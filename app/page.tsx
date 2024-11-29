@@ -1,4 +1,4 @@
-import { SpeedInsights } from "@vercel/speed-insights/next";
+
 import React from 'react';
 import dynamic from 'next/dynamic';
 
@@ -24,7 +24,7 @@ export default function Home() {
       <Skills />
       <Project />
       <Footer />
-      <SpeedInsights />
+    
     </>
   );
 }
