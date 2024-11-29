@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-"@vercel/speed-insights": "^latest-version",
-"@vercel/analytics": "^latest-version",
+"@vercel/analytics": "^1.4.1",
+"@vercel/speed-insights": "^1.1.0",
     "@fortawesome/free-brands-svg-icons": "^6.7.1",
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "@fortawesome/react-fontawesome": "^0.2.2",
