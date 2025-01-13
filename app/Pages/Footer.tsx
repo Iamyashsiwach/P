@@ -82,7 +82,7 @@ export function Footer() {
 
         {/* Footer Note */}
         <div className="mt-8 text-sm text-gray-400">
-          <p>&copy; {new Date().getFullYear()} Yash Siwach. All rights reserved.</p>
+          <p>Yash Siwach. All rights reserved.</p>
         </div>
       </div>
     </div>
