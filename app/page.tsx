@@ -4,16 +4,14 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 
 // Dynamically import components with loading state handling
-const Hero = dynamic(() => import('./Pages/Hero'), { loading: () => <Loading /> });
-const AboutMe = dynamic(() => import('./Pages/AboutMe'), { loading: () => <Loading /> });
-const TimelineWithBackground = dynamic(() => import('./Pages/TimelineWithBackground'), { loading: () => <Loading /> });
-const Skills = dynamic(() => import('./Pages/Skills'), { loading: () => <Loading /> });
-const Project = dynamic(() => import('./Pages/Project'), { loading: () => <Loading /> });
-const Footer = dynamic(() => import('./Pages/Footer'), { loading: () => <Loading /> });
-const Navbar = dynamic(() => import('./components/Navbar'), { loading: () => <Loading /> });
+const Hero = dynamic(() => import('./Pages/Hero'));
+const AboutMe = dynamic(() => import('./Pages/AboutMe'));
+const TimelineWithBackground = dynamic(() => import('./Pages/TimelineWithBackground'));
+const Skills = dynamic(() => import('./Pages/Skills'));
+const Project = dynamic(() => import('./Pages/Project'));
+const Footer = dynamic(() => import('./Pages/Footer'));
+const Navbar = dynamic(() => import('./components/Navbar'));
 
-// Loading component to show while dynamic imports are being resolved
-const Loading = () => <h2>🌀 Loading...</h2>;
 
 export default function Home() {
   return (
