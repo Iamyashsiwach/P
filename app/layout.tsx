@@ -16,7 +16,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Yash Siwach",
-  description: "Portfolio Created in Next.js",
+  description: "Portfolio Created using Next.js",
 };
 
 
