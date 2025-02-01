@@ -50,7 +50,7 @@ const tech = [
           id: 8,
           name: "Unity",
           designation: "Game Development Engine",
-          image: "/Unity.jpg",
+          image: "/u.png",
         },
         {
           id: 9,
