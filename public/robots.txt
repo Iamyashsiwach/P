@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://yashsiwach.space
+
+# Sitemaps
+Sitemap: https://yashsiwach.space/sitemap.xml

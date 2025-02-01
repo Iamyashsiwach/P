@@ -16,6 +16,7 @@ import React from "react";
 // });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://yashsiwach.space'),
   title: "Yash Siwach - Portfolio",
   description: "Welcome to Yash Siwach's portfolio. Explore my projects, skills, and achievements.",
   keywords: "Yash Siwach, portfolio, web developer, UI/UX designer, projects, frontend developer, software engineer, web design",
