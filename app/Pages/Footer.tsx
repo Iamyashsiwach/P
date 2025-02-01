@@ -1,3 +1,4 @@
+
 import React from "react";
 import { WavyBackground } from "../components/ui/wavy-background";
 import { HiOutlineMail, HiOutlinePhone, HiOutlineMap } from "react-icons/hi";
@@ -82,9 +83,6 @@ export function Footer() {
         {/* Footer Note */}
         <div className="mt-8 text-sm text-gray-400">
           <p>Yash Siwach. All rights reserved. &copy; {new Date().getFullYear()}</p>
-          <p>
-            <a href="/sitemap.xml" className="text-blue-400 hover:underline">Sitemap</a>
-          </p>
         </div>
       </div>
     </div>
