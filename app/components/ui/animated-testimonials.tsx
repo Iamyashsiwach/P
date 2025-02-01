@@ -43,6 +43,7 @@ export const AnimatedTestimonials = ({
   const isActive = (index: number) => index === active;
 
   const randomRotateY = () => {
+    if (typeof window === 'undefined') return 0; // Return 0 on the server
     return Math.floor(Math.random() * 21) - 10;
   };
 

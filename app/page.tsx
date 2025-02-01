@@ -4,14 +4,8 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 
 // Dynamically import components with loading state handling
-const Hero = dynamic(() => import('./Pages/Hero'), {
-  loading: () => <div>Loading...</div>,
-  ssr: true
-});
-const AboutMe = dynamic(() => import('./Pages/AboutMe'), {
-  loading: () => <div>Loading...</div>,
-  ssr: true
-});
+const Hero = dynamic(() => import('./Pages/Hero'));
+const AboutMe = dynamic(() => import('./Pages/AboutMe'));
 const TimelineWithBackground = dynamic(() => import('./Pages/TimelineWithBackground'));
 const Skills = dynamic(() => import('./Pages/Skills'));
 const Project = dynamic(() => import('./Pages/Project'));
