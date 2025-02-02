@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     siteName: "Yash Siwach",
     images: [
       {
-        url: "/Hero_img.jpeg", // Replace with your image URL
+        url: "https://yashsiwach.space/Hero_img.jpeg", // Replace with your image URL
         width: 800,
         height: 600,
         alt: "Yash Siwach Portfolio",
@@ -40,11 +40,14 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Yash Siwach - Portfolio",
     description: "Explore the portfolio of Yash Siwach, a skilled web developer and UI/UX designer.",
-    images: [
-      {
-        url: "/Hero_img.jpeg", // Replace with your image URL
-      },
-    ],
+   images: [
+  {
+    url: "https://yashsiwach.space/Hero_img.jpeg", 
+    width: 800,
+    height: 600,
+    alt: "Yash Siwach Portfolio",
+  },
+],
   },
 };
 
@@ -63,20 +66,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               "name": "Yash Siwach",
               "url": "https://yashsiwach.space",
               "sameAs": [
+                "https://yashsiwach-portfolio.vercel.app",
                 "https://twitter.com/iamyashsiwach",
                 "https://linkedin.com/in/yash-siwach",
                 "https://github.com/iamyashsiwach"
               ],
-                  "jobTitle": "Frontend Developer",
-              "worksFor": {
-                "@type": "Organization",
-                "name": "Freelancer"
-              },
-                    "jobTitle": "UI/UX Designer",
-              "worksFor": {
-                "@type": "Organization",
-                "name": "Freelancer"
-              },
+        "jobTitle": "Frontend Developer & UI/UX Designer",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Freelancer"
+      }
             }
           `}
         </script>
