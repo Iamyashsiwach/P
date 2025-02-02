@@ -1,17 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const Sitemap = () => {
-  return null; // This component does not render anything
-};
-
-export const getServerSideProps = async ({ res }: { res: NextApiResponse }) => {
+const Sitemap = (req: NextApiRequest, res: NextApiResponse) => {
   // Set response headers
   res.setHeader('Content-Type', 'text/xml');
   res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
 
-  // Generate the sitemap XML
+  // Generate the sitemap XML with the correct namespace
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap-image/1.1">
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
       <loc>https://yashsiwach.space/</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
@@ -37,10 +33,6 @@ export const getServerSideProps = async ({ res }: { res: NextApiResponse }) => {
   // Send the sitemap
   res.write(sitemap);
   res.end();
-
-  return {
-    props: {},
-  };
 };
 
 export default Sitemap; 
