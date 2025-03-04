@@ -5,6 +5,22 @@ import { AnimatedTestimonials } from "../components/ui/animated-testimonials";
 
 export function Project() {
   const testimonials = [
+      {
+      quote:
+        "Developed a freelance website using Three.js, Next.js, and TypeScript, delivering an interactive and dynamic web experience.",
+name: (
+        <a
+          href="https://www.GoOnline.site"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-400 hover:underline"
+        >
+          www.GoOnline.site
+        </a>
+      ),
+      designation: "Freelance website in Three.js & Next.js with TypeScript",
+      src: "/p-1.jpeg",
+    },
     {
       quote:
         "Innovated a portable IoT-based Air Quality Index Monitor using Arduino and advanced sensors, offering real-time feedback for safer, healthier family environments.",
