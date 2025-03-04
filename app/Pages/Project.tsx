@@ -10,7 +10,7 @@ export function Project() {
       "Developed a freelance website using Three.js, Next.js, and TypeScript, delivering an interactive and dynamic web experience.",
     name: "www.GoOnline.site", // Keep as a string
     designation: "Freelance website in Three.js & Next.js with TypeScript",
-    src: "/p-1.jpeg",
+    src: "/Screenshot (2).jpeg",
     link: "https://www.GoOnline.site", // Add a separate field for the link 
 
     },
