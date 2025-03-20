@@ -5,7 +5,7 @@ import { LampContainer } from "../components/ui/lamp";
 import { FlipWords } from "../components/ui/flip-words";
 
 export function Hero() {
-  const words = ["Web Developer", "UI/UX Designer", "Product Manager"]; // Words to flip
+  const words = [ "UI/UX Designer", "Product Manager", "Web Developer" ]; // Words to flip
 
   return (
     <LampContainer>
