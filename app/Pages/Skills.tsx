@@ -58,6 +58,24 @@ const tech = [
           designation: "Typed Superset of JavaScript",
           image: "/ts.png",
         },
+        {
+          id: 10,
+          name: "MongoDB",
+          designation: "Database",
+          image: "/DB.png",
+        },
+        {
+          id: 11,
+          name: "Three.js",
+          designation: "JavaScript 3D library",
+          image: "/three.png",
+        },
+          {
+          id: 12,
+          name: "Retrieval-Augmented Generation",
+          designation: "AI framework",
+          image: "/Rag.png",
+        },
       ];
 
 export function Skills() {
