@@ -1,11 +1,11 @@
-"use client";
-import React from "react";
-import { motion } from "framer-motion";
-import { LampContainer } from "../components/ui/lamp";
-import { FlipWords } from "../components/ui/flip-words";
+'use client';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { LampContainer } from '../components/ui/lamp';
+import { FlipWords } from '../components/ui/flip-words';
 
 export function Hero() {
-  const words = [ "UI/UX Designer", "Product Manager", "Web Developer" ]; // Words to flip
+  const words = ['Web Developer', 'Product Manager', 'UI/UX Designer']; // Words to flip
 
   return (
     <LampContainer>
@@ -16,7 +16,7 @@ export function Hero() {
         exit={{ opacity: 0, y: 100 }} // Animation on exit (when scrolling up)
         transition={{
           duration: 1.8,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         }}
         className="mt-0 sm:mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl sm:text-5xl xs:text-3xl"
       >

@@ -1,76 +1,71 @@
-"use client";
-import React, { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import Image from "next/image";
+'use client';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import Image from 'next/image';
 
 // Utility function for class names
 function cn(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ');
 }
 
 // Background Beams Component
 const BackgroundBeams = React.memo(() => {
   const paths = [
-    "M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875",
-    "M-373 -197C-373 -197 -305 208 159 335C623 462 691 867 691 867",
-    "M-366 -205C-366 -205 -298 200 166 327C630 454 698 859 698 859",
-    "M-359 -213C-359 -213 -291 192 173 319C637 446 705 851 705 851",
-    "M-352 -221C-352 -221 -284 184 180 311C644 438 712 843 712 843",
-    "M-345 -229C-345 -229 -277 176 187 303C651 430 719 835 719 835",
-    "M-338 -237C-338 -237 -270 168 194 295C658 422 726 827 726 827",
-    "M-331 -245C-331 -245 -263 160 201 287C665 414 733 819 733 819",
-    "M-324 -253C-324 -253 -256 152 208 279C672 406 740 811 740 811",
-    "M-317 -261C-317 -261 -249 144 215 271C679 398 747 803 747 803",
-    "M-310 -269C-310 -269 -242 136 222 263C686 390 754 795 754 795",
-    "M-303 -277C-303 -277 -235 128 229 255C693 382 761 787 761 787",
-    "M-296 -285C-296 -285 -228 120 236 247C700 374 768 779 768 779",
-    "M-289 -293C-289 -293 -221 112 243 239C707 366 775 771 775 771",
-    "M-282 -301C-282 -301 -214 104 250 231C714 358 782 763 782 763",
-    "M-275 -309C-275 -309 -207 96 257 223C721 350 789 755 789 755",
-    "M-268 -317C-268 -317 -200 88 264 215C728 342 796 747 796 747",
-    "M-261 -325C-261 -325 -193 80 271 207C735 334 803 739 803 739",
-    "M-254 -333C-254 -333 -186 72 278 199C742 326 810 731 810 731",
-    "M-247 -341C-247 -341 -179 64 285 191C749 318 817 723 817 723",
-    "M-240 -349C-240 -349 -172 56 292 183C756 310 824 715 824 715",
-    "M-233 -357C-233 -357 -165 48 299 175C763 302 831 707 831 707",
-    "M-226 -365C-226 -365 -158 40 306 167C770 294 838 699 838 699",
-    "M-219 -373C-219 -373 -151 32 313 159C777 286 845 691 845 691",
-    "M-212 -381C-212 -381 -144 24 320 151C784 278 852 683 852 683",
-    "M-205 -389C-205 -389 -137 16 327 143C791 270 859 675 859 675",
-    "M-198 -397C-198 -397 -130 8 334 135C798 262 866 667 866 667",
-    "M-191 -405C-191 -405 -123 0 341 127C805 254 873 659 873 659",
-    "M-184 -413C-184 -413 -116 -8 348 119C812 246 880 651 880 651",
-    "M-177 -421C-177 -421 -109 -16 355 111C819 238 887 643 887 643",
-    "M-170 -429C-170 -429 -102 -24 362 103C826 230 894 635 894 635",
-    "M-163 -437C-163 -437 -95 -32 369 95C833 222 901 627 901 627",
-    "M-156 -445C-156 -445 -88 -40 376 87C840 214 908 619 908 619",
-    "M-149 -453C-149 -453 -81 -48 383 79C847 206 915 611 915 611",
-    "M-142 -461C-142 -461 -74 -56 390 71C854 198 922 603 922 603",
-    "M-135 -469C-135 -469 -67 -64 397 63C861 190 929 595 929 595",
-    "M-128 -477C-128 -477 -60 -72 404 55C868 182 936 587 936 587",
-    "M-121 -485C-121 -485 -53 -80 411 47C875 174 943 579 943 579",
-    "M-114 -493C-114 -493 -46 -88 418 39C882 166 950 571 950 571",
-    "M-107 -501C-107 -501 -39 -96 425 31C889 158 957 563 957 563",
-    "M-100 -509C-100 -509 -32 -104 432 23C896 150 964 555 964 555",
-    "M-93 -517C-93 -517 -25 -112 439 15C903 142 971 547 971 547",
-    "M-86 -525C-86 -525 -18 -120 446 7C910 134 978 539 978 539",
-    "M-79 -533C-79 -533 -11 -128 453 -1C917 126 985 531 985 531",
-    "M-72 -541C-72 -541 -4 -136 460 -9C924 118 992 523 992 523",
-    "M-65 -549C-65 -549 3 -144 467 -17C931 110 999 515 999 515",
-    "M-58 -557C-58 -557 10 -152 474 -25C938 102 1006 507 1006 507",
-    "M-51 -565C-51 -565 17 -160 481 -33C945 94 1013 499 1013 499",
-    "M-44 -573C-44 -573 24 -168 488 -41C952 86 1020 491 1020 491",
-    "M-37 -581C-37 -581 31 -176 495 -49C959 78 1027 483 1027 483",
-    "M-30 -589C-30 -589 38 -184 502 -57C966 70 1034 475 1034 475",
+    'M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875',
+    'M-373 -197C-373 -197 -305 208 159 335C623 462 691 867 691 867',
+    'M-366 -205C-366 -205 -298 200 166 327C630 454 698 859 698 859',
+    'M-359 -213C-359 -213 -291 192 173 319C637 446 705 851 705 851',
+    'M-352 -221C-352 -221 -284 184 180 311C644 438 712 843 712 843',
+    'M-345 -229C-345 -229 -277 176 187 303C651 430 719 835 719 835',
+    'M-338 -237C-338 -237 -270 168 194 295C658 422 726 827 726 827',
+    'M-331 -245C-331 -245 -263 160 201 287C665 414 733 819 733 819',
+    'M-324 -253C-324 -253 -256 152 208 279C672 406 740 811 740 811',
+    'M-317 -261C-317 -261 -249 144 215 271C679 398 747 803 747 803',
+    'M-310 -269C-310 -269 -242 136 222 263C686 390 754 795 754 795',
+    'M-303 -277C-303 -277 -235 128 229 255C693 382 761 787 761 787',
+    'M-296 -285C-296 -285 -228 120 236 247C700 374 768 779 768 779',
+    'M-289 -293C-289 -293 -221 112 243 239C707 366 775 771 775 771',
+    'M-282 -301C-282 -301 -214 104 250 231C714 358 782 763 782 763',
+    'M-275 -309C-275 -309 -207 96 257 223C721 350 789 755 789 755',
+    'M-268 -317C-268 -317 -200 88 264 215C728 342 796 747 796 747',
+    'M-261 -325C-261 -325 -193 80 271 207C735 334 803 739 803 739',
+    'M-254 -333C-254 -333 -186 72 278 199C742 326 810 731 810 731',
+    'M-247 -341C-247 -341 -179 64 285 191C749 318 817 723 817 723',
+    'M-240 -349C-240 -349 -172 56 292 183C756 310 824 715 824 715',
+    'M-233 -357C-233 -357 -165 48 299 175C763 302 831 707 831 707',
+    'M-226 -365C-226 -365 -158 40 306 167C770 294 838 699 838 699',
+    'M-219 -373C-219 -373 -151 32 313 159C777 286 845 691 845 691',
+    'M-212 -381C-212 -381 -144 24 320 151C784 278 852 683 852 683',
+    'M-205 -389C-205 -389 -137 16 327 143C791 270 859 675 859 675',
+    'M-198 -397C-198 -397 -130 8 334 135C798 262 866 667 866 667',
+    'M-191 -405C-191 -405 -123 0 341 127C805 254 873 659 873 659',
+    'M-184 -413C-184 -413 -116 -8 348 119C812 246 880 651 880 651',
+    'M-177 -421C-177 -421 -109 -16 355 111C819 238 887 643 887 643',
+    'M-170 -429C-170 -429 -102 -24 362 103C826 230 894 635 894 635',
+    'M-163 -437C-163 -437 -95 -32 369 95C833 222 901 627 901 627',
+    'M-156 -445C-156 -445 -88 -40 376 87C840 214 908 619 908 619',
+    'M-149 -453C-149 -453 -81 -48 383 79C847 206 915 611 915 611',
+    'M-142 -461C-142 -461 -74 -56 390 71C854 198 922 603 922 603',
+    'M-135 -469C-135 -469 -67 -64 397 63C861 190 929 595 929 595',
+    'M-128 -477C-128 -477 -60 -72 404 55C868 182 936 587 936 587',
+    'M-121 -485C-121 -485 -53 -80 411 47C875 174 943 579 943 579',
+    'M-114 -493C-114 -493 -46 -88 418 39C882 166 950 571 950 571',
+    'M-107 -501C-107 -501 -39 -96 425 31C889 158 957 563 957 563',
+    'M-100 -509C-100 -509 -32 -104 432 23C896 150 964 555 964 555',
+    'M-93 -517C-93 -517 -25 -112 439 15C903 142 971 547 971 547',
+    'M-86 -525C-86 -525 -18 -120 446 7C910 134 978 539 978 539',
+    'M-79 -533C-79 -533 -11 -128 453 -1C917 126 985 531 985 531',
+    'M-72 -541C-72 -541 -4 -136 460 -9C924 118 992 523 992 523',
+    'M-65 -549C-65 -549 3 -144 467 -17C931 110 999 515 999 515',
+    'M-58 -557C-58 -557 10 -152 474 -25C938 102 1006 507 1006 507',
+    'M-51 -565C-51 -565 17 -160 481 -33C945 94 1013 499 1013 499',
+    'M-44 -573C-44 -573 24 -168 488 -41C952 86 1020 491 1020 491',
+    'M-37 -581C-37 -581 31 -176 495 -49C959 78 1027 483 1027 483',
+    'M-30 -589C-30 -589 38 -184 502 -57C966 70 1034 475 1034 475',
   ];
 
   return (
-    <div
-      className={cn(
-        "absolute inset-0 h-full w-full flex items-center justify-center",
-        
-      )}
-    >
+    <div className={cn('absolute inset-0 h-full w-full flex items-center justify-center')}>
       <svg
         className="z-0 h-full w-full pointer-events-none absolute"
         width="100%"
@@ -94,20 +89,20 @@ const BackgroundBeams = React.memo(() => {
               id={`linearGradient-${index}`}
               key={`gradient-${index}`}
               initial={{
-                x1: "0%",
-                x2: "0%",
-                y1: "0%",
-                y2: "0%",
+                x1: '0%',
+                x2: '0%',
+                y1: '0%',
+                y2: '0%',
               }}
               animate={{
-                x1: ["0%", "100%"],
-                x2: ["0%", "95%"],
-                y1: ["0%", "100%"],
-                y2: ["0%", `${93 + Math.random() * 8}%`],
+                x1: ['0%', '100%'],
+                x2: ['0%', '95%'],
+                y1: ['0%', '100%'],
+                y2: ['0%', `${93 + Math.random() * 8}%`],
               }}
               transition={{
                 duration: Math.random() * 10 + 10,
-                ease: "easeInOut",
+                ease: 'easeInOut',
                 repeat: Infinity,
                 delay: Math.random() * 10,
               }}
@@ -124,13 +119,13 @@ const BackgroundBeams = React.memo(() => {
   );
 });
 
-BackgroundBeams.displayName = "BackgroundBeams";
+BackgroundBeams.displayName = 'BackgroundBeams';
 
 // Timeline Component
 export function TimelineWithBackground() {
   const data = [
     {
-      title: "2024",
+      title: '2024',
       content: (
         <div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6">
@@ -148,16 +143,23 @@ export function TimelineWithBackground() {
               />
               <br />
               <p className="dark:text-neutral-200 text-xs sm:text-sm font-normal mb-4 text-center">
-                <b>2nd Place at the TON Hackathon:</b> <br /> <i>Oct 2024</i><br />
-                Our project <b>TonMate</b> a copy treading platform won <b>2nd place</b> at the <b>TON Hackathon Bootcamp</b> and a <b>$1500 prize</b>. With my teammates, <b>Jayanth</b> and <b>Kartik</b>, for their dedication. 🚀
+                <b>2nd Place at the TON Hackathon:</b> <br /> <i>Oct 2024</i>
+                <br />
+                Our project <b>TonMate</b> a copy treading platform won <b>2nd place</b> at the{' '}
+                <b>TON Hackathon Bootcamp</b> and a <b>$1500 prize</b>. With my teammates,{' '}
+                <b>Jayanth</b> and <b>Kartik</b>, for their dedication. 🚀
               </p>
             </div>
 
             {/* Second Achievement - Starknet India Roadshow */}
             <div className="flex flex-col items-center">
               <p className="dark:text-neutral-200 text-xs sm:text-sm font-normal mb-4 text-center">
-                <b>Starknet India Roadshow: </b> <br /><i>Apr 2024</i><br />
-                As <b>Chapter Lead</b>, I organized the <b>Starknet India Roadshow</b> with workshops, gaming sessions, and <b>32,000 STRK</b> in prizes. Great success in bringing together Web3 enthusiasts! 🌟
+                <b>Starknet India Roadshow: </b> <br />
+                <i>Apr 2024</i>
+                <br />
+                As <b>Chapter Lead</b>, I organized the <b>Starknet India Roadshow</b> with
+                workshops, gaming sessions, and <b>32,000 STRK</b> in prizes. Great success in
+                bringing together Web3 enthusiasts! 🌟
               </p>
               <br />
               <Image
@@ -180,8 +182,11 @@ export function TimelineWithBackground() {
               />
               <br />
               <p className="dark:text-neutral-200 text-xs sm:text-sm font-normal mb-4 text-center">
-                <b>Aleo Chandigarh zkMeetup:</b> <br /> <i>Jun 2024</i><br />
-                Led the <b>Aleo Chandigarh zkMeetup</b> as <b>Chapter Lead</b>, discussing <b>Zero-Knowledge technology</b> with privacy and security experts. Stay tuned for more ZK events! 🔐
+                <b>Aleo Chandigarh zkMeetup:</b> <br /> <i>Jun 2024</i>
+                <br />
+                Led the <b>Aleo Chandigarh zkMeetup</b> as <b>Chapter Lead</b>, discussing{' '}
+                <b>Zero-Knowledge technology</b> with privacy and security experts. Stay tuned for
+                more ZK events! 🔐
               </p>
             </div>
           </div>
@@ -189,7 +194,7 @@ export function TimelineWithBackground() {
       ),
     },
     {
-      title: "2023",
+      title: '2023',
       content: (
         <div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-center mb-6">
@@ -207,16 +212,22 @@ export function TimelineWithBackground() {
               />
               <br />
               <p className="dark:text-neutral-200 text-xs sm:text-sm font-normal mb-4 text-center">
-                <b>Hackathon at Rajasthan University, Jaipur:</b> <br /> <i>Mar 2023</i><br />
-                I had the opportunity to participate in a hackathon hosted by the <b>Government of Rajasthan</b> at <b>Rajasthan University, Jaipur</b>. My team developed a <b>P2P cash lending, sharing, and investing app</b>, which was a great learning experience.
+                <b>Hackathon at Rajasthan University, Jaipur:</b> <br /> <i>Mar 2023</i>
+                <br />I had the opportunity to participate in a hackathon hosted by the{' '}
+                <b>Government of Rajasthan</b> at <b>Rajasthan University, Jaipur</b>. My team
+                developed a <b>P2P cash lending, sharing, and investing app</b>, which was a great
+                learning experience.
               </p>
             </div>
 
             {/* Second Achievement - TECHHACKS 3.0 Hackathon */}
             <div className="flex flex-col items-center">
               <p className="dark:text-neutral-200 text-xs sm:text-sm font-normal mb-4 text-center">
-                <b>TECHHACKS 3.0 Hackathon at Chitkara University:</b> <br /> <i>Nov 2023</i><br />
-                I participated in the <b>TECHHACKS 3.0 Hackathon</b> at <b>Chitkara University</b>, where I had the chance to dive deep into <b>blockchain technology</b> and <b>NFTs</b>. It was my first 24-hour hackathon and an excellent learning experience.
+                <b>TECHHACKS 3.0 Hackathon at Chitkara University:</b> <br /> <i>Nov 2023</i>
+                <br />I participated in the <b>TECHHACKS 3.0 Hackathon</b> at{' '}
+                <b>Chitkara University</b>, where I had the chance to dive deep into{' '}
+                <b>blockchain technology</b> and <b>NFTs</b>. It was my first 24-hour hackathon and
+                an excellent learning experience.
               </p>
               <br />
               <Image
@@ -239,8 +250,11 @@ export function TimelineWithBackground() {
               />
               <br />
               <p className="dark:text-neutral-200 text-xs sm:text-sm font-normal mb-4 text-center">
-                <b>Gas Cylinder Regulation Project:</b> <br /> <i>Sep 2023</i><br />
-                I developed a project focused on regulating <b>home gas cylinders</b>. The project includes safety features like <b>wheels for easy movement</b> and an <b>emergency shut-off valve</b> to prevent gas leaks. This project is designed to make it easier and safer for elderly people to handle gas cylinders at home. 🚨
+                <b>Gas Cylinder Regulation Project:</b> <br /> <i>Sep 2023</i>
+                <br />I developed a project focused on regulating <b>home gas cylinders</b>. The
+                project includes safety features like <b>wheels for easy movement</b> and an{' '}
+                <b>emergency shut-off valve</b> to prevent gas leaks. This project is designed to
+                make it easier and safer for elderly people to handle gas cylinders at home. 🚨
               </p>
             </div>
           </div>
@@ -262,7 +276,7 @@ export function TimelineWithBackground() {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 10%", "end 50%"],
+    offset: ['start 10%', 'end 50%'],
   });
 
   const heightTransform = useTransform(scrollYProgress, [0, 1], [0, height]);
@@ -287,10 +301,7 @@ export function TimelineWithBackground() {
 
         <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
           {data.map((item, index) => (
-            <div
-              key={index}
-              className="flex justify-start pt-10 md:pt-40 md:gap-10"
-            >
+            <div key={index} className="flex justify-start pt-10 md:pt-40 md:gap-10">
               <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
                 <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white dark:bg-black flex items-center justify-center">
                   <div className="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 p-2" />
@@ -304,13 +315,13 @@ export function TimelineWithBackground() {
                 <h3 className="md:hidden block text-2xl mb-4 text-left font-bold text-neutral-500 dark:text-neutral-500">
                   {item.title}
                 </h3>
-                {item.content}{" "}
+                {item.content}{' '}
               </div>
             </div>
           ))}
           <div
             style={{
-              height: height + "px",
+              height: height + 'px',
             }}
             className="absolute md:left-8 left-8 top-0 overflow-hidden w-[2px] bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent from-[0%] via-neutral-200 dark:via-neutral-700 to-transparent to-[99%]  [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] "
           >
@@ -328,4 +339,4 @@ export function TimelineWithBackground() {
   );
 }
 
-export default TimelineWithBackground; 
+export default TimelineWithBackground;

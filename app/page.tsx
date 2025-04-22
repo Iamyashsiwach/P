@@ -1,5 +1,5 @@
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from "@vercel/analytics/next"; 
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from '@vercel/analytics/next';
 import React from 'react';
 import dynamic from 'next/dynamic';
 
@@ -11,7 +11,6 @@ const Skills = dynamic(() => import('./Pages/Skills'));
 const Project = dynamic(() => import('./Pages/Project'));
 const Footer = dynamic(() => import('./Pages/Footer'));
 const Navbar = dynamic(() => import('./components/Navbar'));
-
 
 export default function Home() {
   return (

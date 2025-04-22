@@ -1,13 +1,10 @@
-
-import React from "react";
-import { WavyBackground } from "../components/ui/wavy-background";
-import { HiOutlineMail, HiOutlinePhone, HiOutlineMap } from "react-icons/hi";
-import { FaTwitter, FaLinkedin, FaGithub } from "react-icons/fa";
-
+import React from 'react';
+import { WavyBackground } from '../components/ui/wavy-background';
+import { HiOutlineMail, HiOutlinePhone, HiOutlineMap } from 'react-icons/hi';
+import { FaTwitter, FaLinkedin, FaGithub } from 'react-icons/fa';
 
 export function Footer() {
   return (
-
     <div id="contact" className="relative w-full  bg-black">
       {/* Wavy Background */}
       <div className="absolute inset-0">
@@ -18,9 +15,7 @@ export function Footer() {
       <div className="relative z-10 flex flex-col items-center justify-center py-12 space-y-8 text-white">
         {/* Header */}
         <div className="text-center">
-          <p className="text-2xl md:text-4xl lg:text-5xl font-bold inter-var">
-            Love what you see?
-          </p>
+          <p className="text-2xl md:text-4xl lg:text-5xl font-bold inter-var">Love what you see?</p>
           <p className="text-base md:text-lg mt-4 font-normal inter-var">
             Wanna work with me or share feedback?
           </p>
@@ -86,7 +81,6 @@ export function Footer() {
         </div>
       </div>
     </div>
- 
   );
 }
 export default Footer;
