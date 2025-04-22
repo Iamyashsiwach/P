@@ -40,11 +40,11 @@
 //     setActiveCard(closestBreakpointIndex);
 //   });
 
-"use client";
-import React, { useEffect, useRef, useState } from "react";
-import { useMotionValueEvent, useScroll } from "framer-motion";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+'use client';
+import React, { useEffect, useRef, useState } from 'react';
+import { useMotionValueEvent, useScroll } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 export const StickyScroll = ({
   content,
@@ -59,45 +59,36 @@ export const StickyScroll = ({
 }) => {
   const [activeCard, setActiveCard] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
-  
+
   const { scrollYProgress } = useScroll({
     container: ref,
-    offset: ["start start", "end start"],
+    offset: ['start start', 'end start'],
   });
-  
+
   const cardLength = content.length;
-  
-  useMotionValueEvent(scrollYProgress, "change", (latest: number) => {
+
+  useMotionValueEvent(scrollYProgress, 'change', (latest: number) => {
     const cardsBreakpoints = content.map((_, index) => index / cardLength);
-    const closestBreakpointIndex = cardsBreakpoints.reduce(
-      (acc, breakpoint, index) => {
-        const distance = Math.abs(latest - breakpoint);
-        if (distance < Math.abs(latest - cardsBreakpoints[acc])) {
-          return index;
-        }
-        return acc;
-      },
-      0
-    );
+    const closestBreakpointIndex = cardsBreakpoints.reduce((acc, breakpoint, index) => {
+      const distance = Math.abs(latest - breakpoint);
+      if (distance < Math.abs(latest - cardsBreakpoints[acc])) {
+        return index;
+      }
+      return acc;
+    }, 0);
     setActiveCard(closestBreakpointIndex);
   });
-  
+
   // Rest of the component remains the same...
 
-  const backgroundColors = [
-    "var(--slate-900)",
-    "var(--black)",
-    "var(--neutral-900)",
-  ];
+  const backgroundColors = ['var(--slate-900)', 'var(--black)', 'var(--neutral-900)'];
   const linearGradients = [
-    "linear-gradient(to bottom right, var(--cyan-500), var(--emerald-500))",
-    "linear-gradient(to bottom right, var(--pink-500), var(--indigo-500))",
-    "linear-gradient(to bottom right, var(--orange-500), var(--yellow-500))",
+    'linear-gradient(to bottom right, var(--cyan-500), var(--emerald-500))',
+    'linear-gradient(to bottom right, var(--pink-500), var(--indigo-500))',
+    'linear-gradient(to bottom right, var(--orange-500), var(--yellow-500))',
   ];
 
-  const [backgroundGradient, setBackgroundGradient] = useState(
-    linearGradients[0]
-  );
+  const [backgroundGradient, setBackgroundGradient] = useState(linearGradients[0]);
 
   useEffect(() => {
     setBackgroundGradient(linearGradients[activeCard % linearGradients.length]);
@@ -145,7 +136,7 @@ export const StickyScroll = ({
       <div
         style={{ background: backgroundGradient }}
         className={cn(
-          "hidden lg:block h-60 w-80 rounded-md bg-white sticky top-10 overflow-hidden",
+          'hidden lg:block h-60 w-80 rounded-md bg-white sticky top-10 overflow-hidden',
           contentClassName
         )}
       >

@@ -1,9 +1,7 @@
-
-
-"use client";
-import React from "react";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+'use client';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 export const LampContainer = ({
   children,
@@ -15,19 +13,19 @@ export const LampContainer = ({
   return (
     <div
       className={cn(
-        "relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-slate-950 w-full rounded-md z-0",
+        'relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-slate-950 w-full rounded-md z-0',
         className
       )}
     >
       <div className="relative flex w-full flex-1 scale-y-125 items-center justify-center isolate z-0 ">
         {/* First Motion Element (Lamp) */}
         <motion.div
-          initial={{ opacity: 0.5, width: "15rem" }}
-          whileInView={{ opacity: 1, width: "22rem" }} // Trigger animation when the element is in view
-          exit={{ opacity: 0.5, width: "15rem" }} // Animation when exiting
+          initial={{ opacity: 0.5, width: '15rem' }}
+          whileInView={{ opacity: 1, width: '22rem' }} // Trigger animation when the element is in view
+          exit={{ opacity: 0.5, width: '15rem' }} // Animation when exiting
           transition={{
             duration: 1,
-            ease: "easeInOut",
+            ease: 'easeInOut',
           }}
           style={{
             backgroundImage: `conic-gradient(var(--conic-position), var(--tw-gradient-stops))`,
@@ -40,12 +38,12 @@ export const LampContainer = ({
 
         {/* Second Motion Element (Lamp) */}
         <motion.div
-          initial={{ opacity: 0.5, width: "15rem" }}
-          whileInView={{ opacity: 1, width: "22rem" }}
-          exit={{ opacity: 0.5, width: "15rem" }}
+          initial={{ opacity: 0.5, width: '15rem' }}
+          whileInView={{ opacity: 1, width: '22rem' }}
+          exit={{ opacity: 0.5, width: '15rem' }}
           transition={{
             duration: 1,
-            ease: "easeInOut",
+            ease: 'easeInOut',
           }}
           style={{
             backgroundImage: `conic-gradient(var(--conic-position), var(--tw-gradient-stops))`,
@@ -63,23 +61,23 @@ export const LampContainer = ({
 
         {/* Scroll-triggered motion */}
         <motion.div
-          initial={{ width: "8rem" }}
-          whileInView={{ width: "14rem" }}
-          exit={{ width: "8rem" }}
+          initial={{ width: '8rem' }}
+          whileInView={{ width: '14rem' }}
+          exit={{ width: '8rem' }}
           transition={{
             duration: 1,
-            ease: "easeInOut",
+            ease: 'easeInOut',
           }}
           className="absolute inset-auto z-30 h-36 w-64 -translate-y-[6rem] rounded-full bg-cyan-400 blur-2xl"
         ></motion.div>
 
         <motion.div
-          initial={{ width: "15rem" }}
-          whileInView={{ width: "22rem" }}
-          exit={{ width: "15rem" }}
+          initial={{ width: '15rem' }}
+          whileInView={{ width: '22rem' }}
+          exit={{ width: '15rem' }}
           transition={{
             duration: 1,
-            ease: "easeInOut",
+            ease: 'easeInOut',
           }}
           className="absolute inset-auto z-50 h-0.5 w-[30rem] sm:w-[10rem] -translate-y-[7rem] bg-cyan-400 "
         ></motion.div>

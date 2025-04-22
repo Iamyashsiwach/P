@@ -26,7 +26,7 @@
 //             width={1400}
 //             className="mx-auto rounded-2xl object-cover w-full h-full"
 //             draggable={false}
-//             priority 
+//             priority
 //           />
 //         </div>
 //       </ContainerScroll>
@@ -64,7 +64,7 @@
 //             width={1400}
 //             className="mx-auto rounded-2xl object-cover w-full h-full"
 //             draggable={false}
-//             priority 
+//             priority
 //           />
 //           <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-4">
 //             <p className="text-lg md:text-xl">
@@ -84,43 +84,37 @@
 // export default AboutMe;
 
 // AboutMe.tsx
-"use client";
+'use client';
 
-import React, { useRef, useState, useEffect } from "react";
-import { useScroll, useTransform, motion, MotionValue } from "framer-motion";
-import Image from "next/image";
-
+import React, { useRef, useState, useEffect } from 'react';
+import { useScroll, useTransform, motion, MotionValue } from 'framer-motion';
+import Image from 'next/image';
 
 const AboutMe = () => {
   return (
-
-      <ContainerScroll
-        titleComponent={
-          <>
-            <h1 id="about" className="text-4xl font-semibold text-white">
-              A Little <br />
-              <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none">
-                About Me
-              </span>
-            </h1>
-          </>
-        }
-      >
-        {/* Content Section */}
-        <div   className="relative w-full h-[500px] md:h-[720px] ">
-          <Image
-            src="/bbgg.png" // Path to the image
-            alt="Background image for About Me section"
-            height={720}
-            width={1400}
-            className="mx-auto rounded-2xl object-cover w-full h-full"
-            draggable={false}
-            priority
-          />
-      
-        </div>
-      </ContainerScroll>
-   
+    <ContainerScroll
+      titleComponent={
+        <>
+          <h1 id="about" className="text-4xl font-semibold text-white">
+            A Little <br />
+            <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none">About Me</span>
+          </h1>
+        </>
+      }
+    >
+      {/* Content Section */}
+      <div className="relative w-full h-[500px] md:h-[720px] ">
+        <Image
+          src="/bbgg.png" // Path to the image
+          alt="Background image for About Me section"
+          height={720}
+          width={1400}
+          className="mx-auto rounded-2xl object-cover w-full h-full"
+          draggable={false}
+          priority
+        />
+      </div>
+    </ContainerScroll>
   );
 };
 
@@ -145,9 +139,9 @@ export const ContainerScroll = ({
       setIsMobile(window.innerWidth <= 768);
     };
     checkMobile();
-    window.addEventListener("resize", checkMobile);
+    window.addEventListener('resize', checkMobile);
     return () => {
-      window.removeEventListener("resize", checkMobile);
+      window.removeEventListener('resize', checkMobile);
     };
   }, []);
 
@@ -164,7 +158,7 @@ export const ContainerScroll = ({
       <div
         className="py-10 md:py-40 w-full relative"
         style={{
-          perspective: "1000px",
+          perspective: '1000px',
         }}
       >
         <Header translate={translate} titleComponent={titleComponent} />
@@ -208,7 +202,7 @@ const Card = ({
       rotateX: rotate,
       scale,
       boxShadow:
-        "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
+        '0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003',
     }}
     className="max-w-5xl -mt-12 mx-auto h-[30rem] md:h-[40rem] w-full border-4 border-[#6C6C6C] p-2 md:p-6 bg-[#222222] rounded-[30px] shadow-2xl"
   >

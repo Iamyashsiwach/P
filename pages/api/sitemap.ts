@@ -35,4 +35,4 @@ const Sitemap = (req: NextApiRequest, res: NextApiResponse) => {
   res.end();
 };
 
-export default Sitemap; 
+export default Sitemap;

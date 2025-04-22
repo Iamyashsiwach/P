@@ -1,5 +1,5 @@
 // Loading.tsx
-"use client"; // Ensure this is a client component
+'use client'; // Ensure this is a client component
 
 import React from 'react';
 import { motion } from 'framer-motion';
