@@ -6,6 +6,14 @@ export function Project() {
   const testimonials = [
     {
       quote:
+        'Designed and developed a website for a Network Integrater company, delivering a seamless and interactive web experience.',
+      name: 'reveeinfotech.com', // Keep as a string
+      designation: 'Newtwork Integrater company website',
+      src: '/reveeinfotech.png',
+      link: 'https://www.reveeinfotech.com', // Add a separate field for the link
+    },
+    {
+      quote:
         'Developed a freelance website using Three.js, Next.js, and RAG, delivering an interactive and dynamic web experience.',
       name: 'www.GoOnline.site', // Keep as a string
       designation: 'Freelance website with AI Chatbot using RAG',
