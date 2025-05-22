@@ -6,7 +6,7 @@ export function Project() {
   const testimonials = [
     {
       quote:
-        'Designed and developed a website for a Network Integrater company, delivering a seamless and interactive web experience.',
+        'Designed and developed a website for a System Integrater company, delivering a seamless and interactive web experience.',
       name: 'reveeinfotech.com', // Keep as a string
       designation: 'Newtwork Integrater company website',
       src: '/reveeinfotech.png',
