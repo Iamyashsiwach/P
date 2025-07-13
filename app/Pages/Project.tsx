@@ -6,19 +6,19 @@ export function Project() {
   const testimonials = [
     {
       quote:
+        'Developed a freelance website using Three.js, Next.js, and RAG, delivering an interactive and dynamic web experience.',
+      name: 'Bluelayerstudio.com', // Keep as a string
+      designation: 'Web Agency Website',
+      src: '/Screenshot (2).jpeg',
+      link: 'https://www.bluelayerstudio.com', // Add a separate field for the link
+    },
+    {
+      quote:
         'Designed and developed a website for a System Integrater company, delivering a seamless and interactive web experience.',
       name: 'reveeinfotech.com', // Keep as a string
       designation: 'Newtwork Integrater company website',
       src: '/reveeinfotech.png',
       link: 'https://www.reveeinfotech.com', // Add a separate field for the link
-    },
-    {
-      quote:
-        'Developed a freelance website using Three.js, Next.js, and RAG, delivering an interactive and dynamic web experience.',
-      name: 'www.GoOnline.site', // Keep as a string
-      designation: 'Freelance website with AI Chatbot using RAG',
-      src: '/Screenshot (2).jpeg',
-      link: 'https://www.GoOnline.site', // Add a separate field for the link
     },
     {
       quote:
@@ -32,7 +32,7 @@ export function Project() {
       quote:
         'Designed and developed a responsive and user-friendly NGO website to amplify outreach and engagement. Integrated intuitive navigation, impactful visuals, and donation tools to drive social impact and support..',
       name: 'SmileFoundationScoiety.com',
-      designation: 'Dynamic and Responsive NGO Website Design',
+      designation: 'NGO Website with payment integration ',
       src: '/p-3.png',
       link: 'https://smilefoudationsociety.vercel.app',
     },
