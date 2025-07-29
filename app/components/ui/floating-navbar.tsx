@@ -68,7 +68,7 @@ export const FloatingNav = ({
           </Link>
         ))}
         <a
-          href="https://drive.google.com/file/d/1tGy3s4sajH-kB7quN0ibmJJxxyzJCDZg/view?usp=sharing"
+          href="https://drive.google.com/file/d/1ZKDsqFIP8bYJbzc60ojeXw0EfuP5OBux/view?usp=sharing"
           target="_blank"
         >
           <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
