@@ -6,49 +6,49 @@ export function Project() {
   const testimonials = [
     {
       quote:
-        'Developed a freelance website using Three.js, Next.js, and RAG, delivering an interactive and dynamic web experience.',
+        'Led product strategy and user experience design for a freelance website using Three.js, Next.js, and RAG. Analyzed user needs and market requirements to deliver an interactive and dynamic web solution that drives business value.',
       name: 'Bluelayerstudio.com', // Keep as a string
-      designation: 'Web Agency Website',
+      designation: 'Web Agency Product Strategy & Development',
       src: '/Screenshot (2).jpeg',
       link: 'https://www.bluelayerstudio.com', // Add a separate field for the link
     },
     {
       quote:
-        'Designed and developed a website for a System Integrater company, delivering a seamless and interactive web experience.',
+        'Managed end-to-end product development for a System Integrator company website. Conducted stakeholder interviews, defined user stories, and prioritized features to deliver a seamless customer experience that improved user engagement metrics.',
       name: 'reveeinfotech.com', // Keep as a string
-      designation: 'Newtwork Integrater company website',
+      designation: 'B2B Product Management & Development',
       src: '/reveeinfotech.png',
       link: 'https://www.reveeinfotech.com', // Add a separate field for the link
     },
     {
       quote:
-        'Innovated a portable IoT-based Air Quality Index Monitor using Arduino and advanced sensors, offering real-time feedback for safer, healthier family environments.',
+        'Identified market opportunity and led product innovation for a portable IoT-based Air Quality Index Monitor. Conducted user research, defined MVP requirements, and delivered a solution addressing key pain points for healthier family environments.',
       name: 'LinkedIn',
-      designation: 'Portable Air Quality Monitoring for Healthier Homes',
+      designation: 'IoT Product Innovation & Market Research',
       src: '/p-1.jpeg',
       link: 'https://www.linkedin.com/posts/yash-siwach_iot-airquality-smarthome-activity-7207296630738341889-wHXx?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAD2PIUkBnJudFv2-2-HEiqgp0YqkhGaTwlI',
     },
     {
       quote:
-        'Designed and developed a responsive and user-friendly NGO website to amplify outreach and engagement. Integrated intuitive navigation, impactful visuals, and donation tools to drive social impact and support..',
+        'Drove product roadmap and feature prioritization for an NGO website to maximize social impact. Analyzed user journeys, implemented A/B testing for donation flows, and integrated analytics to measure engagement KPIs and optimize conversion rates.',
       name: 'SmileFoundationScoiety.com',
-      designation: 'NGO Website with payment integration ',
+      designation: 'Non-Profit Product Strategy & Growth',
       src: '/p-3.png',
       link: 'https://smilefoudationsociety.vercel.app',
     },
     {
       quote:
-        'Created an AR game with Unity, featuring majestic dragons and dynamic joystick controls. Players embark on thrilling quests, experiencing immersive dragon-riding adventures in a captivating virtual world.',
+        'Conceptualized and executed product vision for an AR gaming experience using agile methodologies. Gathered user feedback through beta testing, iterated on core features, and delivered an engaging product that enhanced user retention and satisfaction.',
       name: 'LinkedIn',
-      designation: 'Immersive AR Dragon Adventure Game',
+      designation: 'AR Gaming Product Development & UX',
       src: '/p-2.png',
       link: 'https://www.linkedin.com/posts/yash-siwach_unity-csharp-argame-activity-7193535905696018432-jD3h?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAD2PIUkBnJudFv2-2-HEiqgp0YqkhGaTwlI',
     },
     {
       quote:
-        'Designed  a user-friendly interface for a copytrading platform, ensuring seamless navigation, real-time data visualization, and enhanced user engagement for effortless trading experiences.',
+        'Collaborated with cross-functional teams to design and optimize user experience for a fintech copytrading platform. Conducted competitive analysis, defined success metrics, and implemented data-driven improvements to enhance user adoption and platform usability.',
       name: 'Yash',
-      designation: 'Intuitive UI for Copytrading Platform',
+      designation: 'Fintech Product Design & Analytics',
       src: '/p-4.png',
     },
   ];

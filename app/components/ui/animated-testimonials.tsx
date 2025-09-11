@@ -2,7 +2,7 @@
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 type Testimonial = {
   quote: string;
@@ -26,20 +26,20 @@ export const AnimatedTestimonials = ({
     setIsMounted(true); // Ensures the component only runs on the client
   }, []);
 
+  const handleNext = useCallback(() => {
+    setActive(prev => (prev + 1) % testimonials.length);
+  }, [testimonials.length]);
+
+  const handlePrev = useCallback(() => {
+    setActive(prev => (prev - 1 + testimonials.length) % testimonials.length);
+  }, [testimonials.length]);
+
   useEffect(() => {
     if (autoplay && isMounted) {
       const interval = setInterval(handleNext, 5000);
       return () => clearInterval(interval);
     }
-  }, [autoplay, isMounted]);
-
-  const handleNext = () => {
-    setActive(prev => (prev + 1) % testimonials.length);
-  };
-
-  const handlePrev = () => {
-    setActive(prev => (prev - 1 + testimonials.length) % testimonials.length);
-  };
+  }, [autoplay, isMounted, handleNext]);
 
   const isActive = (index: number) => index === active;
 
@@ -161,19 +161,26 @@ export const AnimatedTestimonials = ({
               ))}
             </motion.p>
           </motion.div>
-          <div className="flex gap-4 pt-6 md:pt-12">
-            <button
-              onClick={handlePrev}
-              className="h-7 w-7 rounded-full bg-gray-800 flex items-center justify-center group/button"
-            >
-              <IconArrowLeft className="h-5 w-5 text-white group-hover/button:rotate-12 transition-transform duration-300" />
-            </button>
-            <button
-              onClick={handleNext}
-              className="h-7 w-7 rounded-full bg-gray-800 flex items-center justify-center group/button"
-            >
-              <IconArrowRight className="h-5 w-5 text-white group-hover/button:-rotate-12 transition-transform duration-300" />
-            </button>
+          <div className="pt-4 md:pt-8">
+            <p className="text-xs md:text-sm text-gray-400 mb-2 flex items-center gap-1">
+              Click
+              <IconArrowRight className="h-3 w-3 inline-block animate-pulse" />
+              to explore more projects
+            </p>
+            <div className="flex gap-4">
+              <button
+                onClick={handlePrev}
+                className="h-7 w-7 rounded-full bg-gray-800 flex items-center justify-center group/button"
+              >
+                <IconArrowLeft className="h-5 w-5 text-white group-hover/button:rotate-12 transition-transform duration-300" />
+              </button>
+              <button
+                onClick={handleNext}
+                className="h-7 w-7 rounded-full bg-gray-800 flex items-center justify-center group/button"
+              >
+                <IconArrowRight className="h-5 w-5 text-white group-hover/button:-rotate-12 transition-transform duration-300" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
