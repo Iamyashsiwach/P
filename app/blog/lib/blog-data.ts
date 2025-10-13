@@ -21,47 +21,62 @@ const blogPosts: BlogPost[] = [
     title: 'Chapter 1: The Beginning',
     excerpt:
       'Every story has a beginning. This is mine - where it all started and the early memories that shaped who I am today.',
-    content: `# Chapter 1: The Beginning
+    content: `
 
-*"Every story has a beginning. This is where mine starts."*
+  
+ # Understanding
+
+I am only able to write this because i feel that no one is going to read it and i can say anything about my life, that's the only motivation i have.
+
+I am just a <span style="position: relative; display: inline-block;">Normal<span style="position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: currentColor; transform: translateY(-50%);"></span></span> guy who is trying to write about his life experiences and share wounderful weird awkward moments of my life and trust me on this i have a lot of stories to tell.
+and its not a clickbate article, i am not trying to sell you anything here, its just about stories of my life.
+
+I am not a good writer, nor am i a good storyteller. 
+
+haven't written any blogs or even my practical files in my life this is a first time for me. 
+
+Just a disclaimer,
+I make terrible spelling mistakes and grammatical errors. So, somethings might have to guess what i mean. but i hoping you will get the feeling what i am trying to say.
+
+Let me tell you a bit about myself and where I stand right now.
+
+My name is Yash Siwach, a 21 years old guy who has absolutely no idea what he is doing with his life. 
+I completed my Bachelor’s in Computer Applications from Chandigarh University in 2025. After that, 
+I joined VIT Vellore for a master’s in Artificial Intelligence and Machine Learning, but I dropped out before the first semester ended.
+
+Now I live with my mother and sister in Zirakpur, doing absolutely nothing.
+It’s not that I am dumb or useless. On paper, I look like one of those smart guys who used to run his own web agency during college. 
+lived in Gurugram for the last 8 months of my degree, worked in various companies for various roles gaining experience and learning a lot in that short span of time.
+
+Even a week ago my last interviewer, the CEO of a company, told me that I reminded him of manager he had back in the day. and said "you have lot of potential and will do something great in my life."
+
+He offered me a job. I said no.
+Why? I still don’t know. Maybe the salary felt too low. Or maybe I was just tired of pretending I knew what I wanted.
+
+And that brings me here.
+
+How did I end up in this place? Why am I writing this? Why am I still here? Why am I even alive?
+
+
+
+
+
 
 ---
 
+*"Every story has a beginning. This is where mine starts."*
+
 ## The Early Days
 
-  I was born in 2004 in gurugram gov hospital btw which is no longer there as a building now
 
-Growing up in gurugram, I remember 
 
-The house I lived in...
+I was born in 2004 at a government hospital in Gurugram. It doesn’t exist anymore they shifted it, demolished it, maybe buried my birth certificate with it. 
+Now there’s just a gate and a parking lot, like someone deleted the “building” part of life’s code.
 
-My family consisted of...
 
-## First Memories
 
-Some of my earliest memories include:
+to be continued...
 
-- [Memory 1]
-- [Memory 2]
-- [Memory 3]
-
-## What Shaped Me
-
-Looking back, there were a few things from these early years that really shaped who I became:
-
-### [Influence 1]
-[Describe how this influenced you]
-
-### [Influence 2]
-[Describe how this influenced you]
-
-## Lessons from the Beginning
-
-Even as a child, I was learning lessons that would stay with me:
-
-1. **[Lesson 1]**: [Explanation]
-2. **[Lesson 2]**: [Explanation]
-3. **[Lesson 3]**: [Explanation]
 
 ---
 
@@ -73,444 +88,444 @@ Even as a child, I was learning lessons that would stay with me:
     author: 'Yash Siwach',
     published: true, // Set to false if you're not ready to publish yet
   },
-  {
-    slug: 'chapter-2-discovery',
-    title: 'Chapter 2: Discovery',
-    excerpt:
-      'The years of discovery - finding my interests, passions, and beginning to understand what made me unique.',
-    content: `# Chapter 2: Discovery
+  //   {
+  //     slug: 'chapter-2-discovery',
+  //     title: 'Chapter 2: Discovery',
+  //     excerpt:
+  //       'The years of discovery - finding my interests, passions, and beginning to understand what made me unique.',
+  //     content: `# Chapter 2: Discovery
 
-*"The journey of self-discovery begins when we start asking who we really are."*
+  // *"The journey of self-discovery begins when we start asking who we really are."*
 
----
+  // ---
 
-## Finding My Path
+  // ## Finding My Path
 
-[Write about your teenage years, education, first interests]
+  // [Write about your teenage years, education, first interests]
 
-During my school years, I started to discover...
+  // During my school years, I started to discover...
 
-The subjects I loved were...
+  // The subjects I loved were...
 
-## The First Spark
+  // ## The First Spark
 
-I remember the moment when I first felt passionate about something:
+  // I remember the moment when I first felt passionate about something:
 
-[Describe the moment/experience that sparked a passion]
+  // [Describe the moment/experience that sparked a passion]
 
-It happened when...
+  // It happened when...
 
-What made it special was...
+  // What made it special was...
 
-## Interests and Hobbies
+  // ## Interests and Hobbies
 
-During this time, I explored:
+  // During this time, I explored:
 
-### [Interest/Hobby 1]
-[Why you were drawn to it, what you learned]
+  // ### [Interest/Hobby 1]
+  // [Why you were drawn to it, what you learned]
 
-### [Interest/Hobby 2]
-[Why you were drawn to it, what you learned]
+  // ### [Interest/Hobby 2]
+  // [Why you were drawn to it, what you learned]
 
-### [Interest/Hobby 3]
-[Why you were drawn to it, what you learned]
+  // ### [Interest/Hobby 3]
+  // [Why you were drawn to it, what you learned]
 
-## Challenges Faced
+  // ## Challenges Faced
 
-Not everything was smooth sailing. I faced:
+  // Not everything was smooth sailing. I faced:
 
-- **[Challenge 1]**: [How you dealt with it]
-- **[Challenge 2]**: [How you dealt with it]
-- **[Challenge 3]**: [What you learned]
+  // - **[Challenge 1]**: [How you dealt with it]
+  // - **[Challenge 2]**: [How you dealt with it]
+  // - **[Challenge 3]**: [What you learned]
 
-## People Who Influenced Me
+  // ## People Who Influenced Me
 
-Several people made a significant impact during this phase:
+  // Several people made a significant impact during this phase:
 
-**[Person 1]**: [Their influence on you]
+  // **[Person 1]**: [Their influence on you]
 
-**[Person 2]**: [Their influence on you]
+  // **[Person 2]**: [Their influence on you]
 
-**[Person 3]**: [Their influence on you]
+  // **[Person 3]**: [Their influence on you]
 
-## Reflections
+  // ## Reflections
 
-This period taught me that discovery is a continuous process. The key lessons were:
+  // This period taught me that discovery is a continuous process. The key lessons were:
 
-1. [Lesson 1]
-2. [Lesson 2]
-3. [Lesson 3]
+  // 1. [Lesson 1]
+  // 2. [Lesson 2]
+  // 3. [Lesson 3]
 
----
+  // ---
 
-*The journey of discovery never really ends, but this chapter set the foundation for everything that followed.*`,
-    date: '2024-10-11',
-    readTime: '7 min read',
-    tags: ['Life Story', 'Discovery', 'Growth', 'Personal Journey'],
-    image: '/blog/chapter-2.jpg',
-    author: 'Yash Siwach',
-    published: true,
-  },
-  {
-    slug: 'chapter-3-the-turning-point',
-    title: 'Chapter 3: The Turning Point',
-    excerpt:
-      'Every life has moments that change everything. This is the story of mine - the decision that altered my path forever.',
-    content: `# Chapter 3: The Turning Point
+  // *The journey of discovery never really ends, but this chapter set the foundation for everything that followed.*`,
+  //     date: '2024-10-11',
+  //     readTime: '7 min read',
+  //     tags: ['Life Story', 'Discovery', 'Growth', 'Personal Journey'],
+  //     image: '/blog/chapter-2.jpg',
+  //     author: 'Yash Siwach',
+  //     published: true,
+  //   },
+  //   {
+  //     slug: 'chapter-3-the-turning-point',
+  //     title: 'Chapter 3: The Turning Point',
+  //     excerpt:
+  //       'Every life has moments that change everything. This is the story of mine - the decision that altered my path forever.',
+  //     content: `# Chapter 3: The Turning Point
 
-*"Sometimes one decision changes everything."*
+  // *"Sometimes one decision changes everything."*
 
----
+  // ---
 
-## Before the Change
+  // ## Before the Change
 
-Life was [describe your situation before the turning point]...
+  // Life was [describe your situation before the turning point]...
 
-I was working/studying/doing [what you were doing]...
+  // I was working/studying/doing [what you were doing]...
 
-Everything seemed to be going according to plan, but...
+  // Everything seemed to be going according to plan, but...
 
-## The Moment Everything Changed
+  // ## The Moment Everything Changed
 
-[Describe the event, decision, or realization that was your turning point]
+  // [Describe the event, decision, or realization that was your turning point]
 
-It happened on [time/date/period]...
+  // It happened on [time/date/period]...
 
-I remember thinking...
+  // I remember thinking...
 
-The decision I had to make was:
+  // The decision I had to make was:
 
-> [Quote or describe the pivotal decision]
+  // > [Quote or describe the pivotal decision]
 
-## The Fear and Doubt
+  // ## The Fear and Doubt
 
-Making this change wasn't easy. I was afraid of:
+  // Making this change wasn't easy. I was afraid of:
 
-- [Fear 1]
-- [Fear 2]  
-- [Fear 3]
+  // - [Fear 1]
+  // - [Fear 2]
+  // - [Fear 3]
 
-People around me said...
+  // People around me said...
 
-But deep down, I knew...
+  // But deep down, I knew...
 
-## Taking the Leap
+  // ## Taking the Leap
 
-[Describe how you made the change]
+  // [Describe how you made the change]
 
-The steps I took were:
+  // The steps I took were:
 
-1. **[Step 1]**: [What you did]
-2. **[Step 2]**: [What you did]
-3. **[Step 3]**: [What you did]
+  // 1. **[Step 1]**: [What you did]
+  // 2. **[Step 2]**: [What you did]
+  // 3. **[Step 3]**: [What you did]
 
-## The Immediate Impact
+  // ## The Immediate Impact
 
-Once I made the change:
+  // Once I made the change:
 
-- [What happened immediately]
-- [How life changed in the short term]
-- [Initial challenges you faced]
+  // - [What happened immediately]
+  // - [How life changed in the short term]
+  // - [Initial challenges you faced]
 
-## Looking Back
+  // ## Looking Back
 
-Now, looking back at that turning point, I realize:
+  // Now, looking back at that turning point, I realize:
 
-**What I learned:**
-[Key lesson 1]
+  // **What I learned:**
+  // [Key lesson 1]
 
-**What I would tell myself then:**
-[Advice to past self]
+  // **What I would tell myself then:**
+  // [Advice to past self]
 
-**Why it mattered:**
-[The long-term impact]
+  // **Why it mattered:**
+  // [The long-term impact]
 
-## A New Direction
+  // ## A New Direction
 
-This turning point set me on a completely new path:
+  // This turning point set me on a completely new path:
 
-[Describe the new direction your life took]
+  // [Describe the new direction your life took]
 
----
+  // ---
 
-*Sometimes the scariest decisions lead to the most beautiful destinations.*`,
-    date: '2024-10-11',
-    readTime: '8 min read',
-    tags: ['Life Story', 'Turning Point', 'Decisions', 'Life Lessons', 'Change'],
-    image: '/blog/chapter-3.jpg',
-    author: 'Yash Siwach',
-    published: true,
-  },
-  {
-    slug: 'chapter-4-building-dreams',
-    title: 'Chapter 4: Building Dreams',
-    excerpt:
-      'With a new direction set, it was time to build. This chapter is about the work, the hustle, and turning dreams into reality.',
-    content: `# Chapter 4: Building Dreams
+  // *Sometimes the scariest decisions lead to the most beautiful destinations.*`,
+  //     date: '2024-10-11',
+  //     readTime: '8 min read',
+  //     tags: ['Life Story', 'Turning Point', 'Decisions', 'Life Lessons', 'Change'],
+  //     image: '/blog/chapter-3.jpg',
+  //     author: 'Yash Siwach',
+  //     published: true,
+  //   },
+  //   {
+  //     slug: 'chapter-4-building-dreams',
+  //     title: 'Chapter 4: Building Dreams',
+  //     excerpt:
+  //       'With a new direction set, it was time to build. This chapter is about the work, the hustle, and turning dreams into reality.',
+  //     content: `# Chapter 4: Building Dreams
 
-*"Dreams don't work unless you do."*
+  // *"Dreams don't work unless you do."*
 
----
+  // ---
 
-## The Vision
+  // ## The Vision
 
-After my turning point, I had a clear vision:
+  // After my turning point, I had a clear vision:
 
-[Describe your dream/goal/aspiration]
+  // [Describe your dream/goal/aspiration]
 
-I wanted to...
+  // I wanted to...
 
-What success looked like to me:
+  // What success looked like to me:
 
-- [Success metric 1]
-- [Success metric 2]
-- [Success metric 3]
+  // - [Success metric 1]
+  // - [Success metric 2]
+  // - [Success metric 3]
 
-## The Beginning of the Journey
+  // ## The Beginning of the Journey
 
-I started by:
+  // I started by:
 
-### Phase 1: Learning
-[What you had to learn, how you learned it]
+  // ### Phase 1: Learning
+  // [What you had to learn, how you learned it]
 
-The resources I used:
-- [Resource 1]
-- [Resource 2]
-- [Resource 3]
+  // The resources I used:
+  // - [Resource 1]
+  // - [Resource 2]
+  // - [Resource 3]
 
-### Phase 2: Taking Action
-[First steps you took toward your dream]
+  // ### Phase 2: Taking Action
+  // [First steps you took toward your dream]
 
-My first project/attempt was:
-[Describe it]
+  // My first project/attempt was:
+  // [Describe it]
 
-### Phase 3: Failing Forward
-[Early failures and what they taught you]
+  // ### Phase 3: Failing Forward
+  // [Early failures and what they taught you]
 
-I failed at:
-- [Failure 1] - But I learned: [Lesson]
-- [Failure 2] - But I learned: [Lesson]
-- [Failure 3] - But I learned: [Lesson]
+  // I failed at:
+  // - [Failure 1] - But I learned: [Lesson]
+  // - [Failure 2] - But I learned: [Lesson]
+  // - [Failure 3] - But I learned: [Lesson]
 
-## The Grind
+  // ## The Grind
 
-Building dreams requires consistent effort. My daily routine looked like:
+  // Building dreams requires consistent effort. My daily routine looked like:
 
-**Morning**: [What you did]
+  // **Morning**: [What you did]
 
-**Afternoon**: [What you did]
+  // **Afternoon**: [What you did]
 
-**Evening**: [What you did]
+  // **Evening**: [What you did]
 
-The sacrifices I made:
-- [Sacrifice 1]
-- [Sacrifice 2]
-- [Sacrifice 3]
+  // The sacrifices I made:
+  // - [Sacrifice 1]
+  // - [Sacrifice 2]
+  // - [Sacrifice 3]
 
-## Small Wins
+  // ## Small Wins
 
-Along the way, there were moments of victory:
+  // Along the way, there were moments of victory:
 
-### Win 1: [First Achievement]
-[What happened, why it mattered]
+  // ### Win 1: [First Achievement]
+  // [What happened, why it mattered]
 
-### Win 2: [Second Achievement]
-[What happened, why it mattered]
+  // ### Win 2: [Second Achievement]
+  // [What happened, why it mattered]
 
-### Win 3: [Third Achievement]
-[What happened, why it mattered]
+  // ### Win 3: [Third Achievement]
+  // [What happened, why it mattered]
 
-## People Who Helped
+  // ## People Who Helped
 
-I didn't do this alone. These people made a difference:
+  // I didn't do this alone. These people made a difference:
 
-**[Person/Mentor 1]**: [How they helped]
+  // **[Person/Mentor 1]**: [How they helped]
 
-**[Person/Mentor 2]**: [How they helped]
+  // **[Person/Mentor 2]**: [How they helped]
 
-**[Community/Group]**: [How they supported you]
+  // **[Community/Group]**: [How they supported you]
 
-## The Reality Check
+  // ## The Reality Check
 
-Building dreams isn't just about success. The hard truths I learned:
+  // Building dreams isn't just about success. The hard truths I learned:
 
-1. **[Truth 1]**: [Explanation]
-2. **[Truth 2]**: [Explanation]
-3. **[Truth 3]**: [Explanation]
+  // 1. **[Truth 1]**: [Explanation]
+  // 2. **[Truth 2]**: [Explanation]
+  // 3. **[Truth 3]**: [Explanation]
 
-## Where I Am Now
+  // ## Where I Am Now
 
-As I write this chapter, [describe your current state]:
+  // As I write this chapter, [describe your current state]:
 
-Progress made:
-- [Progress 1]
-- [Progress 2]
-- [Progress 3]
+  // Progress made:
+  // - [Progress 1]
+  // - [Progress 2]
+  // - [Progress 3]
 
-Still working on:
-- [Goal 1]
-- [Goal 2]
-- [Goal 3]
+  // Still working on:
+  // - [Goal 1]
+  // - [Goal 2]
+  // - [Goal 3]
 
-## The Journey Continues
+  // ## The Journey Continues
 
-The dream is still being built, one day at a time. What keeps me going:
+  // The dream is still being built, one day at a time. What keeps me going:
 
-[Your motivation, why you continue]
+  // [Your motivation, why you continue]
 
----
+  // ---
 
-*The best view comes after the hardest climb.*`,
-    date: '2024-10-11',
-    readTime: '10 min read',
-    tags: ['Life Story', 'Dreams', 'Career', 'Hustle', 'Goals', 'Personal Growth'],
-    image: '/blog/chapter-4.jpg',
-    author: 'Yash Siwach',
-    published: true,
-  },
-  {
-    slug: 'chapter-5-lessons-learned',
-    title: 'Chapter 5: Lessons Learned',
-    excerpt:
-      'Wisdom comes from experience. Here are the most important lessons life has taught me so far on this journey.',
-    content: `# Chapter 5: Lessons Learned
+  // *The best view comes after the hardest climb.*`,
+  //     date: '2024-10-11',
+  //     readTime: '10 min read',
+  //     tags: ['Life Story', 'Dreams', 'Career', 'Hustle', 'Goals', 'Personal Growth'],
+  //     image: '/blog/chapter-4.jpg',
+  //     author: 'Yash Siwach',
+  //     published: true,
+  //   },
+  //   {
+  //     slug: 'chapter-5-lessons-learned',
+  //     title: 'Chapter 5: Lessons Learned',
+  //     excerpt:
+  //       'Wisdom comes from experience. Here are the most important lessons life has taught me so far on this journey.',
+  //     content: `# Chapter 5: Lessons Learned
 
-*"We don't learn from experience. We learn from reflecting on experience."*
+  // *"We don't learn from experience. We learn from reflecting on experience."*
 
----
+  // ---
 
-## Introduction
+  // ## Introduction
 
-Life has been my greatest teacher. Looking back at everything I've experienced, these are the lessons that stand out the most.
+  // Life has been my greatest teacher. Looking back at everything I've experienced, these are the lessons that stand out the most.
 
-## Lesson 1: [Your Lesson Title]
+  // ## Lesson 1: [Your Lesson Title]
 
-### What I Learned
-[Explain the lesson]
+  // ### What I Learned
+  // [Explain the lesson]
 
-### How I Learned It
-[The experience/story that taught you this]
+  // ### How I Learned It
+  // [The experience/story that taught you this]
 
-### How It Changed Me
-[How this lesson impacted your life/decisions]
+  // ### How It Changed Me
+  // [How this lesson impacted your life/decisions]
 
-### Applying It Today
-[How you use this lesson now]
+  // ### Applying It Today
+  // [How you use this lesson now]
 
----
+  // ---
 
-## Lesson 2: [Your Lesson Title]
+  // ## Lesson 2: [Your Lesson Title]
 
-### What I Learned
-[Explain the lesson]
+  // ### What I Learned
+  // [Explain the lesson]
 
-### How I Learned It
-[The experience/story that taught you this]
+  // ### How I Learned It
+  // [The experience/story that taught you this]
 
-### How It Changed Me
-[How this lesson impacted your life/decisions]
+  // ### How It Changed Me
+  // [How this lesson impacted your life/decisions]
 
-### Applying It Today
-[How you use this lesson now]
+  // ### Applying It Today
+  // [How you use this lesson now]
 
----
+  // ---
 
-## Lesson 3: [Your Lesson Title]
+  // ## Lesson 3: [Your Lesson Title]
 
-### What I Learned
-[Explain the lesson]
+  // ### What I Learned
+  // [Explain the lesson]
 
-### How I Learned It
-[The experience/story that taught you this]
+  // ### How I Learned It
+  // [The experience/story that taught you this]
 
-### How It Changed Me
-[How this lesson impacted your life/decisions]
+  // ### How It Changed Me
+  // [How this lesson impacted your life/decisions]
 
-### Applying It Today
-[How you use this lesson now]
+  // ### Applying It Today
+  // [How you use this lesson now]
 
----
+  // ---
 
-## Lesson 4: [Your Lesson Title]
+  // ## Lesson 4: [Your Lesson Title]
 
-### What I Learned
-[Explain the lesson]
+  // ### What I Learned
+  // [Explain the lesson]
 
-### How I Learned It
-[The experience/story that taught you this]
+  // ### How I Learned It
+  // [The experience/story that taught you this]
 
-### How It Changed Me
-[How this lesson impacted your life/decisions]
+  // ### How It Changed Me
+  // [How this lesson impacted your life/decisions]
 
-### Applying It Today
-[How you use this lesson now]
+  // ### Applying It Today
+  // [How you use this lesson now]
 
----
+  // ---
 
-## Lesson 5: [Your Lesson Title]
+  // ## Lesson 5: [Your Lesson Title]
 
-### What I Learned
-[Explain the lesson]
+  // ### What I Learned
+  // [Explain the lesson]
 
-### How I Learned It
-[The experience/story that taught you this]
+  // ### How I Learned It
+  // [The experience/story that taught you this]
 
-### How It Changed Me
-[How this lesson impacted your life/decisions]
+  // ### How It Changed Me
+  // [How this lesson impacted your life/decisions]
 
-### Applying It Today
-[How you use this lesson now]
+  // ### Applying It Today
+  // [How you use this lesson now]
 
----
+  // ---
 
-## The Big Picture
+  // ## The Big Picture
 
-Putting it all together, these lessons have taught me:
+  // Putting it all together, these lessons have taught me:
 
-**About Life:**
-[Your philosophy on life]
+  // **About Life:**
+  // [Your philosophy on life]
 
-**About Success:**
-[Your definition of success]
+  // **About Success:**
+  // [Your definition of success]
 
-**About Relationships:**
-[Your thoughts on relationships]
+  // **About Relationships:**
+  // [Your thoughts on relationships]
 
-**About Myself:**
-[What you've learned about yourself]
+  // **About Myself:**
+  // [What you've learned about yourself]
 
-## Advice to Others
+  // ## Advice to Others
 
-If I could share one piece of advice with someone reading this:
+  // If I could share one piece of advice with someone reading this:
 
-> [Your main piece of advice]
+  // > [Your main piece of advice]
 
-Because [why this advice matters].
+  // Because [why this advice matters].
 
-## Still Learning
+  // ## Still Learning
 
-The truth is, I'm still learning. New lessons appear every day:
+  // The truth is, I'm still learning. New lessons appear every day:
 
-- [Current lesson you're learning]
-- [Question you're still exploring]
-- [Area you're still growing in]
+  // - [Current lesson you're learning]
+  // - [Question you're still exploring]
+  // - [Area you're still growing in]
 
-## Final Thoughts
+  // ## Final Thoughts
 
-Life is a continuous classroom. The lessons never stop coming, and that's what makes it beautiful.
+  // Life is a continuous classroom. The lessons never stop coming, and that's what makes it beautiful.
 
-[Your closing thoughts]
+  // [Your closing thoughts]
 
----
+  // ---
 
-*The best lessons are the ones we learn by living.*`,
-    date: '2024-10-11',
-    readTime: '12 min read',
-    tags: ['Life Story', 'Wisdom', 'Life Lessons', 'Reflections', 'Personal Growth'],
-    image: '/blog/chapter-5.jpg',
-    author: 'Yash Siwach',
-    published: true,
-  },
+  // *The best lessons are the ones we learn by living.*`,
+  //     date: '2024-10-11',
+  //     readTime: '12 min read',
+  //     tags: ['Life Story', 'Wisdom', 'Life Lessons', 'Reflections', 'Personal Growth'],
+  //     image: '/blog/chapter-5.jpg',
+  //     author: 'Yash Siwach',
+  //     published: true,
+  //   },
 
   // 📝 TEMPLATE FOR NEW CHAPTERS
   // Copy this template to add new chapters to your life story

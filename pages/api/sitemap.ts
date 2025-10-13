@@ -1,9 +1,26 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getBlogPosts } from '@/app/blog/lib/blog-data';
 
 const Sitemap = (req: NextApiRequest, res: NextApiResponse) => {
   // Set response headers
   res.setHeader('Content-Type', 'text/xml');
   res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
+
+  // Get all published blog posts
+  const blogPosts = getBlogPosts();
+
+  // Generate blog post URLs
+  const blogUrls = blogPosts
+    .map(
+      post => `
+    <url>
+      <loc>https://yashsiwach.space/blog/${post.slug}</loc>
+      <lastmod>${post.date}</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
+    </url>`
+    )
+    .join('');
 
   // Generate the sitemap XML with the correct namespace
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -11,23 +28,15 @@ const Sitemap = (req: NextApiRequest, res: NextApiResponse) => {
     <url>
       <loc>https://yashsiwach.space/</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>1.0</priority>
     </url>
     <url>
-      <loc>https://yashsiwach.space/about</loc>
+      <loc>https://yashsiwach.space/blog</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
-    </url>
-    <url>
-      <loc>https://yashsiwach.space/projects</loc>
-      <lastmod>${new Date().toISOString()}</lastmod>
-    </url>
-    <url>
-      <loc>https://yashsiwach.space/contact</loc>
-      <lastmod>${new Date().toISOString()}</lastmod>
-    </url>
-    <url>
-      <loc>https://yashsiwach.space/resume</loc>
-      <lastmod>${new Date().toISOString()}</lastmod>
-    </url>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+    </url>${blogUrls}
   </urlset>`;
 
   // Send the sitemap
