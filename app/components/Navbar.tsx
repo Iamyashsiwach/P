@@ -1,13 +1,21 @@
 'use client';
 import React from 'react';
 import { FloatingNav } from './ui/floating-navbar';
-import { IconHome, IconUser, IconFolder, IconMessage, IconBook } from '@tabler/icons-react';
+import {
+  IconHome,
+  IconUser,
+  IconFolder,
+  IconMessage,
+  IconBook,
+  IconTags,
+  IconList,
+} from '@tabler/icons-react';
 
-export function Navbar() {
+export function Navbar({ showBlogNav = false }: { showBlogNav?: boolean }) {
   const navItems = [
     {
       name: 'Home',
-      link: '#home', // Adjust this if you have a home section
+      link: '#home',
       icon: <IconHome className="h-4 w-4 text-neutral-500 dark:text-white" />,
     },
     {
@@ -18,23 +26,38 @@ export function Navbar() {
     {
       name: 'Projects',
       link: '#projects',
-      icon: <IconFolder className="h-4 w-4 text-neutral-500 dark:text-white" />, // Changed to IconFolder for differentiation
+      icon: <IconFolder className="h-4 w-4 text-neutral-500 dark:text-white" />,
     },
-    {
-      name: 'Blog',
-      link: '/blog',
-      icon: <IconBook className="h-4 w-4 text-neutral-500 dark:text-white" />,
-    },
+    // {
+    //   name: 'Blog',
+    //   link: '/blog',
+    //   icon: <IconBook className="h-4 w-4 text-neutral-500 dark:text-white" />,
+    // },
     {
       name: 'Contact',
       link: '#contact',
-      icon: <IconMessage className="h-4 w-4 text-neutral-500 dark:text-white" />, // Changed to IconMail for contact
+      icon: <IconMessage className="h-4 w-4 text-neutral-500 dark:text-white" />,
     },
   ];
 
+  const blogNavItems = showBlogNav
+    ? [
+        {
+          name: 'Blog',
+          link: '/blog',
+          icon: <IconList className="h-4 w-4 text-neutral-500 dark:text-white" />,
+        },
+        // {
+        //   name: 'Tags',
+        //   link: '/blog#tags',
+        //   icon: <IconTags className="h-4 w-4 text-neutral-500 dark:text-white" />,
+        // },
+      ]
+    : undefined;
+
   return (
     <nav role="navigation" className="fixed top-0 left-0 w-full bg-white shadow-lg z-50">
-      <FloatingNav navItems={navItems} />
+      <FloatingNav navItems={navItems} blogNavItems={blogNavItems} />
     </nav>
   );
 }

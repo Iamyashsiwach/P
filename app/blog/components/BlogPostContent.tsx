@@ -3,8 +3,11 @@ import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { BlogNavbar } from './BlogNavbar';
+import Navbar from '../../components/Navbar';
 
 interface BlogPost {
   slug: string;
@@ -85,6 +88,9 @@ export function BlogPostContent({ post, allPosts = [] }: BlogPostContentProps) {
 
   return (
     <div ref={containerRef} className="min-h-screen w-full bg-black relative">
+      <Navbar />
+      <BlogNavbar />
+
       {/* Minimal Progress Indicator */}
       <motion.div
         className="fixed top-0 left-0 h-px bg-neutral-800 origin-left z-50"
@@ -125,6 +131,7 @@ export function BlogPostContent({ post, allPosts = [] }: BlogPostContentProps) {
         {/* Content - Each element hidden until it reaches midpage */}
         <article className="space-y-8">
           <ReactMarkdown
+            rehypePlugins={[rehypeRaw]}
             components={{
               code({ inline, className, children, ...props }: any) {
                 const match = /language-(\w+)/.exec(className || '');
