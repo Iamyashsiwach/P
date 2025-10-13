@@ -29,9 +29,9 @@ const blogPosts: BlogPost[] = [
 
 ## The Early Days
 
-[Write about your childhood, family, where you grew up, early memories]
+  I was born in 2004 in gurugram gov hospital btw which is no longer there as a building now
 
-Growing up in [place], I remember...
+Growing up in gurugram, I remember 
 
 The house I lived in...
 
