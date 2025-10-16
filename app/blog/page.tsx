@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { getBlogPosts } from './lib/blog-data';
-import { BlogNavbar } from './components';
+import { BlogNavbar, Fireflies } from './components';
 import Navbar from '../components/Navbar';
 
 export default function BlogPage() {
@@ -9,6 +9,7 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen w-full bg-black flex flex-col items-center justify-center py-20 px-4">
+      <Fireflies count={2} />
       <Navbar />
       <BlogNavbar />
       <div className="max-w-3xl w-full">

@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { BlogNavbar } from './BlogNavbar';
+import { BlogNavbar, Fireflies } from './';
 import Navbar from '../../components/Navbar';
 
 interface BlogPost {
@@ -88,6 +88,7 @@ export function BlogPostContent({ post, allPosts = [] }: BlogPostContentProps) {
 
   return (
     <div ref={containerRef} className="min-h-screen w-full bg-black relative">
+      <Fireflies count={4} />
       <Navbar />
       <BlogNavbar />
 
