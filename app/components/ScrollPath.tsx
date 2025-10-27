@@ -7,6 +7,7 @@ export function ScrollPath() {
   const [pathLength, setPathLength] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isFlowerComplete, setIsFlowerComplete] = useState(false);
+  const accumulatedScrollRef = useRef(0);
 
   useEffect(() => {
     if (pathRef.current) {
@@ -23,10 +24,13 @@ export function ScrollPath() {
         const delta = (e as WheelEvent).deltaY || 10; // Default fallback for touch/keyboard
 
         const maxScroll = window.innerHeight * 1.5; // Total "scroll" needed to complete flower
-        const progress = Math.min(
-          (scrollProgress * maxScroll + Math.abs(delta) * 2) / maxScroll,
-          1
+
+        // Update accumulated scroll using ref
+        accumulatedScrollRef.current = Math.max(
+          0,
+          accumulatedScrollRef.current + Math.abs(delta) * 2
         );
+        const progress = Math.min(accumulatedScrollRef.current / maxScroll, 1);
 
         // Check if flower animation is complete
         if (progress >= 1 && !isFlowerComplete) {
@@ -84,6 +88,8 @@ export function ScrollPath() {
       window.removeEventListener('keydown', handleKeyDown);
       // Re-enable scrolling on cleanup
       document.body.style.overflow = 'unset';
+      // Reset accumulated scroll on cleanup
+      accumulatedScrollRef.current = 0;
     };
   }, [isFlowerComplete]);
 
