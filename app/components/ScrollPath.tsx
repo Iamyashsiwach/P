@@ -31,13 +31,15 @@ export function ScrollPath() {
         // Check if flower animation is complete
         if (progress >= 1 && !isFlowerComplete) {
           setIsFlowerComplete(true);
+          setScrollProgress(1); // Lock at 100%
           // Re-enable normal scrolling after a short delay
           setTimeout(() => {
             window.scrollTo(0, 0); // Reset to top if needed
           }, 100);
+        } else if (!isFlowerComplete) {
+          // Only update progress if flower is not complete
+          setScrollProgress(progress);
         }
-
-        setScrollProgress(progress);
       }
     };
 
@@ -92,7 +94,9 @@ export function ScrollPath() {
     }
   }, [isFlowerComplete]);
 
-  const strokeDashoffset = pathLength - pathLength * scrollProgress;
+  // Ensure progress is clamped between 0 and 1, and stroke stays at 0 when complete
+  const clampedProgress = Math.max(0, Math.min(scrollProgress, 1));
+  const strokeDashoffset = isFlowerComplete ? 0 : pathLength - pathLength * clampedProgress;
 
   return (
     <>
