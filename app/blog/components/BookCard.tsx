@@ -3,7 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-interface BlogPost {
+interface BookPost {
   slug: string;
   title: string;
   excerpt: string;
@@ -14,12 +14,12 @@ interface BlogPost {
   author: string;
 }
 
-interface BlogCardProps {
-  post: BlogPost;
+interface BookCardProps {
+  post: BookPost;
   index: number;
 }
 
-export function BlogCard({ post, index }: BlogCardProps) {
+export function BookCard({ post, index }: BookCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -79,7 +79,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
 
         {/* Read More Link */}
         <Link
-          href={`/blog/${post.slug}`}
+          href={`/book/${post.slug}`}
           className="inline-flex items-center text-indigo-400 hover:text-indigo-300 transition-colors duration-200 font-medium"
         >
           Read More

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { getBookPosts } from './lib/blog-data';
+import { getBookPosts } from './lib/book-data';
 import { BookNavbar, Fireflies } from './components';
 import Navbar from '../components/Navbar';
 

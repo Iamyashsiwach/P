@@ -6,12 +6,11 @@ import {
   IconUser,
   IconFolder,
   IconMessage,
-  IconBook,
-  IconTags,
+  IconBook2,
   IconList,
 } from '@tabler/icons-react';
 
-export function Navbar({ showBlogNav = false }: { showBlogNav?: boolean }) {
+export function Navbar({ showBookNav = false }: { showBookNav?: boolean }) {
   const navItems = [
     {
       name: 'Home',
@@ -28,11 +27,11 @@ export function Navbar({ showBlogNav = false }: { showBlogNav?: boolean }) {
       link: '#projects',
       icon: <IconFolder className="h-4 w-4 text-neutral-500 dark:text-white" />,
     },
-    // {
-    //   name: 'Blog',
-    //   link: '/blog',
-    //   icon: <IconBook className="h-4 w-4 text-neutral-500 dark:text-white" />,
-    // },
+    {
+      name: 'Book',
+      link: '/book',
+      icon: <IconBook2 className="h-4 w-4 text-neutral-500 dark:text-white" />,
+    },
     {
       name: 'Contact',
       link: '#contact',
@@ -40,16 +39,16 @@ export function Navbar({ showBlogNav = false }: { showBlogNav?: boolean }) {
     },
   ];
 
-  const blogNavItems = showBlogNav
+  const bookNavItems = showBookNav
     ? [
         {
-          name: 'Blog',
-          link: '/blog',
+          name: 'Book',
+          link: '/book',
           icon: <IconList className="h-4 w-4 text-neutral-500 dark:text-white" />,
         },
         // {
         //   name: 'Tags',
-        //   link: '/blog#tags',
+        //   link: '/book#tags',
         //   icon: <IconTags className="h-4 w-4 text-neutral-500 dark:text-white" />,
         // },
       ]
@@ -57,7 +56,7 @@ export function Navbar({ showBlogNav = false }: { showBlogNav?: boolean }) {
 
   return (
     <nav role="navigation" className="fixed top-0 left-0 w-full bg-white shadow-lg z-50">
-      <FloatingNav navItems={navItems} blogNavItems={blogNavItems} />
+      <FloatingNav navItems={navItems} bookNavItems={bookNavItems} />
     </nav>
   );
 }

@@ -1,20 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getBlogPosts } from '@/app/blog/lib/blog-data';
+import { getBookPosts } from '@/app/book/lib/book-data';
 
 const Sitemap = (req: NextApiRequest, res: NextApiResponse) => {
   // Set response headers
   res.setHeader('Content-Type', 'text/xml');
   res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
 
-  // Get all published blog posts
-  const blogPosts = getBlogPosts();
+  // Get all published book posts
+  const bookPosts = getBookPosts();
 
-  // Generate blog post URLs
-  const blogUrls = blogPosts
+  // Generate book post URLs
+  const bookUrls = bookPosts
     .map(
       post => `
     <url>
-      <loc>https://yashsiwach.space/blog/${post.slug}</loc>
+      <loc>https://yashsiwach.space/book/${post.slug}</loc>
       <lastmod>${post.date}</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.7</priority>
@@ -32,11 +32,11 @@ const Sitemap = (req: NextApiRequest, res: NextApiResponse) => {
       <priority>1.0</priority>
     </url>
     <url>
-      <loc>https://yashsiwach.space/blog</loc>
+      <loc>https://yashsiwach.space/book</loc>
       <lastmod>${new Date().toISOString()}</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
-    </url>${blogUrls}
+    </url>${bookUrls}
   </urlset>`;
 
   // Send the sitemap

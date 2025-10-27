@@ -9,7 +9,7 @@ type NavItem = {
   icon?: JSX.Element;
 };
 
-type BlogNavItem = {
+type BookNavItem = {
   name: string;
   link: string;
   icon?: JSX.Element;
@@ -17,11 +17,11 @@ type BlogNavItem = {
 
 export const FloatingNav = ({
   navItems,
-  blogNavItems,
+  bookNavItems,
   className,
 }: {
   navItems: NavItem[];
-  blogNavItems?: BlogNavItem[];
+  bookNavItems?: BookNavItem[];
   className?: string;
 }) => {
   const { scrollYProgress } = useScroll();
@@ -89,8 +89,8 @@ export const FloatingNav = ({
           </a>
         </motion.div>
 
-        {/* Blog Navigation - Attached */}
-        {blogNavItems && blogNavItems.length > 0 && (
+        {/* Book Navigation - Attached */}
+        {bookNavItems && bookNavItems.length > 0 && (
           <motion.div
             initial={{
               opacity: 1,
@@ -105,16 +105,16 @@ export const FloatingNav = ({
             }}
             className="flex max-w-fit border border-transparent dark:border-white/[0.2] rounded-full dark:bg-black bg-white shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] px-6 py-2 items-center justify-center space-x-3"
           >
-            {blogNavItems.map((blogItem: BlogNavItem, idx: number) => (
+            {bookNavItems.map((bookItem: BookNavItem, idx: number) => (
               <Link
-                key={`blog-link=${idx}`}
-                href={blogItem.link}
+                key={`book-link=${idx}`}
+                href={bookItem.link}
                 className={cn(
                   'relative dark:text-neutral-50 items-center flex space-x-1 text-neutral-600 dark:hover:text-neutral-300 hover:text-neutral-500'
                 )}
               >
-                <span className="block sm:hidden">{blogItem.icon}</span>
-                <span className="hidden sm:block text-sm">{blogItem.name}</span>
+                <span className="block sm:hidden">{bookItem.icon}</span>
+                <span className="hidden sm:block text-sm">{bookItem.name}</span>
               </Link>
             ))}
           </motion.div>

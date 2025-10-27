@@ -6,10 +6,10 @@ import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { BlogNavbar, Fireflies } from './';
+import { BookNavbar, Fireflies } from './';
 import Navbar from '../../components/Navbar';
 
-interface BlogPost {
+interface BookPost {
   slug: string;
   title: string;
   excerpt: string;
@@ -22,9 +22,9 @@ interface BlogPost {
   published: boolean;
 }
 
-interface BlogPostContentProps {
-  post: BlogPost;
-  allPosts?: BlogPost[];
+interface BookPostContentProps {
+  post: BookPost;
+  allPosts?: BookPost[];
 }
 
 // Scroll reveal component - only appears when reaching middle of viewport
@@ -70,7 +70,7 @@ function MidPageReveal({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function BlogPostContent({ post, allPosts = [] }: BlogPostContentProps) {
+export function BookPostContent({ post, allPosts = [] }: BookPostContentProps) {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -90,7 +90,7 @@ export function BlogPostContent({ post, allPosts = [] }: BlogPostContentProps) {
     <div ref={containerRef} className="min-h-screen w-full bg-black relative">
       <Fireflies count={4} />
       <Navbar />
-      <BlogNavbar />
+      <BookNavbar />
 
       {/* Minimal Progress Indicator */}
       <motion.div
@@ -101,7 +101,7 @@ export function BlogPostContent({ post, allPosts = [] }: BlogPostContentProps) {
       {/* Minimal Back Button */}
       <div className="fixed top-8 left-8 z-40">
         <Link
-          href="/blog"
+          href="/book"
           className="text-neutral-600 hover:text-neutral-400 transition-colors text-sm font-mono"
         >
           ←
@@ -232,7 +232,7 @@ export function BlogPostContent({ post, allPosts = [] }: BlogPostContentProps) {
           <div className="flex items-center justify-between text-sm">
             {previousPost ? (
               <Link
-                href={`/blog/${previousPost.slug}`}
+                href={`/book/${previousPost.slug}`}
                 className="text-neutral-600 hover:text-neutral-400 transition-colors font-mono"
               >
                 ← Previous
@@ -243,7 +243,7 @@ export function BlogPostContent({ post, allPosts = [] }: BlogPostContentProps) {
 
             {nextPost ? (
               <Link
-                href={`/blog/${nextPost.slug}`}
+                href={`/book/${nextPost.slug}`}
                 className="text-neutral-600 hover:text-neutral-400 transition-colors font-mono"
               >
                 Next →
@@ -273,4 +273,4 @@ export function BlogPostContent({ post, allPosts = [] }: BlogPostContentProps) {
   );
 }
 
-export default BlogPostContent;
+export default BookPostContent;

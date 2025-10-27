@@ -1,7 +1,9 @@
 import React from 'react';
+import Link from 'next/link';
 import { WavyBackground } from '../components/ui/wavy-background';
 import { HiOutlineMail, HiOutlinePhone, HiOutlineMap } from 'react-icons/hi';
 import { FaTwitter, FaLinkedin, FaGithub } from 'react-icons/fa';
+import { IconBook2 } from '@tabler/icons-react';
 
 export function Footer() {
   return (
@@ -73,6 +75,18 @@ export function Footer() {
           >
             <FaGithub />
           </a>
+        </div>
+
+        {/* Book Link */}
+        <div className="mt-4">
+          <Link href="/book">
+            <div className="group inline-flex items-center gap-2 px-4 py-2 border border-gray-600/30 rounded-full hover:border-blue-400/50 transition-all duration-300">
+              <IconBook2 className="h-4 w-4 text-gray-400 group-hover:text-blue-400 transition-colors" />
+              <span className="text-sm text-gray-400 group-hover:text-blue-400 transition-colors font-serif">
+                📖 Reading my life story?
+              </span>
+            </div>
+          </Link>
         </div>
 
         {/* Footer Note */}

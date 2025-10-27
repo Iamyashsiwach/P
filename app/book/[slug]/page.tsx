@@ -1,6 +1,6 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import { getBookPost, getBookPosts } from '../lib/blog-data';
+import { getBookPost, getBookPosts } from '../lib/book-data';
 import { BookPostContent } from '../components';
 
 interface BookPostPageProps {

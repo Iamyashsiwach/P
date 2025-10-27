@@ -15,7 +15,7 @@ const Navbar = dynamic(() => import('./components/Navbar'));
 export default function Home() {
   return (
     <>
-      <Navbar showBlogNav={true} />
+      <Navbar showBookNav={true} />
       <Hero />
       <AboutMe />
       <TimelineWithBackground />
