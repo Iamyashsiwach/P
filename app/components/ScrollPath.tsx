@@ -23,12 +23,12 @@ export function ScrollPath() {
         // Calculate how much the user is trying to scroll
         const delta = (e as WheelEvent).deltaY || 10; // Default fallback for touch/keyboard
 
-        const maxScroll = window.innerHeight * 1.5; // Total "scroll" needed to complete flower
+        const maxScroll = window.innerHeight * 6; // Much more scroll needed for slower animation
 
-        // Update accumulated scroll using ref
+        // Update accumulated scroll using ref (much reduced multiplier for very slow progression)
         accumulatedScrollRef.current = Math.max(
           0,
-          accumulatedScrollRef.current + Math.abs(delta) * 2
+          accumulatedScrollRef.current + Math.abs(delta) * 0.3
         );
         const progress = Math.min(accumulatedScrollRef.current / maxScroll, 1);
 
@@ -102,7 +102,14 @@ export function ScrollPath() {
 
   // Ensure progress is clamped between 0 and 1, and stroke stays at 0 when complete
   const clampedProgress = Math.max(0, Math.min(scrollProgress, 1));
-  const strokeDashoffset = isFlowerComplete ? 0 : pathLength - pathLength * clampedProgress;
+
+  // Add smooth easing for more natural drawing animation
+  const easeInOutCubic = (t: number) => {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  };
+
+  const easedProgress = easeInOutCubic(clampedProgress);
+  const strokeDashoffset = isFlowerComplete ? 0 : pathLength - pathLength * easedProgress;
 
   return (
     <>
@@ -122,7 +129,7 @@ export function ScrollPath() {
               <motion.div
                 className="h-full bg-slate-400 rounded-full"
                 style={{
-                  width: `${scrollProgress * 100}%`,
+                  width: `${easedProgress * 100}%`,
                 }}
                 transition={{ duration: 0.1 }}
               />
@@ -168,7 +175,7 @@ export function ScrollPath() {
               style={{
                 strokeDasharray: pathLength,
                 strokeDashoffset: strokeDashoffset,
-                transition: 'stroke-dashoffset 0.1s ease-out',
+                transition: 'stroke-dashoffset 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
               }}
             />
           </svg>
@@ -192,7 +199,7 @@ export function ScrollPath() {
               style={{
                 strokeDasharray: pathLength,
                 strokeDashoffset: strokeDashoffset,
-                transition: 'stroke-dashoffset 0.1s ease-out',
+                transition: 'stroke-dashoffset 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
               }}
             />
           </svg>
