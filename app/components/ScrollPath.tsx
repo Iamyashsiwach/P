@@ -28,7 +28,7 @@ export function ScrollPath() {
         // Update accumulated scroll using ref (much reduced multiplier for very slow progression)
         accumulatedScrollRef.current = Math.max(
           0,
-          accumulatedScrollRef.current + Math.abs(delta) * 0.3
+          accumulatedScrollRef.current + Math.abs(delta) * 2
         );
         const progress = Math.min(accumulatedScrollRef.current / maxScroll, 1);
 
