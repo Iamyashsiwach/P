@@ -44,7 +44,7 @@ My name is Yash Siwach, a 21 years old guy who has absolutely no idea what he is
 I completed my Bachelor’s in Computer Applications from Chandigarh University in 2025. After that, 
 I joined VIT Vellore for a master’s in Artificial Intelligence and Machine Learning, but I dropped out before the first semester ended.
 
-Now I live with my mother and sister in Zirakpur, doing absolutely nothing.
+Now I live with my mother and sister in Chandigarh, doing absolutely nothing.
 It’s not that I am dumb or useless. On paper, I look like one of those smart guys who used to run his own web agency during college. 
 lived in Gurugram for the last 8 months of my degree, worked in various companies for various roles gaining experience and learning a lot in that short span of time.
 
