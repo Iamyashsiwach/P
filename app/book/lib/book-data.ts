@@ -17,14 +17,15 @@ export interface BookPost {
 
 const bookPosts: BookPost[] = [
   {
-    slug: 'chapter-1-the-beginning',
-    title: 'Chapter 1: The Beginning',
+    slug: 'Understanding',
+    title: 'Understanding',
     excerpt:
       'Every story has a beginning. This is mine - where it all started and the early memories that shaped who I am today.',
     content: `
 
   
- # Understanding
+ #  
+ *last week of October 2025*
 
 I am only able to write this because i feel that no one is going to read it and i can say anything about my life, that's the only motivation i have.
 
@@ -44,7 +45,7 @@ My name is Yash Siwach, a 21 years old guy who has absolutely no idea what he is
 I completed my Bachelor’s in Computer Applications from Chandigarh University in 2025. After that, 
 I joined VIT Vellore for a master’s in Artificial Intelligence and Machine Learning, but I dropped out before the first semester ended.
 
-Now I live with my mother and sister in Zirakpur, doing absolutely nothing.
+Now I live with my mother and sister in Chandigarh, doing absolutely nothing.
 It’s not that I am dumb or useless. On paper, I look like one of those smart guys who used to run his own web agency during college. 
 lived in Gurugram for the last 8 months of my degree, worked in various companies for various roles gaining experience and learning a lot in that short span of time.
 
@@ -57,114 +58,65 @@ And that brings me here.
 
 How did I end up in this place? Why am I writing this? Why am I still here? Why am I even alive?
 
+Anyways, let me say this clearly this is not going to be an autobiography or some deep serious book.  
+This is more like a storybook, told part by part from my life.  
 
-
-
-
----
-
-*"Every story has a beginning. This is where mine starts."*
-
-## The Early Days
-
-
-
-I was born in 2004 at a government hospital in Gurugram. It doesn’t exist anymore they shifted it, demolished it, maybe buried my birth certificate with it. 
-Now there’s just a gate and a parking lot, like someone deleted the “building” part of life’s code.
-
-
-
-to be continued...
+Everything here is simply what I remember from each incident or moment.  
+So… here we go.
 
 
 ---
 
 *This is just the beginning of the story. There's so much more to come.*`,
-    date: '2024-10-11',
+    date: '2025-08-28',
     readTime: '5 min read',
     tags: ['Life Story', 'Childhood', 'Personal', 'Origins'],
     image: '/book/chapter-1.jpg', // Optional: Add your image to /public/book/
     author: 'Yash Siwach',
     published: true, // Set to false if you're not ready to publish yet
   },
-  //   {
-  //     slug: 'chapter-2-discovery',
-  //     title: 'Chapter 2: Discovery',
-  //     excerpt:
-  //       'The years of discovery - finding my interests, passions, and beginning to understand what made me unique.',
-  //     content: `# Chapter 2: Discovery
+  {
+    slug: 'chapter-1-the-beginning',
+    title: 'Chapter 1: The Beginning',
+    excerpt:
+      'The years of discovery - finding my interests, passions, and beginning to understand what made me unique.',
+    content: `# Chapter 2: Discovery
 
   // *"The journey of self-discovery begins when we start asking who we really are."*
 
-  // ---
 
-  // ## Finding My Path
+  ---
 
-  // [Write about your teenage years, education, first interests]
+  *"Every story has a beginning. This is where mine starts."*
+  
+  ## The Early Days
+  
+  
+  
+  I was born in 2004 at a government hospital in Gurugram. It doesn’t exist anymore they shifted it, demolished it, maybe buried my birth certificate with it. 
+  Now there’s just a gate and a parking lot, like someone deleted the “building” part of life’s code.
+  
+  But from what I’ve been told, the day I was born was apparently a lucky day for the whole family.
+  
+  My father got his joining letter as a Physical Education teacher in a JNV,   
+  my grandfather got promoted,
+  and my mama started his own company or something like that.
+  
+  
+  
+  to be continued...
 
-  // During my school years, I started to discover...
-
-  // The subjects I loved were...
-
-  // ## The First Spark
-
-  // I remember the moment when I first felt passionate about something:
-
-  // [Describe the moment/experience that sparked a passion]
-
-  // It happened when...
-
-  // What made it special was...
-
-  // ## Interests and Hobbies
-
-  // During this time, I explored:
-
-  // ### [Interest/Hobby 1]
-  // [Why you were drawn to it, what you learned]
-
-  // ### [Interest/Hobby 2]
-  // [Why you were drawn to it, what you learned]
-
-  // ### [Interest/Hobby 3]
-  // [Why you were drawn to it, what you learned]
-
-  // ## Challenges Faced
-
-  // Not everything was smooth sailing. I faced:
-
-  // - **[Challenge 1]**: [How you dealt with it]
-  // - **[Challenge 2]**: [How you dealt with it]
-  // - **[Challenge 3]**: [What you learned]
-
-  // ## People Who Influenced Me
-
-  // Several people made a significant impact during this phase:
-
-  // **[Person 1]**: [Their influence on you]
-
-  // **[Person 2]**: [Their influence on you]
-
-  // **[Person 3]**: [Their influence on you]
-
-  // ## Reflections
-
-  // This period taught me that discovery is a continuous process. The key lessons were:
-
-  // 1. [Lesson 1]
-  // 2. [Lesson 2]
-  // 3. [Lesson 3]
 
   // ---
 
   // *The journey of discovery never really ends, but this chapter set the foundation for everything that followed.*`,
-  //     date: '2024-10-11',
-  //     readTime: '7 min read',
-  //     tags: ['Life Story', 'Discovery', 'Growth', 'Personal Journey'],
-  //     image: '/book/chapter-2.jpg',
-  //     author: 'Yash Siwach',
-  //     published: true,
-  //   },
+    date: '2024-10-11',
+    readTime: '7 min read',
+    tags: ['Life Story', 'Discovery', 'Growth', 'Personal Journey'],
+    image: '/book/chapter-2.jpg',
+    author: 'Yash Siwach',
+    published: true,
+  },
   //   {
   //     slug: 'chapter-3-the-turning-point',
   //     title: 'Chapter 3: The Turning Point',
