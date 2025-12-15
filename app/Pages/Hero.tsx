@@ -7,7 +7,7 @@ import { FlipWords } from '../components/ui/flip-words';
 import { ScrollPath } from '../components/ScrollPath';
 
 export function Hero() {
-  const words = ['Drupal Developer', 'AI Developer', 'DevOps & MLops Engineer']; // Words to flip
+  const words = ['Product Manager', 'AI Developer', 'DevOps & MLops Engineer']; // Words to flip
 
   return (
     <div className="relative min-h-screen overflow-hidden">
