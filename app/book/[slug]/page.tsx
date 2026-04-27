@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: BookPostPageProps) {
     openGraph: {
       title: post.title,
       description: post.excerpt,
-      url: `https://yashsiwach.space/book/${post.slug}`,
+      url: `https://yashsiwach.in/book/${post.slug}`,
       siteName: 'Yash Siwach',
       images: post.image
         ? [

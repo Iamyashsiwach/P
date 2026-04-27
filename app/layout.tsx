@@ -16,7 +16,7 @@ import React from 'react';
 // });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://yashsiwach.space'),
+  metadataBase: new URL('https://yashsiwach.in'),
   title: 'Yash Siwach - Portfolio',
   description: "Welcome to Yash Siwach's portfolio. Explore my projects, skills, and achievements.",
   keywords: 'Yash Siwach, portfolio, web developer, UI/UX designer, projects',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: 'Yash Siwach - Portfolio',
     description:
       'Explore the portfolio of Yash Siwach, a skilled web developer and UI/UX designer.',
-    url: 'https://yashsiwach.space',
+    url: 'https://yashsiwach.in',
     siteName: 'Yash Siwach',
     images: [
       {
@@ -66,10 +66,10 @@ const StructuredData = () => (
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: 'Yash Siwach - Portfolio',
-      url: 'https://yashsiwach.space',
+      url: 'https://yashsiwach.in',
       potentialAction: {
         '@type': 'SearchAction',
-        target: 'https://yashsiwach.space/?s={search_term_string}',
+        target: 'https://yashsiwach.in/?s={search_term_string}',
         'query-input': 'required name=search_term_string',
       },
     })}
@@ -82,7 +82,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://yashsiwach.space" />
+        <link rel="canonical" href="https://yashsiwach.in" />
         <link rel="icon" href="/icon.png" type="image/png" />
         <link rel="alternate icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/icon.png" />
@@ -91,7 +91,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             '@context': 'https://schema.org',
             '@type': 'Person',
             name: 'Yash Siwach',
-            url: 'https://yashsiwach.space',
+            url: 'https://yashsiwach.in',
             sameAs: [
               'https://yashsiwach-portfolio.vercel.app',
               'https://twitter.com/iamyashsiwach',

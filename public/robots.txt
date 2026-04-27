@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://yashsiwach.space
+Host: https://yashsiwach.in
 
 # Sitemaps
-Sitemap: https://yashsiwach.space/sitemap.xml
+Sitemap: https://yashsiwach.in/sitemap.xml

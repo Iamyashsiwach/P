@@ -1,5 +1,5 @@
 module.exports = {
-  siteUrl: 'https://yashsiwach.space',
+  siteUrl: 'https://yashsiwach.in',
   generateRobotsTxt: true,
   changefreq: 'daily',
   priority: 0.7,
