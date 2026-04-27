@@ -109,14 +109,29 @@ export const WavyBackground = ({
   }, [init]);
 
   const [isSafari, setIsSafari] = useState(false);
+  const [isFirefox, setIsFirefox] = useState(false);
 
   useEffect(() => {
-    setIsSafari(
-      typeof window !== 'undefined' &&
-        navigator.userAgent.includes('Safari') &&
-        !navigator.userAgent.includes('Chrome')
-    );
+    const ua = navigator.userAgent;
+    setIsSafari(typeof window !== 'undefined' && ua.includes('Safari') && !ua.includes('Chrome'));
+    setIsFirefox(ua.toLowerCase().includes('firefox'));
   }, []);
+
+  // Skip canvas animation on Firefox to prevent memory issues
+  if (isFirefox) {
+    return (
+      <div
+        className={cn(
+          'h-screen flex flex-col items-center justify-center bg-black',
+          containerClassName
+        )}
+      >
+        <div className={cn('relative z-10', className)} {...props}>
+          {children}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={cn('h-screen flex flex-col items-center justify-center', containerClassName)}>

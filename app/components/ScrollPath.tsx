@@ -8,8 +8,24 @@ export function ScrollPath() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isFlowerComplete, setIsFlowerComplete] = useState(false);
   const accumulatedScrollRef = useRef(0);
+  const [isFirefox, setIsFirefox] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Detect Firefox and skip scroll hijacking
+  useEffect(() => {
+    setMounted(true);
+    const firefox = navigator.userAgent.toLowerCase().includes('firefox');
+    setIsFirefox(firefox);
+    if (firefox) {
+      setIsFlowerComplete(true);
+      document.body.style.overflow = 'unset';
+    }
+  }, []);
 
   useEffect(() => {
+    // Skip all scroll handling on Firefox
+    if (isFirefox) return;
+
     if (pathRef.current) {
       const length = pathRef.current.getTotalLength();
       setPathLength(length);
@@ -91,7 +107,7 @@ export function ScrollPath() {
       // Reset accumulated scroll on cleanup
       accumulatedScrollRef.current = 0;
     };
-  }, [isFlowerComplete]);
+  }, [isFlowerComplete, isFirefox]);
 
   // Re-enable scrolling when flower is complete
   useEffect(() => {
@@ -99,6 +115,11 @@ export function ScrollPath() {
       document.body.style.overflow = 'unset';
     }
   }, [isFlowerComplete]);
+
+  // Skip rendering on Firefox - must be after all hooks
+  if (!mounted || isFirefox) {
+    return null;
+  }
 
   // Ensure progress is clamped between 0 and 1, and stroke stays at 0 when complete
   const clampedProgress = Math.max(0, Math.min(scrollProgress, 1));

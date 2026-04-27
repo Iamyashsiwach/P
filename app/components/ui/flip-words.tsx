@@ -1,3 +1,4 @@
+'use client';
 import React, { useCallback, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -13,6 +14,13 @@ export const FlipWords = ({
 }) => {
   const [currentWord, setCurrentWord] = useState(words[0]);
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
+  const [isFirefox, setIsFirefox] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setIsFirefox(navigator.userAgent.toLowerCase().includes('firefox'));
+  }, []);
 
   // thanks for the fix Julian - https://github.com/Julian-AT
   const startAnimation = useCallback(() => {
@@ -22,11 +30,42 @@ export const FlipWords = ({
   }, [currentWord, words]);
 
   useEffect(() => {
+    // Skip animation on Firefox
+    if (isFirefox) return;
+
     if (!isAnimating)
       setTimeout(() => {
         startAnimation();
       }, duration);
-  }, [isAnimating, duration, startAnimation]);
+  }, [isAnimating, duration, startAnimation, isFirefox]);
+
+  // Simplified version for Firefox - just show text without animation
+  if (isFirefox) {
+    return (
+      <span
+        className={cn(
+          'z-10 inline-block relative text-left text-neutral-900 dark:text-neutral-100 px-2',
+          className
+        )}
+      >
+        {words[0]}
+      </span>
+    );
+  }
+
+  // Show nothing until mounted to avoid hydration mismatch
+  if (!mounted) {
+    return (
+      <span
+        className={cn(
+          'z-10 inline-block relative text-left text-neutral-900 dark:text-neutral-100 px-2',
+          className
+        )}
+      >
+        {words[0]}
+      </span>
+    );
+  }
 
   return (
     <AnimatePresence

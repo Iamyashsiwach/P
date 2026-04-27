@@ -3,6 +3,10 @@ import { notFound } from 'next/navigation';
 import { getBookPost, getBookPosts } from '../lib/book-data';
 import { BookPostContent } from '../components';
 
+// Force dynamic rendering to ensure data updates immediately
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface BookPostPageProps {
   params: Promise<{
     slug: string;

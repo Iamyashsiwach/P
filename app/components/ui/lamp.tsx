@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -10,6 +10,28 @@ export const LampContainer = ({
   children: React.ReactNode;
   className?: string;
 }) => {
+  const [isFirefox, setIsFirefox] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setIsFirefox(navigator.userAgent.toLowerCase().includes('firefox'));
+  }, []);
+
+  // Show simplified version until mounted, and for Firefox
+  if (!mounted || isFirefox) {
+    return (
+      <div
+        className={cn(
+          'relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-slate-950 w-full rounded-md z-0',
+          className
+        )}
+      >
+        <div className="relative z-50 flex flex-col items-center px-5">{children}</div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={cn(

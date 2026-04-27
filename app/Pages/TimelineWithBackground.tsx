@@ -8,8 +8,21 @@ function cn(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-// Background Beams Component
+// Background Beams Component - Skip on Firefox to prevent crashes
 const BackgroundBeams = React.memo(() => {
+  const [isFirefox, setIsFirefox] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setIsFirefox(navigator.userAgent.toLowerCase().includes('firefox'));
+  }, []);
+
+  // Skip on Firefox - too many animated SVG paths cause crashes
+  // Also return null before mount to prevent hydration mismatch
+  if (!mounted || isFirefox) {
+    return null;
+  }
   const paths = [
     'M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875',
     'M-373 -197C-373 -197 -305 208 159 335C623 462 691 867 691 867',

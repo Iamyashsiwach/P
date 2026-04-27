@@ -4,6 +4,10 @@ import { getBookPosts } from './lib/book-data';
 import { BookNavbar, Fireflies } from './components';
 import Navbar from '../components/Navbar';
 
+// Force dynamic rendering to ensure data updates immediately
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function BookPage() {
   const posts = getBookPosts();
 

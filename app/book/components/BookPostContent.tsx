@@ -229,11 +229,11 @@ export function BookPostContent({ post, allPosts = [] }: BookPostContentProps) {
 
         {/* Navigation - Minimal */}
         <div className="mt-32 pt-16 border-t border-neutral-900">
-          <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center justify-between gap-4">
             {previousPost ? (
               <Link
                 href={`/book/${previousPost.slug}`}
-                className="text-neutral-600 hover:text-neutral-400 transition-colors font-mono"
+                className="text-neutral-400 hover:text-neutral-200 transition-all duration-300 font-mono text-xl md:text-2xl px-8 py-4 border-2 border-neutral-700 hover:border-neutral-500 rounded-xl hover:bg-neutral-900/70 transform hover:scale-105"
               >
                 ← Previous
               </Link>
@@ -244,7 +244,7 @@ export function BookPostContent({ post, allPosts = [] }: BookPostContentProps) {
             {nextPost ? (
               <Link
                 href={`/book/${nextPost.slug}`}
-                className="text-neutral-600 hover:text-neutral-400 transition-colors font-mono"
+                className="text-neutral-400 hover:text-neutral-200 transition-all duration-300 font-mono text-xl md:text-2xl px-8 py-4 border-2 border-neutral-700 hover:border-neutral-500 rounded-xl hover:bg-neutral-900/70 transform hover:scale-105"
               >
                 Next →
               </Link>

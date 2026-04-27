@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 // Perlin noise implementation for natural movement
@@ -86,14 +86,38 @@ export const Fireflies = ({ count = 4 }: { count?: number }) => {
   const particlesRef = useRef<FireflyParticle[]>([]);
   const animationFrameRef = useRef<number>();
   const noiseRef = useRef<PerlinNoise>(new PerlinNoise());
+  const [isSupported, setIsSupported] = useState(false); // Start false to prevent flash
+  const [mounted, setMounted] = useState(false);
 
+  // Check WebGL support and skip on Firefox to prevent crashes
   useEffect(() => {
-    if (!containerRef.current) {
-      console.log('Container ref not available');
+    setMounted(true);
+
+    // Check Firefox first
+    const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+    if (isFirefox) {
+      setIsSupported(false);
       return;
     }
 
-    console.log('Initializing fireflies...');
+    // Check WebGL support
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) {
+        setIsSupported(false);
+      } else {
+        setIsSupported(true);
+      }
+    } catch (e) {
+      setIsSupported(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current || !isSupported) {
+      return;
+    }
 
     // Scene setup
     const scene = new THREE.Scene();
@@ -112,7 +136,6 @@ export const Fireflies = ({ count = 4 }: { count?: number }) => {
     );
     camera.position.z = 500;
     cameraRef.current = camera;
-    console.log('Camera bounds:', -width / 2, width / 2, height / 2, -height / 2);
 
     // Renderer setup
     const renderer = new THREE.WebGLRenderer({
@@ -130,8 +153,6 @@ export const Fireflies = ({ count = 4 }: { count?: number }) => {
     renderer.domElement.style.zIndex = '1';
     containerRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
-    console.log('Renderer created and canvas added to DOM');
-    console.log('Canvas element:', renderer.domElement);
 
     // Create realistic firefly glow texture
     const createGlowTexture = () => {
@@ -155,7 +176,6 @@ export const Fireflies = ({ count = 4 }: { count?: number }) => {
     };
 
     const glowTexture = createGlowTexture();
-    console.log('Glow texture created');
 
     // Create firefly particles
     const particles: FireflyParticle[] = [];
@@ -180,10 +200,6 @@ export const Fireflies = ({ count = 4 }: { count?: number }) => {
       sprite.scale.set(size, size, 1);
       scene.add(sprite);
 
-      console.log(
-        `Firefly ${i} created at (${startX.toFixed(0)}, ${startY.toFixed(0)}) size: ${size.toFixed(0)})`
-      );
-
       const particle: FireflyParticle = {
         position: new THREE.Vector3(startX, startY, 0),
         velocity: new THREE.Vector3(0, 0, 0),
@@ -206,10 +222,12 @@ export const Fireflies = ({ count = 4 }: { count?: number }) => {
       particles.push(particle);
     }
     particlesRef.current = particles;
-    console.log(`Created ${particles.length} fireflies`);
 
     // Animation loop with realistic behavior
     let time = 0;
+    // Reusable vector to avoid GC pressure - created once outside loop
+    const tempVec = new THREE.Vector3();
+
     const animate = () => {
       time += 0.016;
 
@@ -277,42 +295,40 @@ export const Fireflies = ({ count = 4 }: { count?: number }) => {
         // Apply forces based on state
         if (particle.state === 'flying') {
           // Seek target
-          const desired = particle.target.clone().sub(particle.position).normalize();
-          desired.multiplyScalar(particle.speed);
+          tempVec.copy(particle.target).sub(particle.position).normalize();
+          tempVec.multiplyScalar(particle.speed);
 
           // Steering force
-          const steer = desired.sub(particle.velocity);
-          steer.clampLength(0, 0.05);
-          particle.acceleration.add(steer);
+          tempVec.sub(particle.velocity);
+          tempVec.clampLength(0, 0.05);
+          particle.acceleration.add(tempVec);
 
           // Add noise for wandering
-          particle.acceleration.add(new THREE.Vector3(noiseX * 0.3, noiseY * 0.3, 0));
+          particle.acceleration.x += noiseX * 0.3;
+          particle.acceleration.y += noiseY * 0.3;
         } else if (particle.state === 'hovering') {
           // Gentle floating motion
-          particle.acceleration.add(
-            new THREE.Vector3(
-              noiseX * 0.15,
-              noiseY * 0.15 + Math.sin(time * 2 + particle.glowPhase) * 0.05,
-              0
-            )
-          );
+          particle.acceleration.x += noiseX * 0.15;
+          particle.acceleration.y += noiseY * 0.15 + Math.sin(time * 2 + particle.glowPhase) * 0.05;
           // Damping
           particle.velocity.multiplyScalar(0.95);
         } else if (particle.state === 'resting') {
           // Almost still with tiny movements
-          particle.acceleration.add(new THREE.Vector3(noiseX * 0.05, noiseY * 0.05, 0));
+          particle.acceleration.x += noiseX * 0.05;
+          particle.acceleration.y += noiseY * 0.05;
           // Heavy damping
           particle.velocity.multiplyScalar(0.9);
         } else if (particle.state === 'dark') {
           // Continue moving when dark but slowly
-          const desired = particle.target.clone().sub(particle.position).normalize();
-          desired.multiplyScalar(particle.speed * 0.3); // Slower when dark
+          tempVec.copy(particle.target).sub(particle.position).normalize();
+          tempVec.multiplyScalar(particle.speed * 0.3); // Slower when dark
 
-          const steer = desired.sub(particle.velocity);
-          steer.clampLength(0, 0.02);
-          particle.acceleration.add(steer);
+          tempVec.sub(particle.velocity);
+          tempVec.clampLength(0, 0.02);
+          particle.acceleration.add(tempVec);
 
-          particle.acceleration.add(new THREE.Vector3(noiseX * 0.1, noiseY * 0.1, 0));
+          particle.acceleration.x += noiseX * 0.1;
+          particle.acceleration.y += noiseY * 0.1;
         }
 
         // Update velocity and position
@@ -388,7 +404,6 @@ export const Fireflies = ({ count = 4 }: { count?: number }) => {
     };
 
     animate();
-    console.log('Animation loop started');
 
     // Handle window resize
     const handleResize = () => {
@@ -424,7 +439,12 @@ export const Fireflies = ({ count = 4 }: { count?: number }) => {
         }
       });
     };
-  }, [count]);
+  }, [count, isSupported]);
+
+  // Don't render anything on Firefox, unsupported browsers, or before mount
+  if (!mounted || !isSupported) {
+    return null;
+  }
 
   return (
     <div

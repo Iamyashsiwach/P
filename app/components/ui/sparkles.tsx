@@ -7,6 +7,7 @@ import { loadSlim } from '@tsparticles/slim';
 import { cn } from '@/lib/utils';
 import { motion, useAnimation } from 'framer-motion';
 import type { RecursivePartial, IResizeEvent } from '@tsparticles/engine';
+
 type ParticlesProps = {
   id?: string;
   className?: string;
@@ -23,6 +24,14 @@ export const SparklesCore = (props: ParticlesProps) => {
     props;
 
   const [init, setInit] = useState<boolean>(false);
+  const [isFirefox, setIsFirefox] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Detect Firefox on client side only
+  useEffect(() => {
+    setMounted(true);
+    setIsFirefox(navigator.userAgent.toLowerCase().includes('firefox'));
+  }, []);
 
   useEffect(() => {
     const initializeParticles = async () => {
@@ -53,6 +62,12 @@ export const SparklesCore = (props: ParticlesProps) => {
   };
 
   const generatedId = useId();
+
+  // Skip on Firefox to prevent crashes
+  if (!mounted || isFirefox) {
+    return null;
+  }
+
   return (
     <motion.div animate={controls} className={cn('opacity-0', className)}>
       {init && (
