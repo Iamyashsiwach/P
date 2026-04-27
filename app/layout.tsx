@@ -93,7 +93,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             name: 'Yash Siwach',
             url: 'https://yashsiwach.in',
             sameAs: [
-              'https://yashsiwach-portfolio.vercel.app',
+              'https://yashsiwach.in',
               'https://twitter.com/iamyashsiwach',
               'https://linkedin.com/in/yash-siwach',
               'https://github.com/iamyashsiwach',

@@ -31,7 +31,7 @@ export function Footer() {
               href="mailto:example@example.com"
               className="text-sm md:text-base text-blue-400 hover:underline"
             >
-              Iamyashsiwach@gmail.com
+              me@yashsiwach.in
             </a>
           </div>
           <div className="text-center flex items-center space-x-2">

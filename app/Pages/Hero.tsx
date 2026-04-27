@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { LampContainer } from '../components/ui/lamp';
 import { FlipWords } from '../components/ui/flip-words';
-import { ScrollPath } from '../components/ScrollPath';
 
 export function Hero() {
   const words = ['Product Manager', 'AI Developer', 'DevOps & MLops Engineer']; // Words to flip
@@ -64,9 +63,6 @@ export function Hero() {
           </motion.div>
         </Link>
       </motion.div>
-
-      {/* SVG Scroll Path Indicator */}
-      <ScrollPath />
     </div>
   );
 }
