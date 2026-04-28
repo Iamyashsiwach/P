@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { ReactNode } from 'react';
 // import localFont from "next/font/local";
 import './globals.css';
@@ -19,11 +19,12 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://yashsiwach.in'),
   title: 'Yash Siwach - Portfolio',
   description: "Welcome to Yash Siwach's portfolio. Explore my projects, skills, and achievements.",
-  keywords: 'Yash Siwach, portfolio, web developer, UI/UX designer, projects',
+  keywords:
+    'Yash Siwach, portfolio, web developer, UI/UX designer, project manager, full stack developer, AI developer, DevOps & MLops Engineer',
   openGraph: {
     title: 'Yash Siwach - Portfolio',
     description:
-      'Explore the portfolio of Yash Siwach, a skilled web developer and UI/UX designer.',
+      'Explore the portfolio of Yash Siwach, a skilled web developer and Product Manager.',
     url: 'https://yashsiwach.in',
     siteName: 'Yash Siwach',
     images: [
@@ -56,6 +57,9 @@ export const metadata: Metadata = {
     shortcut: '/icon.png',
     apple: '/icon.png',
   },
+};
+
+export const viewport: Viewport = {
   themeColor: '#000000',
 };
 
@@ -98,7 +102,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               'https://linkedin.com/in/yash-siwach',
               'https://github.com/iamyashsiwach',
             ],
-            jobTitle: 'Frontend Developer & UI/UX Designer',
+            jobTitle: 'Product Manager & full stack Developer',
             worksFor: {
               '@type': 'Organization',
               name: 'Freelancer',

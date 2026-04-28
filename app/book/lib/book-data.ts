@@ -55,13 +55,23 @@ Why? I still don’t know. Maybe the salary felt too low. Or maybe I was just ti
 
 And that brings me here.
 
-How did I end up in this place? Why am I writing this? Why am I still here? Why am I even alive?
+How did I end up in this place? Why am I writing this? Why am I still here? Why am I even alive?`,
 
-
-
-
-
----
+    date: '2024-10-11',
+    readTime: '5 min read',
+    tags: ['Life Story', 'Childhood', 'Personal', 'Origins'],
+    image: '/book/chapter-1.jpg', // Optional: Add your image to /public/book/
+    author: 'Yash Siwach',
+    published: true,
+  },
+  {
+    slug: 'chapter-2-the-early-days',
+    title: 'Chapter 2: The Early Days',
+    excerpt:
+      'Every story has a beginning. This is mine - where it all started and the early memories that shaped who I am today.',
+    content: `
+    
+   
 
 *"Every story has a beginning. This is where mine starts."*
 
@@ -83,11 +93,12 @@ to be continued...
 
 ---
 
-*This is just the beginning of the story. There's so much more to come.*`,
+*This is just the beginning of the story. There's so much more to come.*
+  `,
     date: '2024-10-11',
     readTime: '5 min read',
     tags: ['Life Story', 'Childhood', 'Personal', 'Origins'],
-    image: '/book/chapter-1.jpg', // Optional: Add your image to /public/book/
+    image: '/book/chapter-2.jpg', // Optional: Add your image to /public/book/
     author: 'Yash Siwach',
     published: true,
   },

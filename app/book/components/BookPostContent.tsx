@@ -233,7 +233,7 @@ export function BookPostContent({ post, allPosts = [] }: BookPostContentProps) {
             {previousPost ? (
               <Link
                 href={`/book/${previousPost.slug}`}
-                className="text-neutral-400 hover:text-neutral-200 transition-all duration-300 font-mono text-xl md:text-2xl px-8 py-4 border-2 border-neutral-700 hover:border-neutral-500 rounded-xl hover:bg-neutral-900/70 transform hover:scale-105"
+                className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors duration-300 font-mono tracking-wide"
               >
                 ← Previous
               </Link>
@@ -244,7 +244,7 @@ export function BookPostContent({ post, allPosts = [] }: BookPostContentProps) {
             {nextPost ? (
               <Link
                 href={`/book/${nextPost.slug}`}
-                className="text-neutral-400 hover:text-neutral-200 transition-all duration-300 font-mono text-xl md:text-2xl px-8 py-4 border-2 border-neutral-700 hover:border-neutral-500 rounded-xl hover:bg-neutral-900/70 transform hover:scale-105"
+                className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors duration-300 font-mono tracking-wide"
               >
                 Next →
               </Link>

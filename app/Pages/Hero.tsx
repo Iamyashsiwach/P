@@ -9,8 +9,8 @@ export function Hero() {
   const words = ['Product Manager', 'AI Developer', 'DevOps & MLops Engineer']; // Words to flip
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      <LampContainer>
+    <section className="relative min-h-[100svh] overflow-hidden">
+      <LampContainer className="px-4 sm:px-6">
         {/* Hero Heading */}
         <motion.h1
           initial={{ opacity: 0.5, y: 100 }}
@@ -20,20 +20,20 @@ export function Hero() {
             duration: 1.8,
             ease: 'easeInOut',
           }}
-          className="mt-0 sm:mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl sm:text-5xl xs:text-3xl"
+          className="mx-auto max-w-[18rem] xs:max-w-[20rem] sm:max-w-2xl md:max-w-4xl bg-gradient-to-br from-slate-300 to-slate-500 py-2 sm:py-4 bg-clip-text text-center text-3xl font-medium leading-tight tracking-tight text-transparent xs:text-4xl sm:text-5xl md:text-7xl"
         >
           Yash Siwach <br />
-          <div className="mt-4 text-center">
+          <div className="mt-3 sm:mt-4 text-center">
             <FlipWords
               words={words}
-              className="text-xl md:text-3xl font-bold text-gray-700 sm:text-2xl xs:text-xl"
+              className="block min-h-[3.5rem] text-base font-bold leading-snug text-gray-700 xs:min-h-[4rem] xs:text-lg sm:min-h-[3rem] sm:text-2xl md:text-3xl"
             />
           </div>
         </motion.h1>
       </LampContainer>
 
       {/* Elegant Book Link - Mobile Optimized */}
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{
@@ -62,8 +62,8 @@ export function Hero() {
             </div>
           </motion.div>
         </Link>
-      </motion.div>
-    </div>
+      </motion.div> */}
+    </section>
   );
 }
 

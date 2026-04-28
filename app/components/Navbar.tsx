@@ -28,11 +28,6 @@ export function Navbar({ showBookNav = false }: { showBookNav?: boolean }) {
       icon: <IconFolder className="h-4 w-4 text-neutral-500 dark:text-white" />,
     },
     {
-      name: 'Book',
-      link: '/book',
-      icon: <IconBook2 className="h-4 w-4 text-neutral-500 dark:text-white" />,
-    },
-    {
       name: 'Contact',
       link: '#contact',
       icon: <IconMessage className="h-4 w-4 text-neutral-500 dark:text-white" />,
@@ -41,12 +36,12 @@ export function Navbar({ showBookNav = false }: { showBookNav?: boolean }) {
 
   const bookNavItems = showBookNav
     ? [
-        {
-          name: 'Book',
-          link: '/book',
-          icon: <IconList className="h-4 w-4 text-neutral-500 dark:text-white" />,
-        },
         // {
+        //   name: 'Book',
+        //   link: '/book',
+        //   icon: <IconList className="h-4 w-4 text-neutral-500 dark:text-white" />,
+        // },
+        // // {
         //   name: 'Tags',
         //   link: '/book#tags',
         //   icon: <IconTags className="h-4 w-4 text-neutral-500 dark:text-white" />,

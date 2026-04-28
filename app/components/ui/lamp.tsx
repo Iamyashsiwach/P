@@ -52,10 +52,10 @@ export const LampContainer = ({
           style={{
             backgroundImage: `conic-gradient(var(--conic-position), var(--tw-gradient-stops))`,
           }}
-          className="absolute inset-auto right-1/2 h-56 overflow-visible w-[30rem] sm:w-[10rem] md:w-[25rem] bg-gradient-conic from-cyan-500 via-transparent to-transparent text-white [--conic-position:from_70deg_at_center_top]"
+          className="absolute inset-auto right-1/2 h-40 w-[18rem] overflow-visible xs:h-48 xs:w-[22rem] sm:h-56 sm:w-[24rem] md:w-[25rem] bg-gradient-conic from-cyan-500 via-transparent to-transparent text-white [--conic-position:from_70deg_at_center_top]"
         >
           <div className="absolute w-[100%] left-0 bg-slate-950 h-40 bottom-0 z-20 [mask-image:linear-gradient(to_top,white,transparent)]" />
-          <div className="absolute w-40 h-[100%] left-0 bg-slate-950 bottom-0 z-20 [mask-image:linear-gradient(to_right,white,transparent)]" />
+          <div className="absolute left-0 bottom-0 z-20 h-[100%] w-20 bg-slate-950 [mask-image:linear-gradient(to_right,white,transparent)] xs:w-28 sm:w-40" />
         </motion.div>
 
         {/* Second Motion Element (Lamp) */}
@@ -70,16 +70,16 @@ export const LampContainer = ({
           style={{
             backgroundImage: `conic-gradient(var(--conic-position), var(--tw-gradient-stops))`,
           }}
-          className="absolute inset-auto left-1/2 h-56 w-[30rem] sm:w-[10rem] md:w-[25rem] bg-gradient-conic from-transparent via-transparent to-cyan-500 text-white [--conic-position:from_290deg_at_center_top]"
+          className="absolute inset-auto left-1/2 h-40 w-[18rem] xs:h-48 xs:w-[22rem] sm:h-56 sm:w-[24rem] md:w-[25rem] bg-gradient-conic from-transparent via-transparent to-cyan-500 text-white [--conic-position:from_290deg_at_center_top]"
         >
-          <div className="absolute w-40 h-[100%] right-0 bg-slate-950 bottom-0 z-20 [mask-image:linear-gradient(to_left,white,transparent)]" />
+          <div className="absolute right-0 bottom-0 z-20 h-[100%] w-20 bg-slate-950 [mask-image:linear-gradient(to_left,white,transparent)] xs:w-28 sm:w-40" />
           <div className="absolute w-[100%] right-0 bg-slate-950 h-40 bottom-0 z-20 [mask-image:linear-gradient(to_top,white,transparent)]" />
         </motion.div>
 
         {/* Other Static Visual Elements */}
-        <div className="absolute top-1/2 h-48 w-full translate-y-12 scale-x-150 bg-slate-950 blur-2xl"></div>
+        <div className="absolute top-1/2 h-40 w-full translate-y-10 scale-x-150 bg-slate-950 blur-2xl sm:h-48 sm:translate-y-12"></div>
         <div className="absolute top-1/2 z-50 h-48 w-full bg-transparent opacity-10 backdrop-blur-md"></div>
-        <div className="absolute inset-auto z-50 h-36 w-[28rem] -translate-y-1/2 rounded-full bg-cyan-500 opacity-50 blur-3xl"></div>
+        <div className="absolute inset-auto z-50 h-24 w-[16rem] -translate-y-[3.5rem] rounded-full bg-cyan-500 opacity-50 blur-3xl xs:h-28 xs:w-[20rem] sm:h-36 sm:w-[28rem] sm:-translate-y-1/2"></div>
 
         {/* Scroll-triggered motion */}
         <motion.div
@@ -90,7 +90,7 @@ export const LampContainer = ({
             duration: 1,
             ease: 'easeInOut',
           }}
-          className="absolute inset-auto z-30 h-36 w-64 -translate-y-[6rem] rounded-full bg-cyan-400 blur-2xl"
+          className="absolute inset-auto z-30 h-24 w-40 -translate-y-[4.25rem] rounded-full bg-cyan-400 blur-2xl xs:h-28 xs:w-52 sm:h-36 sm:w-64 sm:-translate-y-[6rem]"
         ></motion.div>
 
         <motion.div
@@ -101,13 +101,13 @@ export const LampContainer = ({
             duration: 1,
             ease: 'easeInOut',
           }}
-          className="absolute inset-auto z-50 h-0.5 w-[30rem] sm:w-[10rem] -translate-y-[7rem] bg-cyan-400 "
+          className="absolute inset-auto z-50 h-0.5 w-[16rem] -translate-y-[4.75rem] bg-cyan-400 xs:w-[20rem] sm:w-[24rem] sm:-translate-y-[7rem]"
         ></motion.div>
 
-        <div className="absolute inset-auto z-40 h-44 w-full -translate-y-[12.5rem] bg-slate-950 "></div>
+        <div className="absolute inset-auto z-40 h-24 w-full -translate-y-[8rem] bg-slate-950 xs:h-28 xs:-translate-y-[9rem] sm:h-44 sm:-translate-y-[12.5rem]"></div>
       </div>
 
-      <div className="relative z-50 flex -translate-y-80 flex-col items-center px-5">
+      <div className="relative z-50 flex -translate-y-44 flex-col items-center px-4 pt-12 pb-16 xs:-translate-y-52 sm:px-5 sm:pt-0 sm:pb-0 md:-translate-y-72 lg:-translate-y-80">
         {children}
       </div>
     </div>
