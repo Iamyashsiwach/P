@@ -17,14 +17,14 @@ import React from 'react';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://yashsiwach.in'),
-  title: 'Yash Siwach - Portfolio',
-  description: "Welcome to Yash Siwach's portfolio. Explore my projects, skills, and achievements.",
+  title: 'Yash Siwach - Profile',
+  description: "Welcome to Yash Siwach's Profile. Explore my projects, skills, and achievements.",
   keywords:
-    'Yash Siwach, portfolio, web developer, UI/UX designer, project manager, full stack developer, AI developer, DevOps & MLops Engineer',
+    'Yash Siwach, Profile, web developer, UI/UX designer, project manager, full stack developer, AI developer, DevOps & MLops Engineer',
   openGraph: {
-    title: 'Yash Siwach - Portfolio',
+    title: 'Yash Siwach - Profile',
     description:
-      'Explore the portfolio of Yash Siwach, a skilled web developer and Product Manager.',
+      'Explore the Profile of Yash Siwach, a skilled web developer and Product Manager.',
     url: 'https://yashsiwach.in',
     siteName: 'Yash Siwach',
     images: [
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
         url: '/Hero_img.jpeg',
         width: 800,
         height: 600,
-        alt: 'Yash Siwach Portfolio',
+        alt: 'Yash Siwach Profile',
       },
     ],
     locale: 'en_US',
@@ -40,9 +40,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Yash Siwach - Portfolio',
+    title: 'Yash Siwach - Profile',
     description:
-      'Explore the portfolio of Yash Siwach, a skilled web developer and UI/UX designer.',
+      'Explore the Profile of Yash Siwach, a skilled web developer and UI/UX designer.',
     images: [
       {
         url: '/Hero_img.jpeg',
