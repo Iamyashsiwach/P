@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 import { LampContainer } from '../components/ui/lamp';
 import { FlipWords } from '../components/ui/flip-words';
 

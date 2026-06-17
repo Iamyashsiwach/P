@@ -17,8 +17,8 @@ export interface BookPost {
 
 const bookPosts: BookPost[] = [
   {
-    slug: 'chapter-1-the-beginning',
-    title: 'Chapter 1: The Beginning',
+    slug: 'Understanding',
+    title: 'Understanding',
     excerpt:
       'Every story has a beginning. This is mine - where it all started and the early memories that shaped who I am today.',
     content: `
@@ -64,14 +64,16 @@ How did I end up in this place? Why am I writing this? Why am I still here? Why 
     author: 'Yash Siwach',
     published: true,
   },
+];
+
+const bookPosts2: BookPost[] = [
   {
-    slug: 'chapter-2-the-early-days',
-    title: 'Chapter 2: The Early Days',
+    slug: 'The-Beginning',
+    title: 'The Beginning',
     excerpt:
       'Every story has a beginning. This is mine - where it all started and the early memories that shaped who I am today.',
     content: `
-    
-   
+---
 
 *"Every story has a beginning. This is where mine starts."*
 
@@ -98,7 +100,7 @@ to be continued...
     date: '2024-10-11',
     readTime: '5 min read',
     tags: ['Life Story', 'Childhood', 'Personal', 'Origins'],
-    image: '/book/chapter-2.jpg', // Optional: Add your image to /public/book/
+    image: '/book/chapter-1.jpg', // Optional: Add your image to /public/book/
     author: 'Yash Siwach',
     published: true,
   },
