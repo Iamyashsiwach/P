@@ -66,7 +66,7 @@ How did I end up in this place? Why am I writing this? Why am I still here? Why 
   },
 ];
 
-const bookPosts2: BookPost[] = [
+const additionalBookPosts: BookPost[] = [
   {
     slug: 'The-Beginning',
     title: 'The Beginning',
@@ -106,18 +106,20 @@ to be continued...
   },
 ];
 
+const allBookPosts = [...bookPosts, ...additionalBookPosts];
+
 export function getBookPosts(): BookPost[] {
-  return bookPosts
+  return allBookPosts
     .filter(post => post.published)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 export function getBookPost(slug: string): BookPost | undefined {
-  return bookPosts.find(post => post.slug === slug && post.published);
+  return allBookPosts.find(post => post.slug === slug && post.published);
 }
 
 export function getBookPostsByTag(tag: string): BookPost[] {
-  return bookPosts
+  return allBookPosts
     .filter(post => post.published && post.tags.includes(tag))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
