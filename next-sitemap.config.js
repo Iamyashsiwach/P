@@ -8,23 +8,20 @@ module.exports = {
   additionalPaths: async config => {
     const result = [];
 
-    // Add blog listing page
+    // Add book listing page
     result.push({
-      loc: '/blog',
+      loc: '/book',
       changefreq: 'weekly',
       priority: 0.8,
       lastmod: new Date().toISOString(),
     });
 
-    // Add individual blog posts
-    const blogPosts = [
-      'chapter-1-the-beginning',
-      // Add more blog post slugs as they are published
-    ];
+    // Keep in sync with published slugs in app/book/lib/book-data.ts
+    const bookPostSlugs = ['Understanding', 'The-Beginning'];
 
-    blogPosts.forEach(slug => {
+    bookPostSlugs.forEach(slug => {
       result.push({
-        loc: `/blog/${slug}`,
+        loc: `/book/${slug}`,
         changefreq: 'monthly',
         priority: 0.7,
         lastmod: new Date().toISOString(),
