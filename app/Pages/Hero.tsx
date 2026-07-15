@@ -5,7 +5,7 @@ import { LampContainer } from '../components/ui/lamp';
 import { FlipWords } from '../components/ui/flip-words';
 
 export function Hero() {
-  const words = ['Product Manager', 'AI Developer', 'DevOps & MLops Engineer']; // Words to flip
+  const words = ['Full Stack Developer, Devops Engineer, Project Manager ']; // Words to flip
 
   return (
     <section className="relative min-h-[100svh] overflow-hidden">
