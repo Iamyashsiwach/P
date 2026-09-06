@@ -1,27 +1,42 @@
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
-import React from 'react';
-import dynamic from 'next/dynamic';
 
-// Dynamically import components with loading state handling
-const Hero = dynamic(() => import('./Pages/Hero'));
-const AboutMe = dynamic(() => import('./Pages/AboutMe'));
-const TimelineWithBackground = dynamic(() => import('./Pages/TimelineWithBackground'));
-const Skills = dynamic(() => import('./Pages/Skills'));
-const Project = dynamic(() => import('./Pages/Project'));
-const Footer = dynamic(() => import('./Pages/Footer'));
-const Navbar = dynamic(() => import('./components/Navbar'));
+import { sectionIds } from './lib/content';
+import { Nav } from './components/chrome/Nav';
+import { Cursor } from './components/chrome/Cursor';
+import { HUD } from './components/chrome/HUD';
+import { ScrollProgress } from './components/chrome/ScrollProgress';
+import { SmoothScroll } from './components/motion/SmoothScroll';
+import { SceneGate } from './components/webgl/SceneGate';
+
+import { Hero } from './sections/Hero';
+import { About } from './sections/About';
+import { Log } from './sections/Log';
+import { Stack } from './sections/Stack';
+import { Certifications } from './sections/Certifications';
+import { Work } from './sections/Work';
+import { Contact } from './sections/Contact';
 
 export default function Home() {
   return (
     <>
-      <Navbar showBookNav={true} />
-      <Hero />
-      <AboutMe />
-      <TimelineWithBackground />
-      <Skills />
-      <Project />
-      <Footer />
+      <SmoothScroll />
+      <SceneGate />
+      <ScrollProgress />
+      <Nav />
+      <Cursor />
+
+      <main>
+        <Hero />
+        <About />
+        <Log />
+        <Stack />
+        <Certifications />
+        <Work />
+        <Contact />
+      </main>
+
+      <HUD sections={sectionIds} />
       <SpeedInsights />
       <Analytics />
     </>

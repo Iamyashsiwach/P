@@ -84,7 +84,7 @@ export const Fireflies = ({ count = 4 }: { count?: number }) => {
   const cameraRef = useRef<THREE.OrthographicCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const particlesRef = useRef<FireflyParticle[]>([]);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
   const noiseRef = useRef<PerlinNoise>(new PerlinNoise());
   const [isSupported, setIsSupported] = useState(false); // Start false to prevent flash
   const [mounted, setMounted] = useState(false);

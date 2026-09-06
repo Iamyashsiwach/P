@@ -7,7 +7,6 @@ import rehypeRaw from 'rehype-raw';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { BookNavbar, Fireflies } from './';
-import Navbar from '../../components/Navbar';
 
 interface BookPost {
   slug: string;
@@ -89,7 +88,6 @@ export function BookPostContent({ post, allPosts = [] }: BookPostContentProps) {
   return (
     <div ref={containerRef} className="min-h-screen w-full bg-black relative">
       <Fireflies count={4} />
-      <Navbar />
       <BookNavbar />
 
       {/* Minimal Progress Indicator */}

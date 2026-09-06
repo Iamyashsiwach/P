@@ -1,55 +1,151 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
   :root {
-    --background: 0 0% 0%; /* Black background */
-    --foreground: 0 0% 100%; /* White text */
+    /* Surfaces — warm off-white, never pure #fff */
+    --paper: 40 30% 97%;
+    --paper-2: 38 22% 94%;
+    --paper-3: 36 16% 90%;
+
+    /* Ink — warm near-black, never pure #000 */
+    --ink: 24 12% 10%;
+    --ink-dim: 26 8% 38%;
+    --ink-mute: 28 6% 55%;
+
+    /* One accent, used sparingly */
+    --signal: 8 78% 46%;
+    --steel: 212 24% 38%;
+
+    /* shadcn-compatible aliases so existing utilities keep resolving */
+    --background: var(--paper);
+    --foreground: var(--ink);
+    --card: var(--paper);
+    --card-foreground: var(--ink);
+    --popover: var(--paper);
+    --popover-foreground: var(--ink);
+    --primary: var(--signal);
+    --primary-foreground: var(--paper);
+    --secondary: var(--paper-2);
+    --secondary-foreground: var(--ink);
+    --muted: var(--paper-2);
+    --muted-foreground: var(--ink-dim);
+    --accent: var(--paper-3);
+    --accent-foreground: var(--ink);
+    --destructive: var(--signal);
+    --destructive-foreground: var(--paper);
+    --border: 32 12% 85%;
+    --input: 32 12% 85%;
+    --ring: var(--signal);
+
+    --radius: 2px;
   }
 
-  body {
-    @apply bg-background text-foreground; /* Applies global styles */
-  }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
-    background-color: black !important; /* Ensures black background always applies */
-    color: white !important;
+    @apply bg-background text-foreground;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  /* Figures never jitter mid-animation */
+  time,
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--signal));
+    outline-offset: 2px;
   }
 }
-.background-beams {
-  position: absolute;
-  inset: 0;
-  z-index: -1; /* This ensures the background stays behind the content */
-  width: 100%;
-  height: 100%;
-}
-html {
-  scroll-behavior: smooth;
-}
-/* globals.css or a specific CSS file */
-/* globals.css or a specific CSS file */
-.loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999; /* Ensure it stays on top */
-  padding: 0 20px; /* Add some padding for mobile */
+
+@layer components {
+  /* 12-column editorial shell. Content spans asymmetric ranges, never 1..-1. */
+  .grid-shell {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 2rem);
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 4rem);
+  }
+
+  /* The motif: one hairline, reused everywhere. */
+  .rule {
+    border: 0;
+    border-top: 1px solid hsl(var(--border));
+    width: 100%;
+  }
 }
 
-.loading-screen h1,
-.loading-screen p {
-  text-align: center; /* Center text for better mobile layout */
-  margin: 0; /* Remove default margin */
+@layer utilities {
+  .section-rhythm {
+    padding-block: clamp(6rem, 14vh, 12rem);
+  }
+
+  /* On a short mobile viewport, 14vh per edge stacks into a gap that reads as
+     dead space rather than breathing room — tighten it below the sm breakpoint. */
+  @media (max-width: 639.98px) {
+    .section-rhythm {
+      padding-block: clamp(3.5rem, 9vh, 6rem);
+    }
+  }
+
+  .mono-label {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: hsl(var(--ink-mute));
+  }
+}
+
+/*
+ * Smooth scrolling is Lenis's job, and Lenis is disabled under reduced motion.
+ *
+ * `scroll-behavior: smooth` MUST NOT be set while Lenis is running: Lenis writes
+ * a new scroll position every frame, CSS then animates toward it, and the
+ * resulting scroll event feeds back into Lenis — the page locks up. Lenis adds
+ * the `lenis` class to <html> when active, so scope the opt-out to that.
+ */
+html:not(.lenis) {
+  scroll-behavior: smooth;
+}
+
+html.lenis {
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

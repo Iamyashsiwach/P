@@ -2,12 +2,7 @@ import type { Config } from 'tailwindcss';
 
 const config = {
   darkMode: ['class'],
-  content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-  ],
+  content: ['./app/**/*.{ts,tsx}', './lib/**/*.{ts,tsx}'],
   prefix: '',
   theme: {
     container: {
@@ -18,7 +13,34 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['var(--font-geist-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-geist-mono)', 'ui-monospace', 'monospace'],
+        display: ['var(--font-display)', 'ui-serif', 'Georgia', 'serif'],
+      },
+      fontSize: {
+        'display-xl': ['clamp(3rem, 11vw, 9rem)', { lineHeight: '0.92', letterSpacing: '-0.04em' }],
+        'display-l': ['clamp(2rem, 6vw, 4.5rem)', { lineHeight: '1.0', letterSpacing: '-0.03em' }],
+        'display-m': [
+          'clamp(1.5rem, 3.5vw, 2.5rem)',
+          { lineHeight: '1.1', letterSpacing: '-0.02em' },
+        ],
+        body: ['1.0625rem', { lineHeight: '1.65' }],
+        'mono-label': ['0.6875rem', { lineHeight: '1.2', letterSpacing: '0.18em' }],
+      },
       colors: {
+        paper: {
+          DEFAULT: 'hsl(var(--paper))',
+          2: 'hsl(var(--paper-2))',
+          3: 'hsl(var(--paper-3))',
+        },
+        ink: {
+          DEFAULT: 'hsl(var(--ink))',
+          dim: 'hsl(var(--ink-dim))',
+          mute: 'hsl(var(--ink-mute))',
+        },
+        signal: 'hsl(var(--signal))',
+        steel: 'hsl(var(--steel))',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
