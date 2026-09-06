@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { gsap, useGSAP, ScrollTrigger, Flip, ease, duration } from '@/app/lib/motion';
 import { nav, profile } from '@/app/lib/content';
 import { ThemeToggle } from '@/app/components/theme/ThemeToggle';
+import { TerminalTrigger } from '@/app/components/terminal/TerminalTrigger';
 
 /**
  * Fixed header. Hides on scroll down and returns on scroll up, but is always
@@ -110,6 +111,7 @@ export function Nav() {
             className="pointer-events-none absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 bg-signal opacity-0"
           />
 
+          <TerminalTrigger className="ml-3 hidden sm:inline-flex" />
           <ThemeToggle className="ml-3 hidden sm:inline-flex" />
 
           <a
@@ -170,7 +172,11 @@ export function Nav() {
               Résumé
             </a>
           </li>
-          <li className="py-3">
+          {/* Closes the menu on either button too — previously only the
+              plain links did, leaving the panel open over whatever these
+              opened. */}
+          <li className="flex gap-3 py-3" onClick={() => setMenuOpen(false)}>
+            <TerminalTrigger />
             <ThemeToggle />
           </li>
         </ul>

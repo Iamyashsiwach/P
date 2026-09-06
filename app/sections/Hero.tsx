@@ -3,6 +3,7 @@
 import { profile } from '@/app/lib/content';
 import { Reveal } from '@/app/components/motion/Reveal';
 import { Magnetic } from '@/app/components/motion/Magnetic';
+import { TerminalTrigger } from '@/app/components/terminal/TerminalTrigger';
 
 /**
  * The WebGL trace field mounts behind this in Phase 3; until then the layout
@@ -48,6 +49,7 @@ export function Hero() {
                 Résumé
               </a>
             </Magnetic>
+            <TerminalTrigger />
           </div>
         </div>
       </div>
