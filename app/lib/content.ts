@@ -31,11 +31,21 @@ export const nav = [
   { label: 'Stack', href: '#stack' },
   { label: 'Certs', href: '#certifications' },
   { label: 'Work', href: '#work' },
+  { label: 'Proof', href: '#proof' },
   { label: 'Contact', href: '#contact' },
 ] as const;
 
 /** Section ids in document order — drives the HUD index. */
-export const sectionIds = ['home', 'about', 'log', 'stack', 'certifications', 'work', 'contact'];
+export const sectionIds = [
+  'home',
+  'about',
+  'log',
+  'stack',
+  'certifications',
+  'work',
+  'proof',
+  'contact',
+];
 
 export const about = {
   eyebrow: '01 / Who',
@@ -310,8 +320,20 @@ export const stack = {
   ],
 } as const;
 
+export const proof = {
+  eyebrow: '06 / Proof',
+  heading: 'Not just claims — the log',
+  /** The plain-language framing a non-technical visitor needs: the sentence
+   * has to make the point on its own, with the calendar grid as backup, not
+   * the other way round. Filled in with the real count at render time. */
+  captionTemplate: (activeDays: number) =>
+    `${activeDays} days I showed up and shipped something in the last year.`,
+  unavailable:
+    'Live activity feed unavailable right now — everything else on this page is still real, this one just did not load.',
+} as const;
+
 export const contact = {
-  eyebrow: '06 / Contact',
+  eyebrow: '07 / Contact',
   heading: 'Let’s build something',
   line: 'Freelance work, full-time roles, or a project you cannot get anyone else to take on.',
 } as const;

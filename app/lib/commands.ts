@@ -148,6 +148,17 @@ export const commands: Command[] = [
     },
   },
   {
+    id: 'proof',
+    aliases: ['contributions', 'activity', 'shipped days', 'proof', 'streak'],
+    description: 'See how consistently I show up',
+    suggested: true,
+    run: () => ({
+      kind: 'goto',
+      href: '#proof',
+      lines: ['Jumping to Proof — real GitHub activity, not just claims.'],
+    }),
+  },
+  {
     id: 'contact',
     aliases: ['say hi', 'contact', 'get in touch', 'hire me'],
     description: 'How to reach me',
