@@ -1,7 +1,11 @@
 import type { Config } from 'tailwindcss';
+import plugin from 'tailwindcss/plugin';
 
 const config = {
-  darkMode: ['class'],
+  // No .dark block exists (or is planned) — this repurposes the slot for the
+  // paper/Hacker Mode toggle so any future `dark:` utility resolves the same
+  // way `crt:` does, rather than tracking two separate theme mechanisms.
+  darkMode: ['selector', '[data-theme="terminal"]'],
   content: ['./app/**/*.{ts,tsx}', './lib/**/*.{ts,tsx}'],
   prefix: '',
   theme: {
@@ -99,7 +103,14 @@ const config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate'),
+    // `crt:tracking-normal` etc. — reads as intent (this is a Hacker Mode
+    // override) rather than `dark:` borrowed for a mode that isn't dark mode.
+    plugin(({ addVariant }) => {
+      addVariant('crt', '&:is([data-theme="terminal"] *)');
+    }),
+  ],
 } satisfies Config;
 
 export default config;

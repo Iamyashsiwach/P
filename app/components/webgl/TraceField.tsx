@@ -1,8 +1,10 @@
 'use client';
 
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
+import { useThemeColors } from './useThemeColors';
+import { useTheme } from '@/app/components/theme/ThemeProvider';
 
 /*
  * A request moving through a fullstack system: Client -> Edge -> API -> Queue -> DB.
@@ -146,6 +148,7 @@ const fragmentShader = /* glsl */ `
   uniform vec3  uInk;
   uniform vec3  uSignal;
   uniform float uOpacity;
+  uniform float uCrt;
 
   varying float vHot;
 
@@ -158,8 +161,15 @@ const fragmentShader = /* glsl */ `
     float glow = pow(1.0 - d * 2.0, 3.0);
 
     vec3 color = mix(uInk, uSignal, vHot);
+    float alpha = uOpacity * core * (0.45 + 0.55 * glow) * (0.85 + 0.35 * vHot);
+
+    // Hacker Mode: read as phosphor rather than ink — hotter core, a touch
+    // more glow reach, no second draw call or second material.
+    alpha = mix(alpha, alpha * 1.35, uCrt);
+    color = mix(color, color * 1.15, uCrt);
+
     // Hot particles also carry a little more weight, so nodes read as denser.
-    gl_FragColor = vec4(color, uOpacity * core * (0.45 + 0.55 * glow) * (0.85 + 0.35 * vHot));
+    gl_FragColor = vec4(color, alpha);
   }
 `;
 
@@ -169,7 +179,9 @@ const target = new THREE.Vector2();
 
 export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<number> }) {
   const material = useRef<THREE.ShaderMaterial>(null);
-  const { viewport } = useThree();
+  const { viewport, invalidate } = useThree();
+  const themeColors = useThemeColors();
+  const { theme } = useTheme();
 
   const orbit = useMemo(() => buildCurveTexture(NODES_ORBIT, 0.62), []);
   const flat = useMemo(() => buildCurveTexture(NODES_FLAT, 0.28), []);
@@ -209,12 +221,33 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
       uMorph: { value: 0 },
       uDpr: { value: 1 },
       uMouse: { value: new THREE.Vector3(0, 0, 0) },
+      // Paper mode's actual colors, seeded directly rather than read from
+      // the hook: this only ever matters for the one frame before the sync
+      // effect below runs (e.g. a hard load straight into Hacker Mode via
+      // ?theme=terminal), and keeping the hook out of this memo's deps means
+      // toggling the theme later never recreates the whole uniforms object
+      // — which would snap uTime/uScatter/uMorph back to their initial
+      // values and visibly reset the field.
       uInk: { value: new THREE.Color('#6E655C') },
       uSignal: { value: new THREE.Color('#CE3A22') },
       uOpacity: { value: 0.72 },
+      uCrt: { value: 0 },
     }),
     [orbit, flat]
   );
+
+  // Sync colors on every theme change (and once on mount). frameloop stops
+  // past the hero, so without an explicit invalidate() a theme toggle while
+  // scrolled down would leave the canvas showing stale colors indefinitely.
+  useEffect(() => {
+    const mat = material.current;
+    if (!mat) return;
+
+    mat.uniforms.uInk.value.copy(themeColors.ink);
+    mat.uniforms.uSignal.value.copy(themeColors.signal);
+    mat.uniforms.uCrt.value = theme === 'terminal' ? 1 : 0;
+    invalidate();
+  }, [themeColors, theme, invalidate]);
 
   useFrame((state, delta) => {
     const mat = material.current;

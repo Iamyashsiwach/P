@@ -8,6 +8,7 @@ import { HUD } from './components/chrome/HUD';
 import { ScrollProgress } from './components/chrome/ScrollProgress';
 import { SmoothScroll } from './components/motion/SmoothScroll';
 import { SceneGate } from './components/webgl/SceneGate';
+import { CrtOverlay } from './components/theme/CrtOverlay';
 
 import { Hero } from './sections/Hero';
 import { About } from './sections/About';
@@ -23,6 +24,7 @@ export default function Home() {
       <SmoothScroll />
       <SceneGate />
       <ScrollProgress />
+      <CrtOverlay />
       <Nav />
       <Cursor />
 

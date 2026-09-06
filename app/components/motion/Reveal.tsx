@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import { gsap, useGSAP, SplitText, ScrollTrigger, ease, duration, START } from '@/app/lib/motion';
 import { usePrefersReducedMotion } from '@/app/hooks/usePrefersReducedMotion';
+import { useTheme } from '@/app/components/theme/ThemeProvider';
 
 type RevealProps = {
   children: React.ReactNode;
@@ -35,6 +36,11 @@ export function Reveal({
 }: RevealProps) {
   const scope = useRef<HTMLElement>(null);
   const reduced = usePrefersReducedMotion();
+  // Hacker Mode swaps the heading/body font, which changes line-wrap geometry
+  // — a `by="lines"` split computed under the old font no longer matches how
+  // the text would actually wrap, so re-run the split whenever the theme
+  // changes, not just on mount.
+  const { theme } = useTheme();
 
   useGSAP(
     () => {
@@ -78,7 +84,7 @@ export function Reveal({
         split?.revert();
       };
     },
-    { scope, dependencies: [reduced, by, stagger, delay, immediate] }
+    { scope, dependencies: [reduced, by, stagger, delay, immediate, theme] }
   );
 
   return (

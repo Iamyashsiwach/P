@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { gsap, useGSAP, ScrollTrigger, Flip, ease, duration } from '@/app/lib/motion';
 import { nav, profile } from '@/app/lib/content';
+import { ThemeToggle } from '@/app/components/theme/ThemeToggle';
 
 /**
  * Fixed header. Hides on scroll down and returns on scroll up, but is always
@@ -109,6 +110,8 @@ export function Nav() {
             className="pointer-events-none absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 bg-signal opacity-0"
           />
 
+          <ThemeToggle className="ml-3 hidden sm:inline-flex" />
+
           <a
             href={profile.resume}
             target="_blank"
@@ -166,6 +169,9 @@ export function Nav() {
             >
               Résumé
             </a>
+          </li>
+          <li className="py-3">
+            <ThemeToggle />
           </li>
         </ul>
       </div>

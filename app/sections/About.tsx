@@ -6,10 +6,15 @@ import { about } from '@/app/lib/content';
 import { gsap, useGSAP, SplitText, ScrollTrigger } from '@/app/lib/motion';
 import { usePrefersReducedMotion } from '@/app/hooks/usePrefersReducedMotion';
 import { SectionHeading } from '@/app/components/chrome/SectionHeading';
+import { useTheme } from '@/app/components/theme/ThemeProvider';
 
 export function About() {
   const prose = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
+  // --ink/--ink-mute are read once below via getComputedStyle, so this tween
+  // must rebuild whenever the theme changes or it stays frozen on whichever
+  // theme's colors happened to be current at first paint.
+  const { theme } = useTheme();
 
   // Words brighten from muted to full ink as they scroll through the viewport,
   // so the paragraph reads as if it is being lit up rather than faded in.
@@ -56,7 +61,7 @@ export function About() {
         split?.revert();
       };
     },
-    { scope: prose, dependencies: [reduced] }
+    { scope: prose, dependencies: [reduced, theme] }
   );
 
   return (
