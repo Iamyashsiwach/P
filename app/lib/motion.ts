@@ -6,9 +6,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { CustomEase } from 'gsap/CustomEase';
 import { Flip } from 'gsap/Flip';
-import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
 
-gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, CustomEase, Flip, ScrambleTextPlugin);
+// This file is imported by every section, so it enters the shared client
+// chunk for every visitor. Plugins only a lazily-mounted feature needs
+// (ScrambleTextPlugin, Draggable, ...) register in `motion.heavy.ts` instead —
+// see that file before adding anything here.
+gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, CustomEase, Flip);
 
 /**
  * Two eases for the whole site. Everything that moves uses one of them, which
@@ -19,10 +22,13 @@ gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, CustomEase, Flip, Scrambl
  */
 CustomEase.create('out', '0.16, 1, 0.3, 1');
 CustomEase.create('move', '0.65, 0, 0.35, 1');
+CustomEase.create('snap', '0.2, 0, 0, 1');
 
 export const ease = {
   out: 'out',
   move: 'move',
+  /** Terminal-mode UI: things should snap into place, not settle luxuriously. */
+  snap: 'snap',
 } as const;
 
 export const duration = {

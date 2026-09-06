@@ -40,6 +40,17 @@
     --ring: var(--signal);
 
     --radius: 2px;
+
+    /* Font role variables, indirected so a theme (or a future one) can swap
+       the whole typographic voice without touching tailwind.config.ts. */
+    --font-body: var(--font-geist-sans);
+    --font-heading: var(--font-display);
+    --font-ui: var(--font-geist-mono);
+
+    /* Layout density, indirected the same way. */
+    --section-pad: clamp(4rem, 9vh, 7rem);
+    --grid-gap: clamp(1rem, 2vw, 2rem);
+    --rule-weight: 1px;
   }
 
   * {
@@ -80,7 +91,7 @@
   .grid-shell {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: clamp(1rem, 2vw, 2rem);
+    gap: var(--grid-gap);
     width: 100%;
     max-width: 1440px;
     margin-inline: auto;
@@ -90,21 +101,24 @@
   /* The motif: one hairline, reused everywhere. */
   .rule {
     border: 0;
-    border-top: 1px solid hsl(var(--border));
+    border-top: var(--rule-weight) solid hsl(var(--border));
     width: 100%;
   }
 }
 
 @layer utilities {
   .section-rhythm {
-    padding-block: clamp(6rem, 14vh, 12rem);
+    padding-block: var(--section-pad);
   }
 
-  /* On a short mobile viewport, 14vh per edge stacks into a gap that reads as
-     dead space rather than breathing room — tighten it below the sm breakpoint. */
+  /* On a short mobile viewport, the desktop value per edge stacks into a gap
+     that reads as dead space rather than breathing room — tighten it below
+     the sm breakpoint. Reassigns the token rather than padding-block
+     directly, so a theme's own --section-pad (set on the same selector
+     specificity level) still wins when both apply. */
   @media (max-width: 639.98px) {
-    .section-rhythm {
-      padding-block: clamp(3.5rem, 9vh, 6rem);
+    :root {
+      --section-pad: clamp(3.5rem, 9vh, 6rem);
     }
   }
 
