@@ -1,6 +1,7 @@
 'use client';
 
 import { useTerminal } from './TerminalProvider';
+import { blip } from '@/app/lib/audio';
 
 /**
  * ⌘K is an accelerator for people who already know the pattern — it is
@@ -14,7 +15,10 @@ export function TerminalTrigger({ className }: { className?: string }) {
   return (
     <button
       type="button"
-      onClick={openTerminal}
+      onClick={() => {
+        blip();
+        openTerminal();
+      }}
       className={
         'inline-flex items-center gap-2 border border-border px-3 py-1.5 font-mono text-mono-label uppercase tracking-[0.18em] text-ink-dim transition-colors hover:border-ink hover:text-ink' +
         (className ? ` ${className}` : '')

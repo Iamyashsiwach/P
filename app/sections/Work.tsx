@@ -72,7 +72,7 @@ export function Work() {
                   data-cursor={project.href ? 'view' : undefined}
                   onMouseEnter={() => setHovered(i)}
                   onMouseLeave={() => setHovered(null)}
-                  className="group grid grid-cols-12 items-baseline gap-4 py-8 transition-colors"
+                  className="group grid grid-cols-12 items-baseline gap-4 py-6 transition-colors md:py-8"
                 >
                   <span
                     data-numeric
@@ -90,22 +90,30 @@ export function Work() {
                     </p>
                   </div>
 
-                  <p className="col-span-12 max-w-prose text-sm leading-relaxed text-ink-dim md:col-span-5 md:col-start-7">
-                    {project.blurb}
-                    <span className="mt-3 block font-mono text-xs text-ink-mute">
+                  <div className="col-span-12 max-w-prose md:col-span-5 md:col-start-7">
+                    {/* Clamped to 2 lines on mobile — the full blurb plus tech
+                        line plus the thumbnail below was most of what made
+                        this list such a long scroll on a phone; the full
+                        text is still one tap away via the project link. */}
+                    <p className="line-clamp-2 text-sm leading-relaxed text-ink-dim md:line-clamp-none">
+                      {project.blurb}
+                    </p>
+                    <p className="mt-3 font-mono text-xs text-ink-mute">
                       {project.tech.join(' · ')}
-                    </span>
-                  </p>
+                    </p>
+                  </div>
 
-                  {/* Inline thumbnail: the only preview on touch and reduced motion. */}
-                  <div className="col-span-12 mt-4 md:hidden">
+                  {/* Inline thumbnail: the only preview on touch and reduced
+                      motion — shrunk on mobile so it reads as a reference
+                      strip, not a full-width hero image per project. */}
+                  <div className="col-span-12 mt-3 md:hidden">
                     <Image
                       src={project.image}
                       alt=""
                       width={640}
                       height={400}
                       sizes="100vw"
-                      className="w-full border border-border object-cover"
+                      className="h-28 w-full border border-border object-cover"
                     />
                   </div>
                 </Row>

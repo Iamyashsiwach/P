@@ -57,7 +57,7 @@ function ensureContext(): AudioContext | null {
   ctx = new Ctor();
   const compressor = ctx.createDynamicsCompressor();
   master = ctx.createGain();
-  master.gain.value = 0.08;
+  master.gain.value = 0.16;
   master.connect(compressor);
   compressor.connect(ctx.destination);
   return ctx;

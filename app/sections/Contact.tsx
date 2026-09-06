@@ -8,6 +8,7 @@ import { SectionHeading } from '@/app/components/chrome/SectionHeading';
 import { Magnetic } from '@/app/components/motion/Magnetic';
 import { GithubMark, XMark, LinkedinMark } from '@/app/components/icons/Brand';
 import { usePrefersReducedMotion } from '@/app/hooks/usePrefersReducedMotion';
+import { blip } from '@/app/lib/audio';
 
 const marks = {
   GitHub: GithubMark,
@@ -78,6 +79,7 @@ export function Contact() {
     try {
       await navigator.clipboard.writeText(profile.email);
       setCopied(true);
+      blip();
       burst();
       window.setTimeout(() => setCopied(false), 1600);
     } catch {
@@ -134,6 +136,7 @@ export function Contact() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => blip()}
                       className="inline-flex items-center gap-3 font-mono text-mono-label uppercase tracking-[0.18em] text-ink transition-colors hover:text-signal"
                     >
                       <Mark width={14} height={14} />

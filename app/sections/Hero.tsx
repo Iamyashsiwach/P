@@ -4,6 +4,7 @@ import { profile } from '@/app/lib/content';
 import { Reveal } from '@/app/components/motion/Reveal';
 import { Magnetic } from '@/app/components/motion/Magnetic';
 import { TerminalTrigger } from '@/app/components/terminal/TerminalTrigger';
+import { blip } from '@/app/lib/audio';
 
 /**
  * The WebGL trace field mounts behind this in Phase 3; until then the layout
@@ -34,6 +35,7 @@ export function Hero() {
             <Magnetic>
               <a
                 href="#work"
+                onClick={() => blip()}
                 className="inline-block border border-ink bg-ink px-6 py-3 font-mono text-mono-label uppercase tracking-[0.18em] text-paper transition-colors hover:bg-transparent hover:text-ink"
               >
                 View work
@@ -44,6 +46,7 @@ export function Hero() {
                 href={profile.resume}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => blip()}
                 className="inline-block border border-border px-6 py-3 font-mono text-mono-label uppercase tracking-[0.18em] text-ink transition-colors hover:border-ink"
               >
                 Résumé
