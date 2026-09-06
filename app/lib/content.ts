@@ -329,6 +329,7 @@ export const proof = {
   captionTemplate: (activeDays: number) => `${activeDays} days I showed up and shipped something.`,
   unavailable:
     'Live activity feed unavailable right now — everything else on this page is still real, this one just did not load.',
+  activityUnavailable: 'Recent activity unavailable right now.',
 } as const;
 
 export const contact = {

@@ -129,3 +129,95 @@ export async function getGithub(): Promise<GithubResult> {
     return { ok: false, reason: 'error' };
   }
 }
+
+export type ActivityItem = { id: string; text: string; url: string; date: string };
+export type ActivityResult =
+  | { ok: true; data: ActivityItem[] }
+  | { ok: false; reason: 'no-token' | 'rate-limited' | 'error' };
+
+type GithubEvent = {
+  id: string;
+  type: string;
+  created_at: string;
+  repo?: { name: string };
+  payload?: {
+    action?: string;
+    ref_type?: string;
+    pull_request?: { merged?: boolean };
+  };
+};
+
+/** Translates a raw public event into a plain-English line — never the raw
+ * GitHub event type. Returns null for event types not worth surfacing here
+ * (stars, branch pushes, comments) so the feed stays a "what I shipped"
+ * list, not a firehose of every micro-action. */
+function describeEvent(e: GithubEvent): ActivityItem | null {
+  const full = e.repo?.name ?? '';
+  const repo = full.split('/')[1] ?? full;
+  const url = `https://github.com/${full}`;
+  const base = { id: e.id, url, date: e.created_at };
+
+  switch (e.type) {
+    case 'PushEvent':
+      // The public events API no longer includes a commit count or list on
+      // this payload (verified against the live endpoint — payload here is
+      // just push_id/ref/head/before), so this never claims a number it
+      // cannot back up.
+      return { ...base, text: `Pushed to ${repo}` };
+    case 'PullRequestEvent': {
+      const action = e.payload?.action;
+      // Verified against the live endpoint: this API reports a merge as its
+      // own action: 'merged', not action: 'closed' + pull_request.merged —
+      // that's the webhook payload's shape, not this one. Handling both
+      // keeps this correct if that ever changes.
+      if (action === 'merged' || (action === 'closed' && e.payload?.pull_request?.merged)) {
+        return { ...base, text: `Merged a pull request in ${repo}` };
+      }
+      if (action === 'opened') return { ...base, text: `Opened a pull request in ${repo}` };
+      return null;
+    }
+    case 'CreateEvent':
+      if (e.payload?.ref_type === 'repository') {
+        return { ...base, text: `Started a new project: ${repo}` };
+      }
+      return null;
+    case 'ReleaseEvent':
+      return { ...base, text: `Published a release in ${repo}` };
+    default:
+      return null;
+  }
+}
+
+/** Recent public activity — a REST endpoint, unlike the calendar, so this
+ * is a plain GET rather than GraphQL. Same token, same hourly cache. */
+export async function getRecentActivity(): Promise<ActivityResult> {
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) return { ok: false, reason: 'no-token' };
+
+  try {
+    const res = await fetch(
+      `https://api.github.com/users/${GITHUB_LOGIN}/events/public?per_page=30`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/vnd.github+json',
+        },
+        next: { revalidate: 3600 },
+      }
+    );
+
+    if (res.status === 401) return { ok: false, reason: 'no-token' };
+    if (res.status === 403) return { ok: false, reason: 'rate-limited' };
+    if (!res.ok) return { ok: false, reason: 'error' };
+
+    const events: GithubEvent[] = await res.json();
+    const items = events
+      .map(describeEvent)
+      .filter((item): item is ActivityItem => item !== null)
+      .slice(0, 5);
+
+    return { ok: true, data: items };
+  } catch {
+    return { ok: false, reason: 'error' };
+  }
+}

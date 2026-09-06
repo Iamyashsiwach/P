@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getGithub } from '@/app/lib/github';
+import { getGithub, getRecentActivity } from '@/app/lib/github';
 
 /**
  * The terminal's `contributions`/`activity` command hits this instead of
@@ -16,8 +16,13 @@ export const revalidate = 3600;
 export const dynamic = 'force-static';
 
 export async function GET() {
-  const result = await getGithub();
-  return NextResponse.json(result, {
-    headers: { 'Cache-Control': 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' },
-  });
+  const [contributions, activity] = await Promise.all([getGithub(), getRecentActivity()]);
+  return NextResponse.json(
+    { contributions, activity },
+    {
+      headers: {
+        'Cache-Control': 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400',
+      },
+    }
+  );
 }
