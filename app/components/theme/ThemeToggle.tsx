@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import { useTheme } from './ThemeProvider';
+import { thunk } from '@/app/lib/audio';
 
 /**
  * Deliberately not labelled "paper/terminal" — a visitor who has never heard
@@ -18,7 +19,10 @@ export function ThemeToggle({ className }: { className?: string }) {
     <button
       ref={ref}
       type="button"
-      onClick={() => toggle(ref.current)}
+      onClick={() => {
+        thunk();
+        toggle(ref.current);
+      }}
       aria-pressed={isHacker}
       className={
         'inline-flex items-center gap-2 border border-border px-3 py-1.5 font-mono text-mono-label uppercase tracking-[0.18em] text-ink-dim transition-colors hover:border-ink hover:text-ink' +

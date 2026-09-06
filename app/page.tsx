@@ -13,6 +13,7 @@ import { TapRipple } from './components/mobile/TapRipple';
 import { CrtOverlay } from './components/theme/CrtOverlay';
 import { TerminalProvider } from './components/terminal/TerminalProvider';
 import { TerminalMount } from './components/terminal/TerminalMount';
+import { DevTools } from './components/theme/DevTools';
 
 import { Hero } from './sections/Hero';
 import { About } from './sections/About';
@@ -46,6 +47,7 @@ export default function Home() {
 
       <HUD sections={sectionIds} />
       <TerminalMount />
+      <DevTools />
       <SpeedInsights />
       <Analytics />
     </TerminalProvider>

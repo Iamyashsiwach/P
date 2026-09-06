@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/app/components/theme/ThemeProvider';
 import { getLenis, scrollToTarget } from '@/app/lib/lenis';
 import { resolveCommand, suggestions, type CommandResult } from '@/app/lib/commands';
+import { key, blip, thunk, enableSound, disableSound, isSoundEnabled } from '@/app/lib/audio';
 
 type LogLine = { id: number; kind: 'input' | 'output'; text: string };
 
@@ -83,10 +84,18 @@ export function Terminal({ onRequestClose }: { onRequestClose: () => void }) {
           return;
         case 'theme':
           result.lines?.forEach(appendOutput);
+          thunk();
           // Origin the view-transition wipe from the dialog itself — there's
           // no fixed button to expand from when the change comes from here.
           if (result.next === 'toggle') toggle(dialogRef.current);
           else setTheme(result.next, dialogRef.current);
+          return;
+        case 'sound':
+          result.lines?.forEach(appendOutput);
+          if (result.next === 'off') disableSound();
+          else if (result.next === 'on') enableSound();
+          else if (isSoundEnabled()) disableSound();
+          else enableSound();
           return;
         case 'clear':
           setLines([]);
@@ -120,6 +129,7 @@ export function Terminal({ onRequestClose }: { onRequestClose: () => void }) {
         );
         return;
       }
+      blip();
       runResult(resolved.command.run(resolved.args));
     },
     [appendOutput, runResult]
@@ -218,7 +228,10 @@ export function Terminal({ onRequestClose }: { onRequestClose: () => void }) {
           <input
             ref={inputRef}
             value={value}
-            onChange={event => setValue(event.target.value)}
+            onChange={event => {
+              setValue(event.target.value);
+              key();
+            }}
             onKeyDown={onInputKeyDown}
             inputMode="text"
             enterKeyHint="go"

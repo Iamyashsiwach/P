@@ -5,6 +5,7 @@ export type CommandResult =
   | { kind: 'goto'; href: string; lines?: string[] }
   | { kind: 'link'; href: string; lines?: string[] }
   | { kind: 'theme'; next: 'paper' | 'terminal' | 'toggle'; lines?: string[] }
+  | { kind: 'sound'; next: 'on' | 'off' | 'toggle'; lines?: string[] }
   | { kind: 'clear' }
   | { kind: 'close'; lines?: string[] };
 
@@ -199,6 +200,37 @@ export const commands: Command[] = [
       }
       return { kind: 'theme', next: 'toggle', lines: ['Flipping the switch.'] };
     },
+  },
+  {
+    id: 'sound',
+    aliases: ['sound', 'sound on', 'sound off'],
+    description: 'Turn UI sound on or off',
+    run: args => {
+      const a = args.trim().toLowerCase();
+      if (a === 'off' || a.includes('off')) {
+        return { kind: 'sound', next: 'off', lines: ['Sound off.'] };
+      }
+      if (a === 'on' || a.includes('on')) {
+        return { kind: 'sound', next: 'on', lines: ['Sound on.'] };
+      }
+      return { kind: 'sound', next: 'toggle', lines: ['Flipping sound.'] };
+    },
+  },
+  // Separate entries, not aliases on `sound` above: run() only sees leftover
+  // argument text, not which alias matched, so "mute" would have no way to
+  // tell itself apart from a bare "sound" and would wrongly fall through to
+  // toggle instead of always meaning off.
+  {
+    id: 'mute',
+    aliases: ['mute'],
+    description: 'Turn sound off',
+    run: () => ({ kind: 'sound', next: 'off', lines: ['Sound off.'] }),
+  },
+  {
+    id: 'unmute',
+    aliases: ['unmute'],
+    description: 'Turn sound on',
+    run: () => ({ kind: 'sound', next: 'on', lines: ['Sound on.'] }),
   },
   {
     id: 'clear',

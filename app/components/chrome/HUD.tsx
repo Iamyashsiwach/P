@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { ScrollTrigger, useGSAP } from '@/app/lib/motion';
 import { TiltToggle } from '@/app/components/mobile/TiltToggle';
+import { SoundToggle } from '@/app/components/theme/SoundToggle';
 
 const TIME_FORMAT = new Intl.DateTimeFormat('en-GB', {
   hour: '2-digit',
@@ -51,8 +52,11 @@ export function HUD({ sections }: { sections: string[] }) {
         <span data-numeric>
           {current} / {total} &middot; {sections[index]}
         </span>
-        {/* Rendered only after mount so server and client markup agree. */}
-        <span data-numeric>{time ? `${time} IST` : ''}</span>
+        <div className="flex items-center gap-4">
+          <SoundToggle />
+          {/* Rendered only after mount so server and client markup agree. */}
+          <span data-numeric>{time ? `${time} IST` : ''}</span>
+        </div>
       </div>
 
       {/* Mobile had no HUD at all — the desktop readouts, plus the one
@@ -64,7 +68,10 @@ export function HUD({ sections }: { sections: string[] }) {
         <span aria-hidden="true" data-numeric>
           {current}/{total}
         </span>
-        <TiltToggle />
+        <div className="flex items-center gap-3">
+          <SoundToggle />
+          <TiltToggle />
+        </div>
       </div>
     </>
   );
