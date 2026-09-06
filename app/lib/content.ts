@@ -11,7 +11,7 @@
 
 export const profile = {
   name: 'Yash Siwach',
-  eyebrow: 'Gurugram, IN · Open to work',
+  eyebrow: 'Gurugram, IN · Associate Software Engineer @ Accenture',
   statement: 'I build web products end to end — schema to shader — and I care how they get used.',
   email: 'me@yashsiwach.in',
   phone: '+91 7206099609',
@@ -29,25 +29,28 @@ export const nav = [
   { label: 'Who', href: '#about' },
   { label: 'Log', href: '#log' },
   { label: 'Stack', href: '#stack' },
+  { label: 'Certs', href: '#certifications' },
   { label: 'Work', href: '#work' },
   { label: 'Contact', href: '#contact' },
 ] as const;
 
 /** Section ids in document order — drives the HUD index. */
-export const sectionIds = ['home', 'about', 'log', 'stack', 'work', 'contact'];
+export const sectionIds = ['home', 'about', 'log', 'stack', 'certifications', 'work', 'contact'];
 
 export const about = {
   eyebrow: '01 / Who',
   heading: 'Someone has to own the whole stack.',
   spec: [
     { term: 'Location', value: 'Gurugram, IN' },
+    { term: 'Currently', value: 'Associate Software Engineer, Accenture' },
     { term: 'Stack', value: 'TypeScript · Next.js · Node · Three.js' },
-    { term: 'Focus', value: 'Real-time systems, GPU rendering, performance' },
+    { term: 'Focus', value: 'Real-time systems, GPU rendering, agent tooling' },
     { term: 'Shipping since', value: '2023' },
   ],
   paragraphs: [
     'I started building because I wanted things that did not exist yet — an air quality monitor for my parents’ flat, an AR game, a copy-trading bot at 3am during a hackathon.',
     'Most of what I know came from shipping small things badly and then fixing them. I have written the schema, the API, the frontend, the deploy config and the CSS for the same product often enough that I stopped thinking of them as separate jobs. Owning all of it is also what got me interested in why we were building any of it.',
+    'That habit of owning the whole thing is what led me to run BlueLayer Studio for the better part of two years — client sites, start to finish, my own name on the invoice. These days most of that energy goes into shipping at Accenture, and into the parts of the stack I did not expect to end up caring about, like getting agents to do real work reliably.',
     'Right now I am drawn to the parts of the web that are hard to fake: real-time systems, GPU rendering, and making things fast on a bad phone.',
   ],
   portrait: { src: '/Hero_img.jpeg', alt: 'Yash Siwach' },
@@ -63,8 +66,69 @@ export type Project = {
   image: string;
 };
 
+export type Certification = {
+  title: string;
+  issuer: string;
+  date: string;
+  skills?: string[];
+  credentialId?: string;
+};
+
+export const certifications = {
+  eyebrow: '04 / Certifications',
+  heading: 'What I went and got certified in',
+  items: [
+    {
+      title: 'Claude Certified Developer',
+      issuer: 'Anthropic',
+      date: 'Issued Aug 2026 · Expires Aug 2027',
+      skills: ['Model Context Protocol (MCP)', 'Claude Agent SDK'],
+    },
+    {
+      title: 'GitHub Foundations',
+      issuer: 'DataCamp',
+      date: 'Issued Jul 2026',
+      credentialId: '905,059',
+      skills: ['GitHub'],
+    },
+    {
+      title: 'Using MySQL Database with PHP',
+      issuer: 'Coursera',
+      date: 'Issued May 2024',
+    },
+    {
+      title: 'Clean Data in SQL using MySQL Workbench',
+      issuer: 'Coursera',
+      date: 'Issued May 2024',
+    },
+    {
+      title: 'Build a MERN Application using Next.js',
+      issuer: 'Coursera',
+      date: 'Issued May 2024',
+    },
+    {
+      title: "Angela Yu's iOS Bootcamp Course",
+      issuer: 'Udemy',
+      date: 'Issued Feb 2024',
+      skills: ['Swift', 'iOS Development'],
+    },
+    {
+      title: 'Introduction to Cyber Attacks',
+      issuer: 'New York University',
+      date: 'Issued Aug 2023',
+      skills: ['Cloud Security'],
+    },
+    {
+      title: 'Principles of UX/UI Design',
+      issuer: 'Meta',
+      date: 'Issued Apr 2023',
+      skills: ['User Experience (UX)', 'User Interface Design'],
+    },
+  ] satisfies Certification[],
+} as const;
+
 export const work = {
-  eyebrow: '04 / Work',
+  eyebrow: '05 / Work',
   heading: 'Things I shipped',
   projects: [
     {
@@ -74,7 +138,7 @@ export const work = {
       blurb:
         'Agency site with a Three.js hero and retrieval-augmented search over their case studies. Built the frontend, the retrieval layer and the deploy.',
       tech: ['Next.js', 'Three.js', 'RAG', 'TypeScript'],
-      href: 'https://www.bluelayerstudio.com',
+      href: 'https://webagency-iamyashsiwachs-projects.vercel.app',
       image: '/Screenshot (2).jpeg',
     },
     {
@@ -223,6 +287,7 @@ export const stack = {
       items: [
         { name: 'MongoDB', note: 'document stores, client projects' },
         { name: 'RAG', note: 'retrieval over case studies, Blue Layer' },
+        { name: 'Claude / Anthropic API', note: 'agent workflows — Claude Certified Developer' },
       ],
     },
     {
@@ -236,6 +301,7 @@ export const stack = {
     {
       label: 'Infra',
       items: [
+        { name: 'AWS', note: 'Accenture infra' },
         { name: 'Vercel', note: 'hosting and analytics' },
         { name: 'Git', note: 'and the CI around it' },
         { name: 'Figma', note: 'where this design started' },
@@ -245,7 +311,7 @@ export const stack = {
 } as const;
 
 export const contact = {
-  eyebrow: '05 / Contact',
+  eyebrow: '06 / Contact',
   heading: 'Let’s build something',
   line: 'Freelance work, full-time roles, or a project you cannot get anyone else to take on.',
 } as const;

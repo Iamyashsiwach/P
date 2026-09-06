@@ -16,7 +16,9 @@ import { nav, profile } from '@/app/lib/content';
 export function Nav() {
   const header = useRef<HTMLElement>(null);
   const marker = useRef<HTMLSpanElement>(null);
+  const menu = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useGSAP(
     () => {
@@ -111,11 +113,61 @@ export function Nav() {
             href={profile.resume}
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-3 border border-ink px-3 py-1.5 font-mono text-mono-label uppercase tracking-[0.18em] text-ink transition-colors hover:bg-ink hover:text-paper"
+            className="ml-3 hidden border border-ink px-3 py-1.5 font-mono text-mono-label uppercase tracking-[0.18em] text-ink transition-colors hover:bg-ink hover:text-paper sm:inline-block"
           >
             Résumé
           </a>
+
+          <button
+            type="button"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-nav"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            onClick={() => setMenuOpen(v => !v)}
+            className="relative ml-2 flex h-8 w-8 flex-col items-center justify-center gap-[5px] sm:hidden"
+          >
+            <span
+              aria-hidden="true"
+              className={`h-px w-5 bg-ink transition-transform duration-300 ${menuOpen ? 'translate-y-[3px] rotate-45' : ''}`}
+            />
+            <span
+              aria-hidden="true"
+              className={`h-px w-5 bg-ink transition-transform duration-300 ${menuOpen ? '-rotate-45' : ''}`}
+            />
+          </button>
         </nav>
+      </div>
+
+      <div
+        ref={menu}
+        className={`grid overflow-hidden border-border bg-paper/95 backdrop-blur-sm transition-[grid-template-rows] duration-300 ease-out sm:hidden ${
+          menuOpen ? 'grid-rows-[1fr] border-t' : 'grid-rows-[0fr]'
+        }`}
+      >
+        <ul id="mobile-nav" className="min-h-0 px-[clamp(1.25rem,4vw,4rem)]">
+          {nav.map(item => (
+            <li key={item.href}>
+              <a
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+                className="block py-3 font-mono text-mono-label uppercase tracking-[0.18em] text-ink-dim transition-colors hover:text-ink"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+          <li>
+            <a
+              href={profile.resume}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMenuOpen(false)}
+              className="block py-3 font-mono text-mono-label uppercase tracking-[0.18em] text-ink transition-colors hover:text-signal"
+            >
+              Résumé
+            </a>
+          </li>
+        </ul>
       </div>
     </header>
   );

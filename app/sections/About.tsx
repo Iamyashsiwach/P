@@ -25,11 +25,17 @@ export function About() {
 
         split = new SplitText(prose.current, { type: 'words' });
 
+        // GSAP's color tween parses the string itself and can't resolve a
+        // nested CSS var(), so read the actual values before handing them off.
+        const rootStyle = getComputedStyle(document.documentElement);
+        const inkMute = `hsl(${rootStyle.getPropertyValue('--ink-mute').trim()})`;
+        const ink = `hsl(${rootStyle.getPropertyValue('--ink').trim()})`;
+
         const tween = gsap.fromTo(
           split.words,
-          { color: 'hsl(var(--ink-mute))' },
+          { color: inkMute },
           {
-            color: 'hsl(var(--ink))',
+            color: ink,
             stagger: 0.6,
             ease: 'none',
             scrollTrigger: {
