@@ -42,6 +42,37 @@ export function Reveal({
   // changes, not just on mount.
   const { theme } = useTheme();
 
+  // Reduced motion forbids movement, not change. A plain opacity fade — no
+  // SplitText, no y-offset — still gives the arrival a felt moment without
+  // being a vestibular trigger, instead of the page reading as inert.
+  //
+  // Kept in its own hook, without `theme` in its dependencies: a theme
+  // toggle must not replay this fade on every Reveal-wrapped element on the
+  // page simultaneously, which is exactly the kind of sudden motion a
+  // reduced-motion visitor turned this setting on to avoid.
+  useGSAP(
+    () => {
+      if (!reduced || !scope.current) return;
+
+      const tween = gsap.fromTo(
+        scope.current,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.12,
+          delay,
+          ...(immediate
+            ? {}
+            : { scrollTrigger: { trigger: scope.current, start: START, once: true } }),
+        }
+      );
+      return () => {
+        tween.kill();
+      };
+    },
+    { scope, dependencies: [reduced, delay, immediate] }
+  );
+
   useGSAP(
     () => {
       if (reduced || !scope.current) return;

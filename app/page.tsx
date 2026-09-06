@@ -8,6 +8,8 @@ import { HUD } from './components/chrome/HUD';
 import { ScrollProgress } from './components/chrome/ScrollProgress';
 import { SmoothScroll } from './components/motion/SmoothScroll';
 import { SceneGate } from './components/webgl/SceneGate';
+import { TouchField } from './components/mobile/TouchField';
+import { TapRipple } from './components/mobile/TapRipple';
 import { CrtOverlay } from './components/theme/CrtOverlay';
 
 import { Hero } from './sections/Hero';
@@ -23,6 +25,8 @@ export default function Home() {
     <>
       <SmoothScroll />
       <SceneGate />
+      <TouchField />
+      <TapRipple />
       <ScrollProgress />
       <CrtOverlay />
       <Nav />
