@@ -87,8 +87,8 @@ export async function Proof() {
           </p>
           {stats ? (
             <p className="mt-3 font-mono text-xs text-ink-mute">
-              {stats.totalContributions.toLocaleString('en-US')} contributions in the last year ·
-              longest streak {stats.longestStreak} {stats.longestStreak === 1 ? 'day' : 'days'}
+              {stats.totalContributions.toLocaleString('en-US')} contributions · longest streak{' '}
+              {stats.longestStreak} {stats.longestStreak === 1 ? 'day' : 'days'}
             </p>
           ) : (
             <p className="mt-3 font-mono text-xs text-ink-mute">{proof.unavailable}</p>
