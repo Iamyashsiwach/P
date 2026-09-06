@@ -74,7 +74,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const toggle = useCallback(
     (origin?: HTMLElement | null) =>
-      runTransition(theme === 'paper' ? 'terminal' : 'paper', origin),
+      runTransition(theme === 'paper' ? 'blueprint' : 'paper', origin),
     [theme, runTransition]
   );
 

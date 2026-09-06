@@ -13,7 +13,7 @@ function readColor(varName: string): THREE.Color {
 
 /**
  * Re-reads --ink/--signal off the root whenever the theme changes, so
- * TraceField's colors track Hacker Mode instead of freezing at whatever was
+ * TraceField's colors track Blueprint mode instead of freezing at whatever was
  * true on first mount.
  */
 export function useThemeColors() {

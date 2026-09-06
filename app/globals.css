@@ -54,29 +54,29 @@
   }
 
   /*
-   * Hacker Mode. Every colour on this site is hsl(var(--token)) — no
-   * component hardcodes one — so this single block re-skins the entire page
-   * with zero component edits. The extra `:root` specificity over a bare
-   * attribute selector is deliberate: it must win outright, not depend on
-   * source order against the block above.
+   * Blueprint. Every colour on this site is hsl(var(--token)) — no component
+   * hardcodes one — so this single block re-skins the entire page with zero
+   * component edits. The extra `:root` specificity over a bare attribute
+   * selector is deliberate: it must win outright, not depend on source order
+   * against the block above.
    */
-  :root[data-theme='terminal'] {
-    /* Surfaces — near-black, green-tinted, never pure #000 */
-    --paper: 150 14% 5%;
-    --paper-2: 150 12% 8%;
-    --paper-3: 150 10% 12%;
+  :root[data-theme='blueprint'] {
+    /* Surfaces — deep drafting-table blue, never pure black */
+    --paper: 212 65% 15%;
+    --paper-2: 212 55% 19%;
+    --paper-3: 212 48% 24%;
 
-    /* Ink — phosphor green */
-    --ink: 140 55% 74%;
-    --ink-dim: 140 32% 54%;
-    --ink-mute: 140 18% 40%;
+    /* Ink — crisp near-white, cool-toned to match the blue */
+    --ink: 200 35% 95%;
+    --ink-dim: 205 26% 76%;
+    --ink-mute: 205 20% 58%;
 
     /* One accent, still used sparingly */
-    --signal: 88 92% 56%;
-    --steel: 190 40% 45%;
+    --signal: 190 85% 55%;
+    --steel: 205 30% 52%;
 
-    --border: 140 24% 16%;
-    --input: 140 24% 16%;
+    --border: 212 40% 34%;
+    --input: 212 40% 34%;
     --radius: 0px;
     --rule-weight: 2px;
 
@@ -162,8 +162,8 @@
  * below the sm breakpoint. Left unlayered (like the rules below) rather than
  * inside @layer utilities: Tailwind's layer order is base < components <
  * utilities, so a bare `:root` override that lived in @layer utilities would
- * always beat the `:root[data-theme='terminal']` block above regardless of
- * specificity, breaking the terminal-mode value on mobile. Unlayered rules
+ * always beat the `:root[data-theme='blueprint']` block above regardless of
+ * specificity, breaking the blueprint-mode value on mobile. Unlayered rules
  * sit after every named layer, so ordinary specificity decides between the
  * two selectors below instead.
  */
@@ -172,7 +172,7 @@
     --section-pad: clamp(3.5rem, 9vh, 6rem);
   }
 
-  :root[data-theme='terminal'] {
+  :root[data-theme='blueprint'] {
     --section-pad: clamp(1.75rem, 4vh, 2.75rem);
   }
 }
@@ -211,37 +211,20 @@ html.lenis {
 }
 
 /*
- * Hacker Mode's CRT layer: scanlines + vignette, both static gradients, plus
- * an optional stepped opacity flicker. No animated filter:blur() and no
- * animated SVG gradient here on purpose — an earlier version of this site
- * animated 51 SVG gradients at once and crashed Firefox (see README).
+ * Blueprint's grid layer: a faint graph-paper pattern, static — no
+ * animation. A technical drawing doesn't move, and this reads as calm and
+ * precise rather than an effect layered on top. No animated filter:blur()
+ * and no animated SVG gradient here regardless — an earlier version of this
+ * site animated 51 SVG gradients at once and crashed Firefox (see README).
  */
-.crt-overlay {
+.blueprint-overlay {
   background-image:
-    repeating-linear-gradient(hsl(0 0% 0% / 0.28) 0 1px, transparent 1px 3px),
-    radial-gradient(ellipse at center, transparent 55%, hsl(0 0% 0% / 0.35) 100%);
-  mix-blend-mode: multiply;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .crt-overlay {
-    animation: crt-flicker 6s steps(1) infinite;
-  }
-}
-
-@keyframes crt-flicker {
-  0%,
-  92%,
-  100% {
-    opacity: 1;
-  }
-  94% {
-    opacity: 0.96;
-  }
+    repeating-linear-gradient(0deg, hsl(0 0% 100% / 0.05) 0 1px, transparent 1px 40px),
+    repeating-linear-gradient(90deg, hsl(0 0% 100% / 0.05) 0 1px, transparent 1px 40px);
 }
 
 /*
- * The paper <-> Hacker Mode morph. ThemeProvider calls
+ * The paper <-> Blueprint morph. ThemeProvider calls
  * document.startViewTransition() and sets --vt-x/--vt-y to the toggle
  * button's centre before it does, so the new state expands from the button
  * that was pressed rather than the viewport centre.

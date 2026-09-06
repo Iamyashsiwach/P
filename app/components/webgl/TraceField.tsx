@@ -148,7 +148,7 @@ const fragmentShader = /* glsl */ `
   uniform vec3  uInk;
   uniform vec3  uSignal;
   uniform float uOpacity;
-  uniform float uCrt;
+  uniform float uBlueprint;
 
   varying float vHot;
 
@@ -163,10 +163,10 @@ const fragmentShader = /* glsl */ `
     vec3 color = mix(uInk, uSignal, vHot);
     float alpha = uOpacity * core * (0.45 + 0.55 * glow) * (0.85 + 0.35 * vHot);
 
-    // Hacker Mode: read as phosphor rather than ink — hotter core, a touch
-    // more glow reach, no second draw call or second material.
-    alpha = mix(alpha, alpha * 1.35, uCrt);
-    color = mix(color, color * 1.15, uCrt);
+    // Blueprint mode: crisper, brighter linework against the dark ground —
+    // no second draw call or second material for it.
+    alpha = mix(alpha, alpha * 1.35, uBlueprint);
+    color = mix(color, color * 1.15, uBlueprint);
 
     // Hot particles also carry a little more weight, so nodes read as denser.
     gl_FragColor = vec4(color, alpha);
@@ -223,15 +223,15 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
       uMouse: { value: new THREE.Vector3(0, 0, 0) },
       // Paper mode's actual colors, seeded directly rather than read from
       // the hook: this only ever matters for the one frame before the sync
-      // effect below runs (e.g. a hard load straight into Hacker Mode via
-      // ?theme=terminal), and keeping the hook out of this memo's deps means
+      // effect below runs (e.g. a hard load straight into Blueprint mode via
+      // ?theme=blueprint), and keeping the hook out of this memo's deps means
       // toggling the theme later never recreates the whole uniforms object
       // — which would snap uTime/uScatter/uMorph back to their initial
       // values and visibly reset the field.
       uInk: { value: new THREE.Color('#6E655C') },
       uSignal: { value: new THREE.Color('#CE3A22') },
       uOpacity: { value: 0.72 },
-      uCrt: { value: 0 },
+      uBlueprint: { value: 0 },
     }),
     [orbit, flat]
   );
@@ -245,7 +245,7 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
 
     mat.uniforms.uInk.value.copy(themeColors.ink);
     mat.uniforms.uSignal.value.copy(themeColors.signal);
-    mat.uniforms.uCrt.value = theme === 'terminal' ? 1 : 0;
+    mat.uniforms.uBlueprint.value = theme === 'blueprint' ? 1 : 0;
     invalidate();
   }, [themeColors, theme, invalidate]);
 

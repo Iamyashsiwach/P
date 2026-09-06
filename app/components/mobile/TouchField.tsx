@@ -16,6 +16,10 @@ const DAMPING = 0.94;
 const TOUCH_RADIUS = 90;
 const TOUCH_FORCE = 480;
 const FADE_ALPHA = 0.09;
+/** Toned down from the original 0.7/0.85 — at full strength the field
+ * competed with text everywhere it showed through, not just in the hero. */
+const INK_ALPHA = 0.35;
+const SIGNAL_ALPHA = 0.5;
 /** getTilt() reports roughly ±18 degrees; this scales one degree of phone
  * tilt to a wind-like force, so opting into TiltToggle turns tilting the
  * phone into stirring the field. */
@@ -101,6 +105,20 @@ export function TouchField() {
     resize();
     window.addEventListener('resize', resize);
 
+    // The desktop WebGL scene fades to 0 opacity by the time you've scrolled
+    // past the hero (Scene.tsx uses this exact formula) — this had no
+    // equivalent at all, so the field kept competing with text in every
+    // section for the whole page, not just the hero. Written straight to
+    // style so scrolling never triggers a React render.
+    let fade = 1;
+    const onScroll = () => {
+      const vh = window.innerHeight;
+      fade = 1 - Math.min(1, Math.max(0, (window.scrollY - vh * 0.55) / (vh * 0.5)));
+      canvas.style.opacity = String(fade);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
     let touch: { x: number; y: number } | null = null;
     const onPointerMove = (e: PointerEvent) => {
       touch = { x: e.clientX, y: e.clientY };
@@ -114,13 +132,17 @@ export function TouchField() {
 
     let time = 0;
     const tick = (_time: number, deltaMs: number) => {
+      // Fully scrolled past — skip the per-particle work entirely rather
+      // than paying for a canvas nobody can see.
+      if (fade <= 0.01) return;
+
       // gsap.ticker's deltaTime is milliseconds; clamp so a stalled tab
       // doesn't fling every particle across the screen on the next tick.
       const dt = Math.min(deltaMs, 48) / 1000;
       time += deltaMs;
 
-      const ink = cssVarColor('--ink-mute', 0.7);
-      const signal = cssVarColor('--signal', 0.85);
+      const ink = cssVarColor('--ink-mute', INK_ALPHA);
+      const signal = cssVarColor('--signal', SIGNAL_ALPHA);
       const tilt = getTilt();
 
       // Trail: wash a translucent paper-color rect instead of clearRect —
@@ -190,6 +212,7 @@ export function TouchField() {
     return () => {
       gsap.ticker.remove(tick);
       window.removeEventListener('resize', resize);
+      window.removeEventListener('scroll', onScroll);
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', clearTouch);
       window.removeEventListener('pointercancel', clearTouch);

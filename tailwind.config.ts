@@ -3,9 +3,9 @@ import plugin from 'tailwindcss/plugin';
 
 const config = {
   // No .dark block exists (or is planned) — this repurposes the slot for the
-  // paper/Hacker Mode toggle so any future `dark:` utility resolves the same
-  // way `crt:` does, rather than tracking two separate theme mechanisms.
-  darkMode: ['selector', '[data-theme="terminal"]'],
+  // paper/Blueprint toggle so any future `dark:` utility resolves the same
+  // way `draft:` does, rather than tracking two separate theme mechanisms.
+  darkMode: ['selector', '[data-theme="blueprint"]'],
   content: ['./app/**/*.{ts,tsx}', './lib/**/*.{ts,tsx}'],
   prefix: '',
   theme: {
@@ -105,10 +105,10 @@ const config = {
   },
   plugins: [
     require('tailwindcss-animate'),
-    // `crt:tracking-normal` etc. — reads as intent (this is a Hacker Mode
+    // `draft:tracking-normal` etc. — reads as intent (this is a Blueprint
     // override) rather than `dark:` borrowed for a mode that isn't dark mode.
     plugin(({ addVariant }) => {
-      addVariant('crt', '&:is([data-theme="terminal"] *)');
+      addVariant('draft', '&:is([data-theme="blueprint"] *)');
     }),
   ],
 } satisfies Config;

@@ -36,7 +36,7 @@ export function Reveal({
 }: RevealProps) {
   const scope = useRef<HTMLElement>(null);
   const reduced = usePrefersReducedMotion();
-  // Hacker Mode swaps the heading/body font, which changes line-wrap geometry
+  // Blueprint mode swaps the heading/body font, which changes line-wrap geometry
   // — a `by="lines"` split computed under the old font no longer matches how
   // the text would actually wrap, so re-run the split whenever the theme
   // changes, not just on mount.

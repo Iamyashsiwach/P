@@ -10,7 +10,7 @@ import { SmoothScroll } from './components/motion/SmoothScroll';
 import { SceneGate } from './components/webgl/SceneGate';
 import { TouchField } from './components/mobile/TouchField';
 import { TapRipple } from './components/mobile/TapRipple';
-import { CrtOverlay } from './components/theme/CrtOverlay';
+import { BlueprintOverlay } from './components/theme/BlueprintOverlay';
 import { TerminalProvider } from './components/terminal/TerminalProvider';
 import { TerminalMount } from './components/terminal/TerminalMount';
 import { DevTools } from './components/theme/DevTools';
@@ -31,7 +31,7 @@ export default function Home() {
       <TouchField />
       <TapRipple />
       <ScrollProgress />
-      <CrtOverlay />
+      <BlueprintOverlay />
       <Nav />
       <Cursor />
 
