@@ -110,12 +110,24 @@
 }
 
 /*
- * Smooth scroll is opt-in via Lenis, and Lenis is disabled under reduced motion.
- * Declaring it here too would fight the JS and re-enable it for users who opted out.
+ * Smooth scrolling is Lenis's job, and Lenis is disabled under reduced motion.
+ *
+ * `scroll-behavior: smooth` MUST NOT be set while Lenis is running: Lenis writes
+ * a new scroll position every frame, CSS then animates toward it, and the
+ * resulting scroll event feeds back into Lenis — the page locks up. Lenis adds
+ * the `lenis` class to <html> when active, so scope the opt-out to that.
  */
-@media (prefers-reduced-motion: no-preference) {
+html:not(.lenis) {
+  scroll-behavior: smooth;
+}
+
+html.lenis {
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto !important;
   }
 }
 

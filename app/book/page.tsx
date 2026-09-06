@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import { getBookPosts } from './lib/book-data';
 import { BookNavbar, Fireflies } from './components';
-import Navbar from '../components/Navbar';
 
 // Force dynamic rendering to ensure data updates immediately
 export const dynamic = 'force-dynamic';
@@ -14,7 +13,6 @@ export default function BookPage() {
   return (
     <div className="min-h-screen w-full bg-black flex flex-col items-center justify-center py-20 px-4">
       <Fireflies count={2} />
-      <Navbar />
       <BookNavbar />
       <div className="max-w-3xl w-full">
         {/* Minimalist Title */}
