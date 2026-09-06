@@ -21,6 +21,7 @@ import { Log } from './sections/Log';
 import { Stack } from './sections/Stack';
 import { Certifications } from './sections/Certifications';
 import { Work } from './sections/Work';
+import { Proof } from './sections/Proof';
 import { Contact } from './sections/Contact';
 
 export default function Home() {
@@ -42,6 +43,7 @@ export default function Home() {
         <Stack />
         <Certifications />
         <Work />
+        <Proof />
         <Contact />
       </main>
 
