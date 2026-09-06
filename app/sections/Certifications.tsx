@@ -20,7 +20,7 @@ export function Certifications() {
         <ol className="col-span-12 mt-16 border-t border-border">
           {certifications.items.map((cert, i) => (
             <li key={cert.title} className="border-b border-border">
-              <div className="grid grid-cols-12 items-baseline gap-4 py-8">
+              <div className="grid grid-cols-12 items-baseline gap-4 py-5 md:py-8">
                 <span
                   data-numeric
                   className="col-span-2 font-mono text-xs text-ink-mute md:col-span-1"

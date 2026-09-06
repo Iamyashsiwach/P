@@ -1,8 +1,20 @@
 'use client';
 
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
+import { useThemeColors } from './useThemeColors';
+import { useTheme } from '@/app/components/theme/ThemeProvider';
+import { FluidSim } from './gpgpu/FluidSim';
+import { hasGpgpuSupport } from './gpgpu/support';
+
+/** 96² is negligible next to the 40k-particle draw call this feeds, so a
+ * fixed resolution (rather than a PerformanceMonitor-driven decline ladder
+ * like TouchField's or Scene's dpr) is enough — the cost here was never
+ * load-bearing the way point count or dpr is. */
+const FLUID_SIZE = 96;
+const BLACK_TEXEL = new THREE.DataTexture(new Uint8Array([0, 0, 0, 255]), 1, 1);
+BLACK_TEXEL.needsUpdate = true;
 
 /*
  * A request moving through a fullstack system: Client -> Edge -> API -> Queue -> DB.
@@ -91,6 +103,9 @@ const vertexShader = /* glsl */ `
   uniform float uMorph;
   uniform float uDpr;
   uniform vec3  uMouse;
+  uniform sampler2D uFluid;
+  uniform float uFluidStrength;
+  uniform vec2  uViewport;
 
   attribute float aCurveIndex;
   attribute float aOffset;
@@ -134,6 +149,15 @@ const vertexShader = /* glsl */ `
     float d = length(toMouse);
     pos.xy += normalize(toMouse + 1e-4) * smoothstep(2.6, 0.0, d) * uMouse.z;
 
+    // GPGPU fluid layer: the same viewport mapping the sim's cursor splats
+    // use (see TraceField.tsx's uPointerUv), so a particle here and the
+    // force that dragged the field there agree on where the cursor is.
+    // uFluidStrength is 0 on any device that failed the gpgpu capability
+    // check, making this exactly a no-op rather than a branch.
+    vec2 fluidUv = pos.xy / uViewport + 0.5;
+    vec2 fluidVel = texture2D(uFluid, fluidUv).xy;
+    pos.xy += fluidVel * uFluidStrength;
+
     vec4 mv = modelViewMatrix * vec4(pos, 1.0);
     gl_PointSize = aSize * uDpr * (26.0 / max(-mv.z, 0.1));
     gl_Position = projectionMatrix * mv;
@@ -146,6 +170,7 @@ const fragmentShader = /* glsl */ `
   uniform vec3  uInk;
   uniform vec3  uSignal;
   uniform float uOpacity;
+  uniform float uBlueprint;
 
   varying float vHot;
 
@@ -158,18 +183,36 @@ const fragmentShader = /* glsl */ `
     float glow = pow(1.0 - d * 2.0, 3.0);
 
     vec3 color = mix(uInk, uSignal, vHot);
+    float alpha = uOpacity * core * (0.45 + 0.55 * glow) * (0.85 + 0.35 * vHot);
+
+    // Blueprint mode: crisper, brighter linework against the dark ground —
+    // no second draw call or second material for it.
+    alpha = mix(alpha, alpha * 1.35, uBlueprint);
+    color = mix(color, color * 1.15, uBlueprint);
+
     // Hot particles also carry a little more weight, so nodes read as denser.
-    gl_FragColor = vec4(color, uOpacity * core * (0.45 + 0.55 * glow) * (0.85 + 0.35 * vHot));
+    gl_FragColor = vec4(color, alpha);
   }
 `;
 
 // Scratch objects reused every frame — nothing is allocated inside useFrame.
 const pointer = new THREE.Vector2();
 const target = new THREE.Vector2();
+const pointerUv = new THREE.Vector2();
 
 export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<number> }) {
   const material = useRef<THREE.ShaderMaterial>(null);
-  const { viewport } = useThree();
+  const { viewport, invalidate, gl } = useThree();
+  const themeColors = useThemeColors();
+  const { theme } = useTheme();
+
+  const gpgpuCapable = useMemo(
+    () => hasGpgpuSupport(gl.getContext() as WebGL2RenderingContext),
+    [gl]
+  );
+
+  const fluid = useMemo(() => (gpgpuCapable ? new FluidSim(FLUID_SIZE) : null), [gpgpuCapable]);
+  useEffect(() => () => fluid?.dispose(), [fluid]);
 
   const orbit = useMemo(() => buildCurveTexture(NODES_ORBIT, 0.62), []);
   const flat = useMemo(() => buildCurveTexture(NODES_FLAT, 0.28), []);
@@ -209,12 +252,39 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
       uMorph: { value: 0 },
       uDpr: { value: 1 },
       uMouse: { value: new THREE.Vector3(0, 0, 0) },
+      // Paper mode's actual colors, seeded directly rather than read from
+      // the hook: this only ever matters for the one frame before the sync
+      // effect below runs (e.g. a hard load straight into Blueprint mode via
+      // ?theme=blueprint), and keeping the hook out of this memo's deps means
+      // toggling the theme later never recreates the whole uniforms object
+      // — which would snap uTime/uScatter/uMorph back to their initial
+      // values and visibly reset the field.
       uInk: { value: new THREE.Color('#6E655C') },
       uSignal: { value: new THREE.Color('#CE3A22') },
       uOpacity: { value: 0.72 },
+      uBlueprint: { value: 0 },
+      uFluid: { value: BLACK_TEXEL },
+      uFluidStrength: { value: 0 },
+      // Updated live in useFrame below (like uDpr/uMouse) rather than fixed
+      // here — window resize would otherwise leave this stale and the
+      // particle/cursor fluid-UV mapping would drift out of alignment.
+      uViewport: { value: new THREE.Vector2(1, 1) },
     }),
     [orbit, flat]
   );
+
+  // Sync colors on every theme change (and once on mount). frameloop stops
+  // past the hero, so without an explicit invalidate() a theme toggle while
+  // scrolled down would leave the canvas showing stale colors indefinitely.
+  useEffect(() => {
+    const mat = material.current;
+    if (!mat) return;
+
+    mat.uniforms.uInk.value.copy(themeColors.ink);
+    mat.uniforms.uSignal.value.copy(themeColors.signal);
+    mat.uniforms.uBlueprint.value = theme === 'blueprint' ? 1 : 0;
+    invalidate();
+  }, [themeColors, theme, invalidate]);
 
   useFrame((state, delta) => {
     const mat = material.current;
@@ -234,6 +304,19 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
     target.set((state.pointer.x * viewport.width) / 2, (state.pointer.y * viewport.height) / 2);
     pointer.lerp(target, 1 - Math.exp(-6 * delta));
     u.uMouse.value.set(pointer.x, pointer.y, 0.9);
+
+    u.uViewport.value.set(viewport.width, viewport.height);
+
+    if (fluid) {
+      // The raw (undamped) pointer, same view-space `target` used for
+      // uMouse above — the fluid sim's own advection+decay already supplies
+      // the smoothing, so what drives it should be immediate, not doubly
+      // lagged behind an already-damped value.
+      pointerUv.set(target.x / viewport.width + 0.5, target.y / viewport.height + 0.5);
+      const texture = fluid.step(state.gl, delta, pointerUv, true);
+      u.uFluid.value = texture;
+      u.uFluidStrength.value = 1;
+    }
   });
 
   // Sits up and to the right: the hero type occupies the lower left, and the

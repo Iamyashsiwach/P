@@ -1,6 +1,10 @@
 node_modules
 .next/
 
+# never commit local secrets (e.g. GITHUB_TOKEN for the contributions API)
+.env
+.env*.local
+
 # macOS
 .DS_Store
 **/.DS_Store

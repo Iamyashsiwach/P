@@ -4,6 +4,9 @@ import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { gsap, useGSAP, ScrollTrigger, Flip, ease, duration } from '@/app/lib/motion';
 import { nav, profile } from '@/app/lib/content';
+import { ThemeToggle } from '@/app/components/theme/ThemeToggle';
+import { TerminalTrigger } from '@/app/components/terminal/TerminalTrigger';
+import { blip } from '@/app/lib/audio';
 
 /**
  * Fixed header. Hides on scroll down and returns on scroll up, but is always
@@ -97,6 +100,7 @@ export function Nav() {
               href={item.href}
               data-nav-item={item.href}
               aria-current={active === item.href ? 'true' : undefined}
+              onClick={() => blip()}
               className="relative hidden px-3 py-2 font-mono text-mono-label uppercase tracking-[0.18em] text-ink-dim transition-colors hover:text-ink sm:inline-block"
             >
               {item.label}
@@ -109,10 +113,14 @@ export function Nav() {
             className="pointer-events-none absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 bg-signal opacity-0"
           />
 
+          <TerminalTrigger className="ml-3 hidden sm:inline-flex" />
+          <ThemeToggle className="ml-3 hidden sm:inline-flex" />
+
           <a
             href={profile.resume}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => blip()}
             className="ml-3 hidden border border-ink px-3 py-1.5 font-mono text-mono-label uppercase tracking-[0.18em] text-ink transition-colors hover:bg-ink hover:text-paper sm:inline-block"
           >
             Résumé
@@ -123,7 +131,10 @@ export function Nav() {
             aria-expanded={menuOpen}
             aria-controls="mobile-nav"
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            onClick={() => setMenuOpen(v => !v)}
+            onClick={() => {
+              blip();
+              setMenuOpen(v => !v);
+            }}
             className="relative ml-2 flex h-8 w-8 flex-col items-center justify-center gap-[5px] sm:hidden"
           >
             <span
@@ -149,7 +160,10 @@ export function Nav() {
             <li key={item.href}>
               <a
                 href={item.href}
-                onClick={() => setMenuOpen(false)}
+                onClick={() => {
+                  blip();
+                  setMenuOpen(false);
+                }}
                 className="block py-3 font-mono text-mono-label uppercase tracking-[0.18em] text-ink-dim transition-colors hover:text-ink"
               >
                 {item.label}
@@ -161,11 +175,21 @@ export function Nav() {
               href={profile.resume}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => setMenuOpen(false)}
+              onClick={() => {
+                blip();
+                setMenuOpen(false);
+              }}
               className="block py-3 font-mono text-mono-label uppercase tracking-[0.18em] text-ink transition-colors hover:text-signal"
             >
               Résumé
             </a>
+          </li>
+          {/* Closes the menu on either button too — previously only the
+              plain links did, leaving the panel open over whatever these
+              opened. */}
+          <li className="flex gap-3 py-3" onClick={() => setMenuOpen(false)}>
+            <TerminalTrigger />
+            <ThemeToggle />
           </li>
         </ul>
       </div>

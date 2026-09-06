@@ -1,7 +1,11 @@
 import type { Config } from 'tailwindcss';
+import plugin from 'tailwindcss/plugin';
 
 const config = {
-  darkMode: ['class'],
+  // No .dark block exists (or is planned) — this repurposes the slot for the
+  // paper/Blueprint toggle so any future `dark:` utility resolves the same
+  // way `draft:` does, rather than tracking two separate theme mechanisms.
+  darkMode: ['selector', '[data-theme="blueprint"]'],
   content: ['./app/**/*.{ts,tsx}', './lib/**/*.{ts,tsx}'],
   prefix: '',
   theme: {
@@ -14,9 +18,12 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ['var(--font-geist-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        mono: ['var(--font-geist-mono)', 'ui-monospace', 'monospace'],
-        display: ['var(--font-display)', 'ui-serif', 'Georgia', 'serif'],
+        // Indirected through --font-body/--font-heading/--font-ui (defined in
+        // globals.css) rather than the raw next/font variables, so a theme can
+        // swap the typographic voice without a config change.
+        sans: ['var(--font-body)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-ui)', 'ui-monospace', 'monospace'],
+        display: ['var(--font-heading)', 'ui-serif', 'Georgia', 'serif'],
       },
       fontSize: {
         'display-xl': ['clamp(3rem, 11vw, 9rem)', { lineHeight: '0.92', letterSpacing: '-0.04em' }],
@@ -96,7 +103,14 @@ const config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate'),
+    // `draft:tracking-normal` etc. — reads as intent (this is a Blueprint
+    // override) rather than `dark:` borrowed for a mode that isn't dark mode.
+    plugin(({ addVariant }) => {
+      addVariant('draft', '&:is([data-theme="blueprint"] *)');
+    }),
+  ],
 } satisfies Config;
 
 export default config;

@@ -55,6 +55,16 @@ export function Scene() {
           alpha: true,
           stencil: false,
         }}
+        // R3F's default event source is the div this canvas is wrapped in —
+        // which is pointer-events-none (so the scene never blocks clicks on
+        // real content beneath it), meaning that div never actually receives
+        // pointer events either. Without this, state.pointer never updates:
+        // TraceField's cursor "soft well" and the fluid layer's cursor drag
+        // both silently read a frozen (0,0). document.body still receives
+        // every pointer event on the page and R3F normalizes against the
+        // canvas's own bounding rect regardless of which element it listens
+        // on, so this is the documented fix, not a workaround.
+        eventSource={document.body}
       >
         {/* Drop resolution before dropping frames. */}
         <PerformanceMonitor

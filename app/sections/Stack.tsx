@@ -32,21 +32,23 @@ export function Stack() {
       </div>
 
       <div className="grid-shell mt-16">
-        <dl className="col-span-12 grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-5">
+        <dl className="col-span-12 grid grid-cols-2 gap-x-8 gap-y-8 md:grid-cols-5 md:gap-y-12">
           {stack.groups.map(group => (
             <div key={group.label}>
               <dt className="mono-label border-b border-border pb-3">{group.label}</dt>
               <dd>
-                <ul className="mt-4 space-y-3">
+                {/*
+                  Mobile: a wrapped row of names only — the note text ("where
+                  it was actually used") is real signal but doubles every
+                  item's height, and five groups of it stacked is most of
+                  what was making this section such a long scroll on a phone.
+                  Desktop keeps the original one-per-line list with notes.
+                */}
+                <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-2 md:block md:space-y-3">
                   {group.items.map(item => (
                     <li key={item.name} className="group">
                       <span className="font-mono text-sm text-ink">{item.name}</span>
-                      {/*
-                        Where it was actually used — evidence, not a claim.
-                        Always rendered rather than hover-only: hiding it left
-                        ragged spacing and made it unreachable on touch.
-                      */}
-                      <span className="mt-1 block max-w-[22ch] text-xs leading-snug text-ink-mute transition-colors duration-300 group-hover:text-ink-dim">
+                      <span className="mt-1 hidden max-w-[22ch] text-xs leading-snug text-ink-mute transition-colors duration-300 group-hover:text-ink-dim md:block">
                         {item.note}
                       </span>
                     </li>

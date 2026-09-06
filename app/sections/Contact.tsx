@@ -1,11 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { gsap } from '@/app/lib/motion';
 import { contact, profile } from '@/app/lib/content';
 import { SectionHeading } from '@/app/components/chrome/SectionHeading';
 import { Magnetic } from '@/app/components/motion/Magnetic';
 import { GithubMark, XMark, LinkedinMark } from '@/app/components/icons/Brand';
+import { usePrefersReducedMotion } from '@/app/hooks/usePrefersReducedMotion';
+import { blip } from '@/app/lib/audio';
 
 const marks = {
   GitHub: GithubMark,
@@ -13,13 +16,71 @@ const marks = {
   LinkedIn: LinkedinMark,
 } as const;
 
+const BURST_GLYPHS = ['·', '+', '▮', '/'];
+const BURST_COUNT = 24;
+
 export function Contact() {
   const [copied, setCopied] = useState(false);
+  const copyButtonRef = useRef<HTMLButtonElement>(null);
+  const reduced = usePrefersReducedMotion();
+
+  // A small physics burst on copy success, using Physics2DPlugin — free in
+  // GSAP's npm build, previously unregistered. Dynamically imported so its
+  // chunk is only fetched by someone who actually clicks copy, not bundled
+  // into this always-rendered section for every visitor.
+  const burst = async () => {
+    if (reduced || !copyButtonRef.current) return;
+    await import('@/app/lib/motion.heavy'); // registers Physics2DPlugin as a side effect
+
+    const rect = copyButtonRef.current.getBoundingClientRect();
+    const originX = rect.left + rect.width / 2;
+    const originY = rect.top + rect.height / 2;
+
+    const container = document.createElement('div');
+    container.setAttribute('aria-hidden', 'true');
+    Object.assign(container.style, {
+      position: 'fixed',
+      inset: '0',
+      pointerEvents: 'none',
+      zIndex: '110',
+    });
+    document.body.appendChild(container);
+
+    const glyphs: HTMLSpanElement[] = [];
+    for (let i = 0; i < BURST_COUNT; i++) {
+      const span = document.createElement('span');
+      span.textContent = BURST_GLYPHS[i % BURST_GLYPHS.length];
+      Object.assign(span.style, {
+        position: 'absolute',
+        left: `${originX}px`,
+        top: `${originY}px`,
+        color: 'hsl(var(--signal))',
+        fontFamily: 'var(--font-geist-mono)',
+        fontSize: '14px',
+      });
+      container.appendChild(span);
+      glyphs.push(span);
+    }
+
+    gsap.to(glyphs, {
+      physics2D: {
+        velocity: () => gsap.utils.random(120, 260),
+        angle: () => gsap.utils.random(0, 360),
+        gravity: 420,
+      },
+      opacity: 0,
+      duration: 0.9,
+      ease: 'power1.out',
+      onComplete: () => container.remove(),
+    });
+  };
 
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(profile.email);
       setCopied(true);
+      blip();
+      burst();
       window.setTimeout(() => setCopied(false), 1600);
     } catch {
       // Clipboard can be blocked by permissions; the mailto link still works.
@@ -45,6 +106,7 @@ export function Contact() {
 
           <div className="mt-6 flex flex-wrap items-center gap-6">
             <button
+              ref={copyButtonRef}
               type="button"
               onClick={copy}
               className="font-mono text-mono-label uppercase tracking-[0.18em] text-ink-mute transition-colors hover:text-signal"
@@ -74,6 +136,7 @@ export function Contact() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => blip()}
                       className="inline-flex items-center gap-3 font-mono text-mono-label uppercase tracking-[0.18em] text-ink transition-colors hover:text-signal"
                     >
                       <Mark width={14} height={14} />

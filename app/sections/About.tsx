@@ -6,10 +6,15 @@ import { about } from '@/app/lib/content';
 import { gsap, useGSAP, SplitText, ScrollTrigger } from '@/app/lib/motion';
 import { usePrefersReducedMotion } from '@/app/hooks/usePrefersReducedMotion';
 import { SectionHeading } from '@/app/components/chrome/SectionHeading';
+import { useTheme } from '@/app/components/theme/ThemeProvider';
 
 export function About() {
   const prose = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
+  // --ink/--ink-mute are read once below via getComputedStyle, so this tween
+  // must rebuild whenever the theme changes or it stays frozen on whichever
+  // theme's colors happened to be current at first paint.
+  const { theme } = useTheme();
 
   // Words brighten from muted to full ink as they scroll through the viewport,
   // so the paragraph reads as if it is being lit up rather than faded in.
@@ -56,7 +61,7 @@ export function About() {
         split?.revert();
       };
     },
-    { scope: prose, dependencies: [reduced] }
+    { scope: prose, dependencies: [reduced, theme] }
   );
 
   return (
@@ -66,31 +71,41 @@ export function About() {
 
         {/* The spec sheet and portrait stick as one unit — making only the list
             sticky lets the portrait scroll up over it. */}
-        <div className="col-span-12 mt-16 md:col-span-4">
-          <div className="sticky top-24">
+        <div className="col-span-12 mt-10 md:col-span-4 md:mt-16">
+          <div className="md:sticky md:top-24">
             <dl className="border-t border-border">
               {about.spec.map(row => (
-                <div key={row.term} className="border-b border-border py-4">
+                <div key={row.term} className="border-b border-border py-3 md:py-4">
                   <dt className="mono-label">{row.term}</dt>
                   <dd className="mt-2 font-mono text-sm text-ink">{row.value}</dd>
                 </div>
               ))}
             </dl>
 
-            <div className="mt-8 border border-border p-2">
+            {/* Shrunk to a small square on mobile instead of full-width — the
+                source photo is a square circular portrait, and stretched
+                across the full screen width it ran nearly as tall as the
+                viewport before you'd even reached the bio text below it.
+                Square crop on a square source is a clean scale-down with no
+                cropping; md:object-fill restores the original full-bleed
+                stretch untouched at desktop sizes. */}
+            <div className="mt-6 border border-border p-2 md:mt-8">
               <Image
                 src={about.portrait.src}
                 alt={about.portrait.alt}
                 width={720}
                 height={900}
-                sizes="(max-width: 768px) 100vw, 30vw"
-                className="w-full grayscale transition-[filter] duration-700 hover:grayscale-0"
+                sizes="(max-width: 768px) 160px, 30vw"
+                className="mx-auto h-40 w-40 object-cover grayscale transition-[filter] duration-700 hover:grayscale-0 md:h-auto md:w-full md:object-fill"
               />
             </div>
           </div>
         </div>
 
-        <div ref={prose} className="col-span-12 mt-16 space-y-6 md:col-span-7 md:col-start-6">
+        <div
+          ref={prose}
+          className="col-span-12 mt-10 space-y-6 md:col-span-7 md:col-start-6 md:mt-16"
+        >
           {about.paragraphs.map(paragraph => (
             <p key={paragraph.slice(0, 24)} className="text-body">
               {paragraph}

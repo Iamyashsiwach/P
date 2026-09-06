@@ -40,6 +40,53 @@
     --ring: var(--signal);
 
     --radius: 2px;
+
+    /* Font role variables, indirected so a theme (or a future one) can swap
+       the whole typographic voice without touching tailwind.config.ts. */
+    --font-body: var(--font-geist-sans);
+    --font-heading: var(--font-display);
+    --font-ui: var(--font-geist-mono);
+
+    /* Layout density, indirected the same way. */
+    --section-pad: clamp(4rem, 9vh, 7rem);
+    --grid-gap: clamp(1rem, 2vw, 2rem);
+    --rule-weight: 1px;
+  }
+
+  /*
+   * Blueprint. Every colour on this site is hsl(var(--token)) — no component
+   * hardcodes one — so this single block re-skins the entire page with zero
+   * component edits. The extra `:root` specificity over a bare attribute
+   * selector is deliberate: it must win outright, not depend on source order
+   * against the block above.
+   */
+  :root[data-theme='blueprint'] {
+    /* Surfaces — deep drafting-table blue, never pure black */
+    --paper: 212 65% 15%;
+    --paper-2: 212 55% 19%;
+    --paper-3: 212 48% 24%;
+
+    /* Ink — crisp near-white, cool-toned to match the blue */
+    --ink: 200 35% 95%;
+    --ink-dim: 205 26% 76%;
+    --ink-mute: 205 20% 58%;
+
+    /* One accent, still used sparingly */
+    --signal: 190 85% 55%;
+    --steel: 205 30% 52%;
+
+    --border: 212 40% 34%;
+    --input: 212 40% 34%;
+    --radius: 0px;
+    --rule-weight: 2px;
+
+    --font-body: var(--font-geist-mono);
+    --font-heading: var(--font-geist-mono);
+
+    /* ~60% denser than paper mode: this is where "minimalist but not
+       whitespace-heavy" actually happens, not by removing content. */
+    --section-pad: clamp(2.25rem, 5vh, 3.5rem);
+    --grid-gap: clamp(0.5rem, 1vw, 1rem);
   }
 
   * {
@@ -80,7 +127,7 @@
   .grid-shell {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: clamp(1rem, 2vw, 2rem);
+    gap: var(--grid-gap);
     width: 100%;
     max-width: 1440px;
     margin-inline: auto;
@@ -90,22 +137,14 @@
   /* The motif: one hairline, reused everywhere. */
   .rule {
     border: 0;
-    border-top: 1px solid hsl(var(--border));
+    border-top: var(--rule-weight) solid hsl(var(--border));
     width: 100%;
   }
 }
 
 @layer utilities {
   .section-rhythm {
-    padding-block: clamp(6rem, 14vh, 12rem);
-  }
-
-  /* On a short mobile viewport, 14vh per edge stacks into a gap that reads as
-     dead space rather than breathing room — tighten it below the sm breakpoint. */
-  @media (max-width: 639.98px) {
-    .section-rhythm {
-      padding-block: clamp(3.5rem, 9vh, 6rem);
-    }
+    padding-block: var(--section-pad);
   }
 
   .mono-label {
@@ -114,6 +153,27 @@
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: hsl(var(--ink-mute));
+  }
+}
+
+/*
+ * On a short mobile viewport, the desktop --section-pad per edge stacks into
+ * a gap that reads as dead space rather than breathing room — tighten it
+ * below the sm breakpoint. Left unlayered (like the rules below) rather than
+ * inside @layer utilities: Tailwind's layer order is base < components <
+ * utilities, so a bare `:root` override that lived in @layer utilities would
+ * always beat the `:root[data-theme='blueprint']` block above regardless of
+ * specificity, breaking the blueprint-mode value on mobile. Unlayered rules
+ * sit after every named layer, so ordinary specificity decides between the
+ * two selectors below instead.
+ */
+@media (max-width: 639.98px) {
+  :root {
+    --section-pad: clamp(2rem, 5vh, 3rem);
+  }
+
+  :root[data-theme='blueprint'] {
+    --section-pad: clamp(1.75rem, 4vh, 2.75rem);
   }
 }
 
@@ -147,5 +207,49 @@ html.lenis {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * Blueprint's grid layer: a faint graph-paper pattern, static — no
+ * animation. A technical drawing doesn't move, and this reads as calm and
+ * precise rather than an effect layered on top. No animated filter:blur()
+ * and no animated SVG gradient here regardless — an earlier version of this
+ * site animated 51 SVG gradients at once and crashed Firefox (see README).
+ */
+.blueprint-overlay {
+  background-image:
+    repeating-linear-gradient(0deg, hsl(0 0% 100% / 0.05) 0 1px, transparent 1px 40px),
+    repeating-linear-gradient(90deg, hsl(0 0% 100% / 0.05) 0 1px, transparent 1px 40px);
+}
+
+/*
+ * The paper <-> Blueprint morph. ThemeProvider calls
+ * document.startViewTransition() and sets --vt-x/--vt-y to the toggle
+ * button's centre before it does, so the new state expands from the button
+ * that was pressed rather than the viewport centre.
+ *
+ * The default cross-fade is replaced with an expanding circle on the
+ * incoming state; the outgoing state holds still underneath it instead of
+ * fading, so it reads as the new theme sweeping over the old one.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: none;
+  }
+
+  ::view-transition-new(root) {
+    /* Same curve as ease.out in app/lib/motion.ts (0.16, 1, 0.3, 1), so the
+       morph feels like the same object as everything else that arrives. */
+    animation: theme-reveal 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes theme-reveal {
+    from {
+      clip-path: circle(0% at var(--vt-x, 50%) var(--vt-y, 50%));
+    }
+    to {
+      clip-path: circle(150% at var(--vt-x, 50%) var(--vt-y, 50%));
+    }
   }
 }

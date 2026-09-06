@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import Lenis from 'lenis';
 import { gsap, ScrollTrigger } from '@/app/lib/motion';
 import { usePrefersReducedMotion } from '@/app/hooks/usePrefersReducedMotion';
+import { setLenis, SCROLL_OFFSET } from '@/app/lib/lenis';
 
 /**
  * Lenis driven by gsap.ticker rather than its own rAF, so the entire site runs
@@ -20,6 +21,7 @@ export function SmoothScroll() {
     if (reduced) return;
 
     const lenis = new Lenis({ duration: 1.05, smoothWheel: true });
+    setLenis(lenis);
 
     lenis.on('scroll', ScrollTrigger.update);
 
@@ -37,7 +39,7 @@ export function SmoothScroll() {
       if (!target) return;
 
       event.preventDefault();
-      lenis.scrollTo(target as HTMLElement, { offset: -80 });
+      lenis.scrollTo(target as HTMLElement, { offset: SCROLL_OFFSET });
     };
 
     document.addEventListener('click', onClick);
@@ -47,6 +49,7 @@ export function SmoothScroll() {
       gsap.ticker.remove(tick);
       gsap.ticker.lagSmoothing(500, 33);
       lenis.destroy();
+      setLenis(null);
     };
   }, [reduced]);
 

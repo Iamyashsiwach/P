@@ -8,6 +8,12 @@ import { HUD } from './components/chrome/HUD';
 import { ScrollProgress } from './components/chrome/ScrollProgress';
 import { SmoothScroll } from './components/motion/SmoothScroll';
 import { SceneGate } from './components/webgl/SceneGate';
+import { TouchField } from './components/mobile/TouchField';
+import { TapRipple } from './components/mobile/TapRipple';
+import { BlueprintOverlay } from './components/theme/BlueprintOverlay';
+import { TerminalProvider } from './components/terminal/TerminalProvider';
+import { TerminalMount } from './components/terminal/TerminalMount';
+import { DevTools } from './components/theme/DevTools';
 
 import { Hero } from './sections/Hero';
 import { About } from './sections/About';
@@ -19,10 +25,13 @@ import { Contact } from './sections/Contact';
 
 export default function Home() {
   return (
-    <>
+    <TerminalProvider>
       <SmoothScroll />
       <SceneGate />
+      <TouchField />
+      <TapRipple />
       <ScrollProgress />
+      <BlueprintOverlay />
       <Nav />
       <Cursor />
 
@@ -37,8 +46,10 @@ export default function Home() {
       </main>
 
       <HUD sections={sectionIds} />
+      <TerminalMount />
+      <DevTools />
       <SpeedInsights />
       <Analytics />
-    </>
+    </TerminalProvider>
   );
 }
