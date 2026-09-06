@@ -326,8 +326,7 @@ export const proof = {
   /** The plain-language framing a non-technical visitor needs: the sentence
    * has to make the point on its own, with the calendar grid as backup, not
    * the other way round. Filled in with the real count at render time. */
-  captionTemplate: (activeDays: number) =>
-    `${activeDays} days I showed up and shipped something in the last year.`,
+  captionTemplate: (activeDays: number) => `${activeDays} days I showed up and shipped something.`,
   unavailable:
     'Live activity feed unavailable right now — everything else on this page is still real, this one just did not load.',
 } as const;

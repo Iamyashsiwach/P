@@ -14,10 +14,15 @@ const GITHUB_LOGIN = (() => {
   return match?.[1] ?? 'iamyashsiwach';
 })();
 
+/** Fixed to calendar-year 2025 rather than the API's default rolling
+ * 365-day window — a deliberate choice, not shown anywhere in the UI copy. */
+const RANGE_FROM = '2025-01-01T00:00:00Z';
+const RANGE_TO = '2026-01-01T00:00:00Z';
+
 const QUERY = /* GraphQL */ `
-  query ($login: String!) {
+  query ($login: String!, $from: DateTime!, $to: DateTime!) {
     user(login: $login) {
-      contributionsCollection {
+      contributionsCollection(from: $from, to: $to) {
         contributionCalendar {
           totalContributions
           weeks {
@@ -75,7 +80,10 @@ export async function getGithub(): Promise<GithubResult> {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ query: QUERY, variables: { login: GITHUB_LOGIN } }),
+      body: JSON.stringify({
+        query: QUERY,
+        variables: { login: GITHUB_LOGIN, from: RANGE_FROM, to: RANGE_TO },
+      }),
       next: { revalidate: 3600 },
     });
 
