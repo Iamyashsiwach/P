@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [],
+    formats: ['image/avif', 'image/webp'],
   },
   async redirects() {
     return [
@@ -22,10 +22,6 @@ const nextConfig = {
         permanent: true,
       },
     ];
-  },
-  // Make sure static assets like favicon are properly handled
-  webpack(config) {
-    return config;
   },
 };
 

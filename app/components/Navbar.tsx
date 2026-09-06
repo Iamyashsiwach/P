@@ -2,13 +2,11 @@
 import React from 'react';
 import { FloatingNav } from './ui/floating-navbar';
 import {
-  IconHome,
-  IconUser,
-  IconFolder,
-  IconMessage,
-  IconBook2,
-  IconList,
-} from '@tabler/icons-react';
+  Home as IconHome,
+  User as IconUser,
+  Folder as IconFolder,
+  MessageSquare as IconMessage,
+} from 'lucide-react';
 
 export function Navbar({ showBookNav = false }: { showBookNav?: boolean }) {
   const navItems = [
@@ -50,7 +48,7 @@ export function Navbar({ showBookNav = false }: { showBookNav?: boolean }) {
     : undefined;
 
   return (
-    <nav role="navigation" className="fixed top-0 left-0 w-full bg-white shadow-lg z-50">
+    <nav role="navigation" className="fixed top-0 left-0 w-full z-50">
       <FloatingNav navItems={navItems} bookNavItems={bookNavItems} />
     </nav>
   );

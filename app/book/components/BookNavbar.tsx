@@ -1,19 +1,19 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import { IconBook2, IconHome } from '@tabler/icons-react';
+import { BookOpen, Home } from 'lucide-react';
 
 export function BookNavbar() {
   const bookNavItems = [
     {
       name: 'All Chapters',
       link: '/book',
-      icon: <IconBook2 className="h-4 w-4" />,
+      icon: <BookOpen className="h-4 w-4" />,
     },
     {
       name: 'Portfolio',
       link: '/',
-      icon: <IconHome className="h-4 w-4" />,
+      icon: <Home className="h-4 w-4" />,
     },
   ];
 

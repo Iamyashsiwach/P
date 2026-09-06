@@ -1,9 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { WavyBackground } from '../components/ui/wavy-background';
-import { HiOutlineMail, HiOutlinePhone, HiOutlineMap } from 'react-icons/hi';
-import { FaTwitter, FaLinkedin, FaGithub } from 'react-icons/fa';
-import { IconBook2 } from '@tabler/icons-react';
+import { Mail, Phone, MapPin, BookOpen } from 'lucide-react';
+import { GithubMark, XMark, LinkedinMark } from '../components/icons/Brand';
 
 export function Footer() {
   return (
@@ -26,25 +25,25 @@ export function Footer() {
         {/* Contact Details */}
         <div className="flex flex-col md:flex-row items-center justify-center md:space-x-8 space-y-4 md:space-y-0">
           <div className="text-center flex items-center space-x-2">
-            <HiOutlineMail className="h-6 w-6 text-blue-400" />
+            <Mail className="h-6 w-6 text-blue-400" />
             <a
-              href="mailto:example@example.com"
+              href="mailto:me@yashsiwach.in"
               className="text-sm md:text-base text-blue-400 hover:underline"
             >
               me@yashsiwach.in
             </a>
           </div>
           <div className="text-center flex items-center space-x-2">
-            <HiOutlinePhone className="h-6 w-6 text-blue-400" />
+            <Phone className="h-6 w-6 text-blue-400" />
             <a
-              href="tel:+1234567890"
+              href="tel:+917206099609"
               className="text-sm md:text-base text-blue-400 hover:underline"
             >
               +91 7206099609
             </a>
           </div>
           <div className="text-center flex items-center space-x-2">
-            <HiOutlineMap className="h-6 w-6 text-blue-400" />
+            <MapPin className="h-6 w-6 text-blue-400" />
             <p className="text-sm md:text-base">Gurugram, Haryana, India</p>
           </div>
         </div>
@@ -57,7 +56,7 @@ export function Footer() {
             rel="noopener noreferrer"
             className="text-2xl text-white hover:text-blue-400"
           >
-            <FaTwitter />
+            <XMark />
           </a>
           <a
             href="https://linkedin.com/in/yash-siwach"
@@ -65,7 +64,7 @@ export function Footer() {
             rel="noopener noreferrer"
             className="text-2xl text-white hover:text-blue-400"
           >
-            <FaLinkedin />
+            <LinkedinMark />
           </a>
           <a
             href="https://github.com/iamyashsiwach"
@@ -73,7 +72,7 @@ export function Footer() {
             rel="noopener noreferrer"
             className="text-2xl text-white hover:text-blue-400"
           >
-            <FaGithub />
+            <GithubMark />
           </a>
         </div>
 
@@ -81,7 +80,7 @@ export function Footer() {
         <div className="mt-4">
           <Link href="/book">
             <div className="group inline-flex items-center gap-2 px-4 py-2 border border-gray-600/30 rounded-full hover:border-blue-400/50 transition-all duration-300">
-              <IconBook2 className="h-4 w-4 text-gray-400 group-hover:text-blue-400 transition-colors" />
+              <BookOpen className="h-4 w-4 text-gray-400 group-hover:text-blue-400 transition-colors" />
               <span className="text-sm text-gray-400 group-hover:text-blue-400 transition-colors font-serif">
                 📖 Reading my life story?
               </span>

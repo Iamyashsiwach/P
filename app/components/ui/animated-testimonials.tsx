@@ -1,5 +1,5 @@
 'use client';
-import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
+import { ArrowLeft as IconArrowLeft, ArrowRight as IconArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect, useState, useCallback } from 'react';

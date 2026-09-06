@@ -1,51 +1,43 @@
 import type { Metadata, Viewport } from 'next';
 import { ReactNode } from 'react';
-// import localFont from "next/font/local";
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
+import { Instrument_Serif } from 'next/font/google';
 import './globals.css';
-import React from 'react';
 
-// const geistSans = localFont({
-//   src: "./fonts/GeistVF.woff",
-//   variable: "--font-geist-sans",
-//   weight: "100 900",
-// });
-// const geistMono = localFont({
-//   src: "./fonts/GeistMonoVF.woff",
-//   variable: "--font-geist-mono",
-//   weight: "100 900",
-// });
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-display',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://yashsiwach.in'),
-  title: 'Yash Siwach - Profile',
-  description: "Welcome to Yash Siwach's Profile. Explore my projects, skills, and achievements.",
-  keywords:
-    'Yash Siwach, Profile, web developer, UI/UX designer, project manager, full stack developer, AI developer, DevOps & MLops Engineer',
+  title: {
+    default: 'Yash Siwach — Fullstack Engineer',
+    template: '%s — Yash Siwach',
+  },
+  description:
+    'Fullstack engineer in Gurugram. I build web products end to end — Next.js, TypeScript, Postgres, Three.js. Some of what I have shipped is here.',
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
-    title: 'Yash Siwach - Profile',
-    description: 'Explore the Profile of Yash Siwach, a skilled web developer and Product Manager.',
+    title: 'Yash Siwach — Fullstack Engineer',
+    description:
+      'Fullstack engineer in Gurugram. I build web products end to end — Next.js, TypeScript, Postgres, Three.js.',
     url: 'https://yashsiwach.in',
     siteName: 'Yash Siwach',
-    images: [
-      {
-        url: '/Hero_img.jpeg',
-        width: 800,
-        height: 600,
-        alt: 'Yash Siwach Profile',
-      },
-    ],
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Yash Siwach - Profile',
-    description: 'Explore the Profile of Yash Siwach, a skilled web developer and UI/UX designer.',
-    images: [
-      {
-        url: '/Hero_img.jpeg',
-      },
-    ],
+    title: 'Yash Siwach — Fullstack Engineer',
+    description:
+      'Fullstack engineer in Gurugram. I build web products end to end — Next.js, TypeScript, Postgres, Three.js.',
   },
   icons: {
     icon: [
@@ -58,60 +50,49 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#000000',
+  themeColor: '#FAF8F4',
 };
 
-// Add structured data script
-const StructuredData = () => (
-  <script type="application/ld+json">
-    {JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'WebSite',
-      name: 'Yash Siwach - Portfolio',
-      url: 'https://yashsiwach.in',
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: 'https://yashsiwach.in/?s={search_term_string}',
-        'query-input': 'required name=search_term_string',
-      },
-    })}
-  </script>
-);
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Yash Siwach',
+  url: 'https://yashsiwach.in',
+  jobTitle: 'Software Engineer',
+  sameAs: [
+    'https://twitter.com/iamyashsiwach',
+    'https://linkedin.com/in/yash-siwach',
+    'https://github.com/iamyashsiwach',
+  ],
+  knowsAbout: [
+    'Full-stack web development',
+    'TypeScript',
+    'Next.js',
+    'Three.js',
+    'WebGL',
+    'Product management',
+  ],
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Gurugram',
+    addressRegion: 'Haryana',
+    addressCountry: 'IN',
+  },
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${GeistSans.variable} ${GeistMono.variable} ${instrumentSerif.variable}`}
+    >
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://yashsiwach.in" />
-        <link rel="icon" href="/icon.png" type="image/png" />
-        <link rel="alternate icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/icon.png" />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'Person',
-            name: 'Yash Siwach',
-            url: 'https://yashsiwach.in',
-            sameAs: [
-              'https://yashsiwach.in',
-              'https://twitter.com/iamyashsiwach',
-              'https://linkedin.com/in/yash-siwach',
-              'https://github.com/iamyashsiwach',
-            ],
-            jobTitle: 'Product Manager & full stack Developer',
-            worksFor: {
-              '@type': 'Organization',
-              name: 'Freelancer',
-            },
-          })}
-        </script>
-        <StructuredData />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
       </head>
-      <body className="bg-background text-foreground">
-        <React.StrictMode>{children}</React.StrictMode>
-      </body>
+      <body className="bg-background text-foreground font-sans">{children}</body>
     </html>
   );
 }
