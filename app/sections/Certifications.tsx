@@ -20,7 +20,7 @@ export function Certifications() {
         <ol className="col-span-12 mt-16 border-t border-border">
           {certifications.items.map((cert, i) => (
             <li key={cert.title} className="border-b border-border">
-              <div className="grid grid-cols-12 items-baseline gap-4 py-5 md:py-8">
+              <div className="grid grid-cols-12 items-baseline gap-4 py-4 md:py-6">
                 <span
                   data-numeric
                   className="col-span-2 font-mono text-xs text-ink-mute md:col-span-1"
@@ -28,9 +28,14 @@ export function Certifications() {
                   {String(i + 1).padStart(2, '0')}
                 </span>
 
+                {/* Deliberately smaller than Work/Log's text-display-m — a
+                    course-completion badge shouldn't carry the same visual
+                    weight as a shipped project or a talk. Same font family
+                    for a little character, sized down so this section reads
+                    as supporting credentials, not the page's headline act. */}
                 <div className="col-span-10 md:col-span-5">
-                  <h3 className="font-display text-display-m text-ink">{cert.title}</h3>
-                  <p className="mt-2 font-mono text-xs text-ink-mute">
+                  <h3 className="font-display text-lg text-ink md:text-xl">{cert.title}</h3>
+                  <p className="mt-1 font-mono text-xs text-ink-mute">
                     {cert.issuer} · {cert.date}
                     {cert.credentialId ? ` · #${cert.credentialId}` : ''}
                   </p>
