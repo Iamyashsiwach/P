@@ -5,6 +5,16 @@ import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useThemeColors } from './useThemeColors';
 import { useTheme } from '@/app/components/theme/ThemeProvider';
+import { FluidSim } from './gpgpu/FluidSim';
+import { hasGpgpuSupport } from './gpgpu/support';
+
+/** 96² is negligible next to the 40k-particle draw call this feeds, so a
+ * fixed resolution (rather than a PerformanceMonitor-driven decline ladder
+ * like TouchField's or Scene's dpr) is enough — the cost here was never
+ * load-bearing the way point count or dpr is. */
+const FLUID_SIZE = 96;
+const BLACK_TEXEL = new THREE.DataTexture(new Uint8Array([0, 0, 0, 255]), 1, 1);
+BLACK_TEXEL.needsUpdate = true;
 
 /*
  * A request moving through a fullstack system: Client -> Edge -> API -> Queue -> DB.
@@ -93,6 +103,9 @@ const vertexShader = /* glsl */ `
   uniform float uMorph;
   uniform float uDpr;
   uniform vec3  uMouse;
+  uniform sampler2D uFluid;
+  uniform float uFluidStrength;
+  uniform vec2  uViewport;
 
   attribute float aCurveIndex;
   attribute float aOffset;
@@ -136,6 +149,15 @@ const vertexShader = /* glsl */ `
     float d = length(toMouse);
     pos.xy += normalize(toMouse + 1e-4) * smoothstep(2.6, 0.0, d) * uMouse.z;
 
+    // GPGPU fluid layer: the same viewport mapping the sim's cursor splats
+    // use (see TraceField.tsx's uPointerUv), so a particle here and the
+    // force that dragged the field there agree on where the cursor is.
+    // uFluidStrength is 0 on any device that failed the gpgpu capability
+    // check, making this exactly a no-op rather than a branch.
+    vec2 fluidUv = pos.xy / uViewport + 0.5;
+    vec2 fluidVel = texture2D(uFluid, fluidUv).xy;
+    pos.xy += fluidVel * uFluidStrength;
+
     vec4 mv = modelViewMatrix * vec4(pos, 1.0);
     gl_PointSize = aSize * uDpr * (26.0 / max(-mv.z, 0.1));
     gl_Position = projectionMatrix * mv;
@@ -176,12 +198,21 @@ const fragmentShader = /* glsl */ `
 // Scratch objects reused every frame — nothing is allocated inside useFrame.
 const pointer = new THREE.Vector2();
 const target = new THREE.Vector2();
+const pointerUv = new THREE.Vector2();
 
 export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<number> }) {
   const material = useRef<THREE.ShaderMaterial>(null);
-  const { viewport, invalidate } = useThree();
+  const { viewport, invalidate, gl } = useThree();
   const themeColors = useThemeColors();
   const { theme } = useTheme();
+
+  const gpgpuCapable = useMemo(
+    () => hasGpgpuSupport(gl.getContext() as WebGL2RenderingContext),
+    [gl]
+  );
+
+  const fluid = useMemo(() => (gpgpuCapable ? new FluidSim(FLUID_SIZE) : null), [gpgpuCapable]);
+  useEffect(() => () => fluid?.dispose(), [fluid]);
 
   const orbit = useMemo(() => buildCurveTexture(NODES_ORBIT, 0.62), []);
   const flat = useMemo(() => buildCurveTexture(NODES_FLAT, 0.28), []);
@@ -232,6 +263,12 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
       uSignal: { value: new THREE.Color('#CE3A22') },
       uOpacity: { value: 0.72 },
       uBlueprint: { value: 0 },
+      uFluid: { value: BLACK_TEXEL },
+      uFluidStrength: { value: 0 },
+      // Updated live in useFrame below (like uDpr/uMouse) rather than fixed
+      // here — window resize would otherwise leave this stale and the
+      // particle/cursor fluid-UV mapping would drift out of alignment.
+      uViewport: { value: new THREE.Vector2(1, 1) },
     }),
     [orbit, flat]
   );
@@ -267,6 +304,19 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
     target.set((state.pointer.x * viewport.width) / 2, (state.pointer.y * viewport.height) / 2);
     pointer.lerp(target, 1 - Math.exp(-6 * delta));
     u.uMouse.value.set(pointer.x, pointer.y, 0.9);
+
+    u.uViewport.value.set(viewport.width, viewport.height);
+
+    if (fluid) {
+      // The raw (undamped) pointer, same view-space `target` used for
+      // uMouse above — the fluid sim's own advection+decay already supplies
+      // the smoothing, so what drives it should be immediate, not doubly
+      // lagged behind an already-damped value.
+      pointerUv.set(target.x / viewport.width + 0.5, target.y / viewport.height + 0.5);
+      const texture = fluid.step(state.gl, delta, pointerUv, true);
+      u.uFluid.value = texture;
+      u.uFluidStrength.value = 1;
+    }
   });
 
   // Sits up and to the right: the hero type occupies the lower left, and the
