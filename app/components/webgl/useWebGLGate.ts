@@ -22,9 +22,11 @@ function hasWebGL2() {
 }
 
 /**
- * Decides whether this device gets the 3D scene at all. Everything that fails
- * here sees the static poster instead — which is a designed fallback, not a
- * degraded one.
+ * Decides whether this device gets the 3D scene at all. Everything that
+ * fails here sees nothing in its place — the hero's text and layout still
+ * work fine without it, there just isn't a fallback graphic. Environments
+ * that block WebGL2 outright (an aggressive browser privacy mode, for one)
+ * fail this gate the same as a genuinely incapable device.
  *
  * Returns false during SSR and on the first client render, so the WebGL chunk
  * is only ever requested after these checks pass.
