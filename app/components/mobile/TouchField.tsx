@@ -6,6 +6,7 @@ import { gsap } from '@/app/lib/motion';
 import { usePrefersReducedMotion } from '@/app/hooks/usePrefersReducedMotion';
 import { useWebGLGate } from '@/app/components/webgl/useWebGLGate';
 import { getTilt } from '@/app/lib/tilt';
+import { getAudioLevel } from '@/app/lib/audio';
 
 /* Tuned calmer than a first pass: the original settings (tight NOISE_SCALE,
  * fast TIME_SCALE, long FADE_ALPHA trails) produced a dense tangle of thin
@@ -36,9 +37,8 @@ const TILT_FORCE = 2.6;
  * language TraceField uses, so the two feel like one system. */
 const HOT_EVERY = 11;
 
-function cssVarColor(varName: string, alpha: number) {
-  const raw = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
-  return `hsl(${raw} / ${alpha})`;
+function readColorVar(varName: string) {
+  return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
 }
 
 /**
@@ -83,6 +83,25 @@ export function TouchField() {
     let pos = new Float32Array(0);
     let vel = new Float32Array(0);
 
+    // Cached so the hot loop below never calls getComputedStyle — it used
+    // to call it three times per frame (ink, signal, paper-trail), on
+    // exactly the devices that already failed the WebGL gate. Recomputed
+    // only when the theme actually changes.
+    let paperRaw = '';
+    let inkRaw = '';
+    let signalRaw = '';
+    const updateColorCache = () => {
+      paperRaw = readColorVar('--paper');
+      inkRaw = readColorVar('--ink-mute');
+      signalRaw = readColorVar('--signal');
+    };
+    updateColorCache();
+    const colorObserver = new MutationObserver(updateColorCache);
+    colorObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+
     const seed = () => {
       for (let i = 0; i < count; i++) {
         pos[i * 2] = Math.random() * width;
@@ -109,7 +128,7 @@ export function TouchField() {
       vel = new Float32Array(count * 2);
       seed();
 
-      ctx.fillStyle = cssVarColor('--paper', 1);
+      ctx.fillStyle = `hsl(${paperRaw} / 1)`;
       ctx.fillRect(0, 0, width, height);
     };
     resize();
@@ -151,13 +170,22 @@ export function TouchField() {
       const dt = Math.min(deltaMs, 48) / 1000;
       time += deltaMs;
 
-      const ink = cssVarColor('--ink-mute', INK_ALPHA);
-      const signal = cssVarColor('--signal', SIGNAL_ALPHA);
+      const ink = `hsl(${inkRaw} / ${INK_ALPHA})`;
+      const signal = `hsl(${signalRaw} / ${SIGNAL_ALPHA})`;
       const tilt = getTilt();
+
+      // Three cheap, bounded audio hooks: louder music means a longer trail
+      // (a lower wash alpha lets more of the past linger), a bit more
+      // drift, and a bigger hot dot. Reduced motion already keeps this
+      // field from mounting at all, so there's no conflict with that.
+      const level = getAudioLevel();
+      const trailAlpha = FADE_ALPHA * (1 - level * 0.4);
+      const drift = DRIFT * (1 + level * 0.6);
+      const hotSize = 2.6 + level * 1.4;
 
       // Trail: wash a translucent paper-color rect instead of clearRect —
       // free motion blur, no filter:blur() (see README).
-      ctx.fillStyle = cssVarColor('--paper', FADE_ALPHA);
+      ctx.fillStyle = `hsl(${paperRaw} / ${trailAlpha})`;
       ctx.fillRect(0, 0, width, height);
 
       for (let i = 0; i < count; i++) {
@@ -174,8 +202,8 @@ export function TouchField() {
         const curlY =
           -(noise(nx + CURL_EPS, ny, nz) - noise(nx - CURL_EPS, ny, nz)) / (2 * CURL_EPS);
 
-        let vx = vel[xi] + curlX * DRIFT * dt + tilt.x * TILT_FORCE * dt;
-        let vy = vel[yi] + curlY * DRIFT * dt + tilt.y * TILT_FORCE * dt;
+        let vx = vel[xi] + curlX * drift * dt + tilt.x * TILT_FORCE * dt;
+        let vy = vel[yi] + curlY * drift * dt + tilt.y * TILT_FORCE * dt;
 
         if (touch) {
           const dx = x - touch.x;
@@ -212,7 +240,7 @@ export function TouchField() {
 
         const hot = i % HOT_EVERY === 0;
         ctx.fillStyle = hot ? signal : ink;
-        const size = hot ? 2.6 : 1.8;
+        const size = hot ? hotSize : 1.8;
         ctx.fillRect(x, y, size, size);
       }
     };
@@ -221,6 +249,7 @@ export function TouchField() {
 
     return () => {
       gsap.ticker.remove(tick);
+      colorObserver.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('pointermove', onPointerMove);
