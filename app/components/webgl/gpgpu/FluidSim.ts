@@ -163,7 +163,12 @@ export class FluidSim {
       this.splatMaterial.uniforms.uPoint.value.set(point.x, point.y);
       this.splatMaterial.uniforms.uForce.value.set(force.x, force.y);
       this.renderPass(renderer, this.splatMaterial);
-      this.lastPoint = point;
+      // A copy, not the reference: TraceField reuses one mutable Vector2 for
+      // `point` across frames (see pointerUv in TraceField.tsx), so storing
+      // it directly made `lastPoint` and `point` alias the same object —
+      // the computed force was always {0,0} and this layer has been inert
+      // since it shipped.
+      this.lastPoint = { x: point.x, y: point.y };
     } else {
       this.lastPoint = null;
     }

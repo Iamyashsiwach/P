@@ -7,6 +7,7 @@ import { useThemeColors } from './useThemeColors';
 import { useTheme } from '@/app/components/theme/ThemeProvider';
 import { FluidSim } from './gpgpu/FluidSim';
 import { hasGpgpuSupport } from './gpgpu/support';
+import { getAudioLevel } from '@/app/lib/audio';
 
 /** 96² is negligible next to the 40k-particle draw call this feeds, so a
  * fixed resolution (rather than a PerformanceMonitor-driven decline ladder
@@ -49,6 +50,15 @@ const NODES_FLAT: [number, number, number][] = [
 const CURVES_PER_LINK = 4;
 const SAMPLES = 256;
 const COUNT = 40000;
+
+// Sits up and to the right: the hero type occupies the lower left, and the
+// diagram has to stay off it. Shared with the fluid-UV mapping below (as
+// uMeshOffset) rather than duplicated as a second magic number — the sim's
+// cursor splats are computed in world/view space, but a particle's `pos` in
+// the vertex shader is still local/object space until this offset is added,
+// so the two were sampling the fluid texture at different places for the
+// same physical point on screen.
+const MESH_OFFSET: [number, number, number] = [1.5, 1.3, 0];
 
 function buildCurveTexture(nodes: [number, number, number][], spread: number) {
   const links = nodes.length - 1;
@@ -106,6 +116,15 @@ const vertexShader = /* glsl */ `
   uniform sampler2D uFluid;
   uniform float uFluidStrength;
   uniform vec2  uViewport;
+  uniform vec2  uMeshOffset;
+  // mediump, explicitly: the fragment shader below sets
+  // "precision mediump float" and a uniform shared between both stages has
+  // to agree on precision or WebGL refuses to link the program (the error
+  // this shipped with: "Precisions of uniform 'uAudio' differ between
+  // VERTEX and FRAGMENT shaders"). uAudioPulse is vertex-only, so it isn't
+  // at risk the same way, but pinned too for consistency.
+  uniform mediump float uAudio;
+  uniform mediump float uAudioPulse;
 
   attribute float aCurveIndex;
   attribute float aOffset;
@@ -124,6 +143,12 @@ const vertexShader = /* glsl */ `
     float rate = 0.05 + aSeed * 0.06;
     float u = fract(aOffset + uTime * rate);
 
+    // A struck bell nudges packets forward along their curve — additive on
+    // top of the base position, never folded into rate itself: with a
+    // large uTime, even a tiny change to rate would make every particle
+    // teleport rather than nudge.
+    u = fract(u + uAudioPulse * 0.02);
+
     vec3 pos = sampleCurve(u, aCurveIndex);
 
     /*
@@ -134,7 +159,7 @@ const vertexShader = /* glsl */ `
      * ink with hotspots at the nodes rather than a wall of red.
      */
     float atNode = 1.0 - smoothstep(0.0, 0.18, min(u, 1.0 - u));
-    vHot = clamp(smoothstep(0.82, 1.0, aSeed) * 0.30 + atNode * 0.85, 0.0, 1.0);
+    vHot = clamp(smoothstep(0.82, 1.0, aSeed) * 0.30 + atNode * 0.85 + uAudioPulse * 0.15, 0.0, 1.0);
 
     // Idle state: a diffuse drifting cloud that condenses onto the curves.
     vec3 flow = vec3(
@@ -142,7 +167,11 @@ const vertexShader = /* glsl */ `
       cos(pos.z * 1.1 - uTime * 0.25 + aSeed * 4.19),
       sin(pos.x * 1.7 + uTime * 0.20 + aSeed * 2.71)
     );
-    pos += flow * uScatter * (1.4 + aSeed * 2.2);
+    // uScatter itself damps to ~0 within ~2.2s of load — the safest place to
+    // fold audio in, since that machinery is already tuned to look good and
+    // is otherwise dead afterward. Capped well under the intro's 1.0 so the
+    // field can never look like the load-in exploding again.
+    pos += flow * (uScatter + uAudio * 0.26) * (1.4 + aSeed * 2.2);
 
     // Pointer pushes a soft well through the field.
     vec2 toMouse = pos.xy - uMouse.xy;
@@ -153,13 +182,17 @@ const vertexShader = /* glsl */ `
     // use (see TraceField.tsx's uPointerUv), so a particle here and the
     // force that dragged the field there agree on where the cursor is.
     // uFluidStrength is 0 on any device that failed the gpgpu capability
-    // check, making this exactly a no-op rather than a branch.
-    vec2 fluidUv = pos.xy / uViewport + 0.5;
+    // check, making this exactly a no-op rather than a branch. pos is
+    // still object-space here (pre-modelViewMatrix), so the mesh's own
+    // position offset has to be added before mapping into the same
+    // world-space UV the pointer uses — without it the two were sampling
+    // the fluid texture at different places for the same point on screen.
+    vec2 fluidUv = (pos.xy + uMeshOffset) / uViewport + 0.5;
     vec2 fluidVel = texture2D(uFluid, fluidUv).xy;
     pos.xy += fluidVel * uFluidStrength;
 
     vec4 mv = modelViewMatrix * vec4(pos, 1.0);
-    gl_PointSize = aSize * uDpr * (26.0 / max(-mv.z, 0.1));
+    gl_PointSize = aSize * uDpr * (26.0 / max(-mv.z, 0.1)) * (1.0 + uAudio * 0.15);
     gl_Position = projectionMatrix * mv;
   }
 `;
@@ -171,6 +204,7 @@ const fragmentShader = /* glsl */ `
   uniform vec3  uSignal;
   uniform float uOpacity;
   uniform float uBlueprint;
+  uniform float uAudio;
 
   varying float vHot;
 
@@ -184,6 +218,10 @@ const fragmentShader = /* glsl */ `
 
     vec3 color = mix(uInk, uSignal, vHot);
     float alpha = uOpacity * core * (0.45 + 0.55 * glow) * (0.85 + 0.35 * vHot);
+    // Never uOpacity itself — that multiplies every particle equally, so
+    // the whole field would flicker in unison and read as a rendering
+    // fault rather than something breathing.
+    alpha *= 1.0 + uAudio * 0.12;
 
     // Blueprint mode: crisper, brighter linework against the dark ground —
     // no second draw call or second material for it.
@@ -202,6 +240,11 @@ const pointerUv = new THREE.Vector2();
 
 export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<number> }) {
   const material = useRef<THREE.ShaderMaterial>(null);
+  // Onset energy (uAudioPulse) is derived here, not read off the analyser
+  // directly: it's how much louder this frame is than the last, decaying
+  // afterward — a struck bell should feel struck, not just raise a level.
+  const audioPulse = useRef(0);
+  const lastAudioLevel = useRef(0);
   const { viewport, invalidate, gl } = useThree();
   const themeColors = useThemeColors();
   const { theme } = useTheme();
@@ -269,6 +312,13 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
       // here — window resize would otherwise leave this stale and the
       // particle/cursor fluid-UV mapping would drift out of alignment.
       uViewport: { value: new THREE.Vector2(1, 1) },
+      uMeshOffset: { value: new THREE.Vector2(MESH_OFFSET[0], MESH_OFFSET[1]) },
+      // Written every frame in useFrame below, same as uTime — kept out of
+      // this memo's deps for the same reason theme colors are: recreating
+      // the uniforms object on a dependency change would snap these (and
+      // uTime/uScatter/uMorph alongside them) back to zero.
+      uAudio: { value: 0 },
+      uAudioPulse: { value: 0 },
     }),
     [orbit, flat]
   );
@@ -307,6 +357,13 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
 
     u.uViewport.value.set(viewport.width, viewport.height);
 
+    const level = getAudioLevel();
+    u.uAudio.value = level;
+    const rise = Math.max(0, level - lastAudioLevel.current);
+    audioPulse.current = Math.max(audioPulse.current * 0.9, rise * 6);
+    u.uAudioPulse.value = audioPulse.current;
+    lastAudioLevel.current = level;
+
     if (fluid) {
       // The raw (undamped) pointer, same view-space `target` used for
       // uMouse above — the fluid sim's own advection+decay already supplies
@@ -319,10 +376,8 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
     }
   });
 
-  // Sits up and to the right: the hero type occupies the lower left, and the
-  // diagram has to stay off it.
   return (
-    <points geometry={geometry} frustumCulled={false} position={[1.5, 1.3, 0]}>
+    <points geometry={geometry} frustumCulled={false} position={MESH_OFFSET}>
       <shaderMaterial
         ref={material}
         uniforms={uniforms}
