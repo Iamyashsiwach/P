@@ -61,7 +61,7 @@ export const about = {
   paragraphs: [
     'I started building because I wanted things that did not exist yet — an air quality monitor for my parents’ flat, an AR game, a copy-trading bot at 3am during a hackathon.',
     'Most of what I know came from shipping small things badly and then fixing them. I have written the schema, the API, the frontend, the deploy config and the CSS for the same product often enough that I stopped thinking of them as separate jobs. Owning all of it is also what got me interested in why we were building any of it.',
-    'That habit of owning the whole thing is what led me to run Blue Layer Studio for the better part of two years — client sites, start to finish, my own name on the invoice. These days most of that energy goes into shipping at Accenture.',
+    'That habit of owning the whole thing is what led me to run Blue Layer Studio for the better part of two years — client sites, start to finish, my own name on the invoice, growing from just me to a team of five or six working across time zones. These days most of that energy goes into shipping at Accenture.',
     'Right now I am drawn to the parts of engineering that are hard to fake: systems and cloud architecture, the DevOps and MLOps work that keeps things running once they ship, and building with MCP and agents rather than just around them.',
   ],
   portrait: { src: '/Hero_img.jpeg', alt: 'Yash Siwach' },
