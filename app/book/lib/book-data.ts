@@ -106,44 +106,7 @@ to be continued...
   },
 ];
 
-const laterBookPosts: BookPost[] = [
-  {
-    slug: 'Ownership',
-    title: 'Ownership',
-    excerpt:
-      "What I'm actually working toward, underneath the job title — and the other thing I've been doing for nine years that nobody on this site mentions.",
-    content: `
-
-# Ownership
-
-My title right now is Associate Software Engineer at Accenture. It's a fine title. It also doesn't say much about what I actually spend my attention on, which is figuring out where I want to be pointed five years from now, and being honest that I don't fully know yet.
-
-Here's what I do know. I'm moving toward DevOps and cloud architecture, on purpose, from inside the same company. Not because the job asked me to — because it's the same instinct that made me learn the schema and the API and the frontend and the deploy config for the same product instead of staying in my lane. If you own the whole stack, eventually you notice that "the whole stack" doesn't stop at the code. It keeps going into where the thing actually runs, what happens when it falls over at 3am, who gets paged. I'd rather be the person who understands that too than the person who ships a feature and hands it off into the dark.
-
-That's the technical half. The other half is that I want to end up somewhere that blends depth with actually running things — leading, deciding, being on the hook for outcomes and not just tickets. I don't know yet if that's inside a big company, at a startup, or back to building my own thing the way I did with BlueLayer Studio for a couple of years — client sites, start to finish, my name on the invoice, nobody to blame if it broke and nobody else to thank if it worked. I'm seriously considering an MBA in the next two or three years, mostly because I keep running into the limits of learning management by just watching it happen to other people.
-
-I don't have a five-year deck. I have a direction, and a habit of taking ownership of things nobody assigned to me, and I'm betting that habit is worth more than the deck would be.
-
----
-
-## The other thing
-
-There's a part of my life this site has never mentioned, because it doesn't fit in a stack table: I've been a competitive archer for over nine years, and I'm a certified coach — national, state and district level, certified through NSNIS Patiala under the Sports Authority of India.
-
-I didn't pick engineering and archery for the same reasons, but I've noticed they train the same muscle. Nobody else can pull the string for you. You can have the best form in the room and still miss, and the only honest response to that is to go find out why and fix it yourself, not explain it away. That's ownership too, just with a bow in your hand instead of a keyboard.
-
-At some point those two parts of my life stopped being separate. My archery academy needed a way to run tournaments and track athlete training that didn't live in someone's notebook, so I built it — a tournament management and training app, from schema to shader, the same way I build anything else. It's a small thing in the scheme of a portfolio, but it's the clearest proof I have that "owning the whole stack" isn't a line I say in interviews. It's just what I do when something I care about needs building.
-
-I don't know exactly where either of these paths ends. I'm fine with that, for now.`,
-    date: '2026-01-18',
-    readTime: '4 min read',
-    tags: ['Career', 'Ownership', 'Archery', 'Vision'],
-    author: 'Yash Siwach',
-    published: true,
-  },
-];
-
-const allBookPosts = [...bookPosts, ...additionalBookPosts, ...laterBookPosts];
+const allBookPosts = [...bookPosts, ...additionalBookPosts];
 
 export function getBookPosts(): BookPost[] {
   return allBookPosts
