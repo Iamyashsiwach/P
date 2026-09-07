@@ -26,13 +26,14 @@ const config = {
         display: ['var(--font-heading)', 'ui-serif', 'Georgia', 'serif'],
       },
       fontSize: {
-        'display-xl': ['clamp(3rem, 11vw, 9rem)', { lineHeight: '0.92', letterSpacing: '-0.04em' }],
-        'display-l': ['clamp(2rem, 6vw, 4.5rem)', { lineHeight: '1.0', letterSpacing: '-0.03em' }],
-        'display-m': [
-          'clamp(1.5rem, 3.5vw, 2.5rem)',
-          { lineHeight: '1.1', letterSpacing: '-0.02em' },
-        ],
-        body: ['1.0625rem', { lineHeight: '1.65' }],
+        // Indirected through --fs-* (defined in globals.css), same pattern as
+        // fontFamily above — Blueprint overrides just these to compensate for
+        // Geist Mono reading larger than the paper-mode pairing at the same
+        // declared size, without touching section padding or grid gap.
+        'display-xl': ['var(--fs-display-xl)', { lineHeight: '0.92', letterSpacing: '-0.04em' }],
+        'display-l': ['var(--fs-display-l)', { lineHeight: '1.0', letterSpacing: '-0.03em' }],
+        'display-m': ['var(--fs-display-m)', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+        body: ['var(--fs-body)', { lineHeight: '1.65' }],
         'mono-label': ['0.6875rem', { lineHeight: '1.2', letterSpacing: '0.18em' }],
       },
       colors: {
