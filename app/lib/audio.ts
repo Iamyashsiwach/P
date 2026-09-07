@@ -15,10 +15,12 @@
  * have opposite defaults and get toggled from different places — but they
  * share one graph and one combined on-screen control (AudioToggle).
  *
- * Deliberately not persisted across page loads: a stored "on" preference
- * with no fresh gesture this session would leave the toggle reading ON
- * while nothing actually plays, which is a worse experience than just
- * asking again. Every load starts silent; enabling always takes one gesture.
+ * Music defaults to on and RadioMount tries to start it on every load with
+ * no gesture required — browsers only let that actually play once they
+ * trust this origin for audio, otherwise it stays silent until the first
+ * click/keydown (see RadioMount). Only an explicit mute is persisted
+ * (localStorage), so a visitor who turns it off stays off on future visits
+ * until they turn it back on.
  */
 
 const MIN_VOICE_GAP_MS = 40;
@@ -158,6 +160,7 @@ export function disableSound() {
  * oscillators — radio.ts subscribes to this and reacts. */
 export function enableMusic() {
   musicEnabled = true;
+  writeMusicMuted(false);
   ensureContext();
   ctx?.resume();
   musicListeners.forEach(l => l(musicEnabled));
@@ -169,23 +172,24 @@ export function disableMusic() {
   musicListeners.forEach(l => l(musicEnabled));
 }
 
-const MUSIC_SESSION_KEY = 'ys.radio';
+const MUSIC_MUTE_KEY = 'ys.radio';
 
 function writeMusicMuted(muted: boolean) {
   try {
-    if (muted) sessionStorage.setItem(MUSIC_SESSION_KEY, 'off');
-    else sessionStorage.removeItem(MUSIC_SESSION_KEY);
+    if (muted) localStorage.setItem(MUSIC_MUTE_KEY, 'off');
+    else localStorage.removeItem(MUSIC_MUTE_KEY);
   } catch {
     // Private mode / storage disabled — the in-memory state still holds for this visit.
   }
 }
 
-/** Whether the radio was explicitly muted earlier this tab session — checked
- * by RadioMount before arming its first-gesture listener, so muting as your
- * very first action on the site stays muted for the rest of the visit. */
+/** Whether a visitor has explicitly muted the radio — persisted so it stays
+ * off on future visits until they turn it back on, not just for one tab.
+ * Checked by RadioMount before arming its first-gesture listener, so muting
+ * as your very first action on the site stays muted. */
 export function isMusicMuted(): boolean {
   try {
-    return sessionStorage.getItem(MUSIC_SESSION_KEY) === 'off';
+    return localStorage.getItem(MUSIC_MUTE_KEY) === 'off';
   } catch {
     return false;
   }
