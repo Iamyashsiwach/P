@@ -14,6 +14,7 @@ import { BlueprintOverlay } from './components/theme/BlueprintOverlay';
 import { TerminalProvider } from './components/terminal/TerminalProvider';
 import { TerminalMount } from './components/terminal/TerminalMount';
 import { DevTools } from './components/theme/DevTools';
+import { RadioMount } from './components/audio/RadioMount';
 
 import { Hero } from './sections/Hero';
 import { About } from './sections/About';
@@ -48,6 +49,7 @@ export default function Home() {
       <HUD sections={sectionIds} />
       <TerminalMount />
       <DevTools />
+      <RadioMount />
       <SpeedInsights />
       <Analytics />
     </TerminalProvider>
