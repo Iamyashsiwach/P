@@ -12,7 +12,7 @@
 export const profile = {
   name: 'Yash Siwach',
   eyebrow: 'Gurugram, IN · Associate Software Engineer @ Accenture',
-  statement: 'I build web products end to end — schema to shader — and I care how they get used.',
+  statement: 'I build software end to end — schema to shader — and I care how they get used.',
   email: 'me@yashsiwach.in',
   phone: '+91 7206099609',
   phoneHref: 'tel:+917206099609',
@@ -185,7 +185,6 @@ export const work = {
       blurb:
         'District-level performance dashboard for a national rural employment scheme — bilingual (Hindi/English), built for low-literacy rural users, with automatic district detection.',
       tech: ['Next.js', 'PostgreSQL', 'Docker', 'GitHub Actions'],
-      href: 'https://mgnrega-dashboard.vercel.app',
       image: '/mgnrega-dashboard.png',
     },
     {
@@ -195,7 +194,7 @@ export const work = {
       blurb:
         'Dating app for the South African market, web and mobile. GitHub Actions deploys straight to production.',
       tech: ['Next.js', 'GitHub Actions', 'TypeScript'],
-      href: 'https://sparksync.vercel.app',
+      href: 'https://sparksync.in',
       image: '/sparksync.png',
     },
     {
@@ -312,9 +311,9 @@ export const log = {
         },
         {
           date: '2023.09',
-          title: 'Gas cylinder regulator',
+          title: 'Gas Cylinder Regulator — team hardware project, software',
           detail:
-            'A safer home gas cylinder rig — wheels so it can be moved without lifting, and an emergency shut-off valve. Built for elderly users handling cylinders alone.',
+            'A safer home gas cylinder rig — wheels so it can be moved without lifting, and an emergency shut-off valve. Built with a team; I handled the software. For elderly users handling cylinders alone.',
           image: '/2023-3.png',
         },
         {
@@ -346,7 +345,9 @@ export const stack = {
       items: [
         { name: 'TypeScript', note: 'default for anything that outlives a weekend' },
         { name: 'JavaScript', note: 'where the tooling insists' },
+        { name: 'Python', note: 'FastAPI backends, the ML pipeline — GreenBytes' },
         { name: 'C#', note: 'Unity, the AR game' },
+        { name: 'Arduino', note: 'hardware projects — air quality monitor, gas cylinder rig' },
       ],
     },
     {
@@ -355,7 +356,7 @@ export const stack = {
         { name: 'MongoDB', note: 'document stores, client projects' },
         { name: 'RAG', note: "retrieval-augmented search, Blue Layer's case studies" },
         {
-          name: 'Claude / Anthropic API',
+          name: 'Anthropic Claude SDK',
           note: 'MCP and the Claude Agent SDK — Claude Certified Developer',
         },
         {
