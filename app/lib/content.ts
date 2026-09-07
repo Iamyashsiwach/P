@@ -159,6 +159,46 @@ export const work = {
       image: '/archery-tms.png',
     },
     {
+      title: 'Tripsee',
+      year: '2026',
+      role: 'Solo build',
+      blurb:
+        'Travel discovery and booking site — browse destinations, plan a trip. Docker-containerized, served behind Nginx.',
+      tech: ['Next.js', 'Docker', 'TypeScript'],
+      href: 'https://traveltripsee.vercel.app',
+      image: '/traveltripsee.png',
+    },
+    {
+      title: 'GreenBytes',
+      year: '2025',
+      role: 'Solo build — frontend, backend and ML pipeline',
+      blurb:
+        'Crop disease detection for farmers — a photo plus a few diagnostic questions, fused through a YOLOv8 + TabNet model for a diagnosis. FastAPI backend, deployed on Azure.',
+      tech: ['Next.js', 'FastAPI', 'PyTorch', 'YOLOv8', 'Azure'],
+      href: 'https://greenbytes-ui.vercel.app',
+      image: '/greenbytes.png',
+    },
+    {
+      title: 'MGNREGA District Dashboard',
+      year: '2025',
+      role: 'Solo build',
+      blurb:
+        'District-level performance dashboard for a national rural employment scheme — bilingual (Hindi/English), built for low-literacy rural users, with automatic district detection.',
+      tech: ['Next.js', 'PostgreSQL', 'Docker', 'GitHub Actions'],
+      href: 'https://mgnrega-dashboard.vercel.app',
+      image: '/mgnrega-dashboard.png',
+    },
+    {
+      title: 'SparkSync',
+      year: '2025',
+      role: 'Solo build',
+      blurb:
+        'Dating app for the South African market, web and mobile. GitHub Actions deploys straight to production.',
+      tech: ['Next.js', 'GitHub Actions', 'TypeScript'],
+      href: 'https://sparksync.vercel.app',
+      image: '/sparksync.png',
+    },
+    {
       title: 'Blue Layer Studio',
       year: '2024',
       role: 'Design and build, solo',
