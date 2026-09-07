@@ -153,17 +153,19 @@ type GithubEvent = {
  * list, not a firehose of every micro-action. */
 function describeEvent(e: GithubEvent): ActivityItem | null {
   const full = e.repo?.name ?? '';
-  const repo = full.split('/')[1] ?? full;
   const url = `https://github.com/${full}`;
   const base = { id: e.id, url, date: e.created_at };
 
+  // The full "owner/repo" form, not just the repo half — some real repos
+  // (this site's own is one) have single-letter names, which read as a
+  // broken placeholder on their own. "owner/repo" is unambiguous either way.
   switch (e.type) {
     case 'PushEvent':
       // The public events API no longer includes a commit count or list on
       // this payload (verified against the live endpoint — payload here is
       // just push_id/ref/head/before), so this never claims a number it
       // cannot back up.
-      return { ...base, text: `Pushed to ${repo}` };
+      return { ...base, text: `Pushed to ${full}` };
     case 'PullRequestEvent': {
       const action = e.payload?.action;
       // Verified against the live endpoint: this API reports a merge as its
@@ -171,18 +173,18 @@ function describeEvent(e: GithubEvent): ActivityItem | null {
       // that's the webhook payload's shape, not this one. Handling both
       // keeps this correct if that ever changes.
       if (action === 'merged' || (action === 'closed' && e.payload?.pull_request?.merged)) {
-        return { ...base, text: `Merged a pull request in ${repo}` };
+        return { ...base, text: `Merged a pull request in ${full}` };
       }
-      if (action === 'opened') return { ...base, text: `Opened a pull request in ${repo}` };
+      if (action === 'opened') return { ...base, text: `Opened a pull request in ${full}` };
       return null;
     }
     case 'CreateEvent':
       if (e.payload?.ref_type === 'repository') {
-        return { ...base, text: `Started a new project: ${repo}` };
+        return { ...base, text: `Started a new project: ${full}` };
       }
       return null;
     case 'ReleaseEvent':
-      return { ...base, text: `Published a release in ${repo}` };
+      return { ...base, text: `Published a release in ${full}` };
     default:
       return null;
   }
