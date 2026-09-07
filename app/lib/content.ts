@@ -149,6 +149,16 @@ export const work = {
   heading: 'Things I shipped',
   projects: [
     {
+      title: 'Archery Tournament Manager',
+      year: '2026',
+      role: 'Solo build',
+      blurb:
+        'Tournament management for my archery academy — coaches register archers, judges score qualification and matches, everyone sees live rankings and field target boards.',
+      tech: ['Next.js', 'Supabase', 'TypeScript'],
+      href: 'https://archery-tms.vercel.app',
+      image: '/archery-tms.png',
+    },
+    {
       title: 'Blue Layer Studio',
       year: '2024',
       role: 'Design and build, solo',
@@ -308,6 +318,10 @@ export const stack = {
           name: 'Claude / Anthropic API',
           note: 'MCP and the Claude Agent SDK — Claude Certified Developer',
         },
+        {
+          name: 'PyTorch / YOLOv8',
+          note: 'multimodal crop-health detection — vision + tabular fusion',
+        },
       ],
     },
     {
@@ -322,8 +336,11 @@ export const stack = {
       label: 'Infra',
       items: [
         { name: 'AWS', note: 'day-to-day at Accenture' },
+        { name: 'Azure', note: 'production deployment, the crop-health project' },
+        { name: 'Docker', note: 'multi-stage builds' },
+        { name: 'Terraform', note: 'infrastructure as code' },
         { name: 'Vercel', note: 'hosting and analytics' },
-        { name: 'Git', note: 'version control' },
+        { name: 'Git / GitHub Actions', note: 'version control, CI/CD' },
         { name: 'Figma', note: 'where this design started' },
       ],
     },
