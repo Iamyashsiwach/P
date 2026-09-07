@@ -14,6 +14,7 @@ export function BlueprintOverlay() {
   return (
     <div
       aria-hidden="true"
+      data-print-hide
       className="blueprint-overlay pointer-events-none fixed inset-0 z-[85]"
     />
   );

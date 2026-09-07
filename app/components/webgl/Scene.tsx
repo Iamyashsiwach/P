@@ -44,7 +44,12 @@ export function Scene() {
   }, []);
 
   return (
-    <div ref={shell} aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10">
+    <div
+      ref={shell}
+      aria-hidden="true"
+      data-print-hide
+      className="pointer-events-none fixed inset-0 -z-10"
+    >
       <Canvas
         frameloop={active ? 'always' : 'never'}
         dpr={dpr}

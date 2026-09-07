@@ -34,6 +34,7 @@ function Heatmap({ stats }: { stats: GithubStats | null }) {
   return (
     <div
       aria-hidden="true"
+      data-print-hide
       className="grid gap-[3px] overflow-x-auto pb-2"
       style={{
         gridTemplateRows: 'repeat(7, 10px)',

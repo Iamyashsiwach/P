@@ -25,7 +25,11 @@ export function ScrollProgress() {
   }, []);
 
   return (
-    <div aria-hidden="true" className="fixed inset-x-0 top-0 z-[90] h-px bg-transparent">
+    <div
+      aria-hidden="true"
+      data-print-hide
+      className="fixed inset-x-0 top-0 z-[90] h-px bg-transparent"
+    >
       <div ref={bar} className="h-full w-full bg-signal" />
     </div>
   );

@@ -7,6 +7,7 @@ export type CommandResult =
   | { kind: 'theme'; next: 'paper' | 'blueprint' | 'toggle'; lines?: string[] }
   | { kind: 'sound'; next: 'on' | 'off' | 'toggle'; lines?: string[] }
   | { kind: 'music'; next: 'on' | 'off' | 'toggle'; lines?: string[] }
+  | { kind: 'print' }
   | { kind: 'clear' }
   | { kind: 'close'; lines?: string[] };
 
@@ -258,6 +259,12 @@ export const commands: Command[] = [
     aliases: ['unmute'],
     description: 'Turn sound on',
     run: () => ({ kind: 'sound', next: 'on', lines: ['Sound on.'] }),
+  },
+  {
+    id: 'print',
+    aliases: ['print', 'save as pdf', 'print this page', 'print resume'],
+    description: 'Print a clean, résumé-style version of this page',
+    run: () => ({ kind: 'print' }),
   },
   {
     id: 'clear',

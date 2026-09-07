@@ -50,7 +50,10 @@ export function HUD({ sections }: { sections: string[] }) {
           interactive audio toggle inside an aria-hidden subtree (an
           axe aria-hidden-focus violation, and a WCAG 1.4.2 blocker now that
           the radio can autoplay). */}
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[80] hidden justify-between px-[clamp(1.25rem,4vw,4rem)] pb-6 font-mono text-mono-label uppercase tracking-[0.18em] text-ink-mute md:flex">
+      <div
+        data-print-hide
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-[80] hidden justify-between px-[clamp(1.25rem,4vw,4rem)] pb-6 font-mono text-mono-label uppercase tracking-[0.18em] text-ink-mute md:flex"
+      >
         <span aria-hidden="true" data-numeric>
           {current} / {total} &middot; {sections[index]}
         </span>
@@ -66,6 +69,7 @@ export function HUD({ sections }: { sections: string[] }) {
       {/* Mobile had no HUD at all — the desktop readouts, plus the one
           mobile-only control (tilt) that needs a persistent home. */}
       <div
+        data-print-hide
         className="pointer-events-none fixed inset-x-0 bottom-0 z-[80] flex items-center justify-between px-[clamp(1.25rem,4vw,4rem)] font-mono text-mono-label uppercase tracking-[0.18em] text-ink-mute md:hidden"
         style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
       >
