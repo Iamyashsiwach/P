@@ -25,8 +25,8 @@ async function ensureBuffer(context: AudioContext): Promise<AudioBuffer> {
 function enterMusic(initial: boolean) {
   if (!ctx || !musicBus || !buffer) return;
   const now = ctx.currentTime;
-  const delay = initial ? 0.35 : 0.05;
-  const fadeDur = initial ? 6 : 1;
+  const delay = initial ? 0.2 : 0.05;
+  const fadeDur = initial ? 2.5 : 1;
 
   musicBus.gain.cancelScheduledValues(now);
   musicBus.gain.setValueAtTime(Math.max(musicBus.gain.value, 0.0001), now);
