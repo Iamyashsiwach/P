@@ -115,7 +115,10 @@ export function Log() {
 
           {log.years.map(group => (
             <div key={group.year} className="md:pl-10">
-              <h3 className="sticky top-20 z-10 -mx-2 bg-paper/90 px-2 py-3 font-mono text-mono-label uppercase tracking-[0.18em] text-ink backdrop-blur-sm">
+              <h3
+                data-log-year
+                className="sticky top-20 z-10 -mx-2 bg-paper/90 px-2 py-3 font-mono text-mono-label uppercase tracking-[0.18em] text-ink backdrop-blur-sm"
+              >
                 {group.year}
               </h3>
 
