@@ -86,11 +86,34 @@ export function VerticalTicker({
       el.addEventListener('focusin', pause);
       el.addEventListener('focusout', resume);
 
+      // The wrap modifier leaves each copy sitting at whatever mid-cycle
+      // translateY it last had — harmless while the CSS clip hides the
+      // other two, but the print stylesheet un-clips the container and
+      // un-hides only the one non-inert copy (the print CSS in globals.css
+      // hides [data-ticker-copy][inert]). Left alone, that surviving copy
+      // still renders at its last live scroll offset instead of at rest,
+      // overlapping whatever content sits above or below it on paper. Same
+      // fix as Reveal.tsx's SplitText revert: pause and zero the transform
+      // before print, restore it after.
+      const onBeforePrint = () => {
+        tween.pause();
+        gsap.set(copies, { y: 0 });
+        if (track) track.style.marginTop = '0px';
+      };
+      const onAfterPrint = () => {
+        if (track) track.style.marginTop = sign === 1 ? `-${cycle}px` : '';
+        tween.play();
+      };
+      window.addEventListener('beforeprint', onBeforePrint);
+      window.addEventListener('afterprint', onAfterPrint);
+
       return () => {
         el.removeEventListener('pointerenter', pause);
         el.removeEventListener('pointerleave', resume);
         el.removeEventListener('focusin', pause);
         el.removeEventListener('focusout', resume);
+        window.removeEventListener('beforeprint', onBeforePrint);
+        window.removeEventListener('afterprint', onAfterPrint);
         tween.kill();
       };
     },

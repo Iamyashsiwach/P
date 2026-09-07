@@ -88,7 +88,19 @@ export function Contact() {
   };
 
   return (
-    <footer id="contact" aria-labelledby="contact-heading" className="section-rhythm">
+    <footer
+      id="contact"
+      aria-labelledby="contact-heading"
+      className="section-rhythm"
+      // The fixed HUD bar sits over whatever's at the very bottom of the
+      // page once you've scrolled as far as you can go — normally that's
+      // empty section padding, but Blueprint's --section-pad is compressed
+      // (~36-56px) versus the HUD's own footprint, so at some viewport
+      // heights the copyright row printed underneath it instead of above
+      // it. Inline so it always wins over section-rhythm's padding-block,
+      // the same reason HUD's own mobile row sets padding-bottom inline.
+      style={{ paddingBottom: 'max(var(--section-pad), 6rem)' }}
+    >
       <div className="grid-shell">
         <SectionHeading id="contact-heading" eyebrow={contact.eyebrow} title={contact.heading} />
 

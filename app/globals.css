@@ -353,6 +353,17 @@ html.lenis {
     display: none !important;
   }
 
+  /* position:sticky has no consistent meaning across print pagination —
+     left alone this printed on top of / inside the entries below it,
+     since there's no scroll container for "sticky" to be relative to. */
+  [data-log-year] {
+    position: static !important;
+    top: auto !important;
+    z-index: auto !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+  }
+
   a {
     color: inherit;
     text-decoration: none;
