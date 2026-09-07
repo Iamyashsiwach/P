@@ -280,3 +280,94 @@ html.lenis {
     }
   }
 }
+
+/*
+ * Print / résumé mode. No component branches on "am I printing" — this is
+ * entirely a stylesheet, plus one JS lifecycle hook (Reveal.tsx's
+ * beforeprint/afterprint SplitText revert, so a section that hasn't
+ * scrolled into view yet isn't sitting at yPercent:110 on paper) and a
+ * terminal `print` command that just calls window.print().
+ *
+ * Unlayered, at the very end of the file, for the same reason the mobile
+ * --section-pad override above is: a bare `:root` override living inside
+ * any Tailwind layer would always lose to the `:root[data-theme='blueprint']`
+ * block in @layer base regardless of specificity. Unlayered rules sit after
+ * every named layer, and this is the last thing in the file, so ordinary
+ * source-order-at-equal-specificity decides — including against the mobile
+ * override above, which this needs to beat too on a printed phone.
+ */
+@media print {
+  :root,
+  :root[data-theme='blueprint'] {
+    --paper: 40 30% 97%;
+    --paper-2: 38 22% 94%;
+    --paper-3: 36 16% 90%;
+    --ink: 24 12% 10%;
+    --ink-dim: 26 8% 38%;
+    --ink-mute: 28 6% 55%;
+    --signal: 8 78% 46%;
+    --border: 32 12% 85%;
+
+    --fs-display-xl: 2rem;
+    --fs-display-l: 1.4rem;
+    --fs-display-m: 1.1rem;
+    --fs-body: 0.85rem;
+    --section-pad: 1.25rem;
+  }
+
+  @page {
+    margin: 15mm;
+  }
+
+  /* Most browsers skip background colors by default when printing — fine
+     for the page itself, but it would leave paper-colored text invisible
+     on whatever a button's now-unprinted dark background used to sit on
+     (Hero's "View work" CTA, for one). */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  /* The hero is sized to fill a viewport nobody is scrolling on paper —
+     without this, page 1 is mostly empty above the actual content. */
+  #home {
+    min-height: auto !important;
+    padding-top: 0 !important;
+  }
+
+  /* The auto-scroll tickers are a fixed-height clipped window holding three
+     stacked copies, two of them `inert` filler that only exists to cover
+     the wrap. There is no scrolling on paper, so the clip has to open and
+     the filler has to disappear, or Work and Certifications print clipped
+     to 420px and tripled. */
+  [data-ticker] {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  [data-ticker-copy][inert] {
+    display: none !important;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Genuinely useful on paper, useless on screen. */
+  #work a[href^='http']::after,
+  #contact a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.7em;
+    color: hsl(28 6% 55%);
+  }
+
+  li,
+  [data-ticker-copy] > * {
+    break-inside: avoid;
+  }
+}

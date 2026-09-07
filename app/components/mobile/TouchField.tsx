@@ -264,6 +264,7 @@ export function TouchField() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
+      data-print-hide
       className="pointer-events-none fixed inset-0 -z-10"
     />
   );

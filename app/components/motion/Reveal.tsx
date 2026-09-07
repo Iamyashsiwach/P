@@ -111,7 +111,23 @@ export function Reveal({
         ScrollTrigger.refresh();
       });
 
+      // SplitText's mask sets overflow:clip inline, and an unrevealed
+      // section sits at yPercent:110 inside it until its ScrollTrigger
+      // fires — printing without ever having scrolled past a section would
+      // print invisible headings. revert() restores the plain original
+      // text (exactly what it's for); afterprint re-splits so the on-screen
+      // reveal still works if printing happens mid-visit.
+      const onBeforePrint = () => split?.revert();
+      const onAfterPrint = () => {
+        run();
+        ScrollTrigger.refresh();
+      };
+      window.addEventListener('beforeprint', onBeforePrint);
+      window.addEventListener('afterprint', onAfterPrint);
+
       return () => {
+        window.removeEventListener('beforeprint', onBeforePrint);
+        window.removeEventListener('afterprint', onAfterPrint);
         tween?.kill();
         split?.revert();
       };

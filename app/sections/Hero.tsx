@@ -60,6 +60,7 @@ export function Hero() {
       {/* First appearance of the hairline motif. */}
       <div
         aria-hidden="true"
+        data-print-hide
         className="absolute bottom-0 left-[clamp(1.25rem,4vw,4rem)] hidden h-24 w-px bg-gradient-to-b from-transparent to-border md:block"
       />
     </section>

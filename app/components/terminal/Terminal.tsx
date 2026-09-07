@@ -122,6 +122,17 @@ export function Terminal({ onRequestClose }: { onRequestClose: () => void }) {
             disableMusic();
           }
           return;
+        case 'print':
+          // Closes first rather than relying solely on the print
+          // stylesheet's [data-print-hide] rule for this dialog — the
+          // system print dialog popping up over an open terminal reads as
+          // a glitch even though the printed output itself is already
+          // correct either way.
+          window.setTimeout(() => {
+            onRequestClose();
+            window.print();
+          }, 300);
+          return;
         case 'clear':
           setLines([]);
           return;
@@ -212,6 +223,7 @@ export function Terminal({ onRequestClose }: { onRequestClose: () => void }) {
     <div
       role="presentation"
       onClick={onRequestClose}
+      data-print-hide
       className="fixed inset-0 z-[120] flex items-start justify-center bg-ink/40 px-4 pt-[12vh] backdrop-blur-sm sm:items-center sm:pt-0"
     >
       <div

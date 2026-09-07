@@ -63,6 +63,7 @@ export function Cursor() {
     <div
       ref={dot}
       aria-hidden="true"
+      data-print-hide
       className="pointer-events-none fixed left-0 top-0 z-[100] hidden items-center justify-center rounded-full border border-ink text-[9px] uppercase tracking-[0.18em] text-ink transition-[width,height,background-color,opacity] duration-300 [@media(pointer:fine)]:flex"
       style={{
         width: size,

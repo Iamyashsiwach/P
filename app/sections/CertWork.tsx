@@ -42,6 +42,7 @@ export function CertWork() {
                       alt=""
                       width={64}
                       height={64}
+                      data-print-hide
                       className="h-14 w-14 shrink-0 border border-border object-cover"
                     />
                     <div className="min-w-0">
