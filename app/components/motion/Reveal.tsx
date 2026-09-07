@@ -14,9 +14,15 @@ type RevealProps = {
   delay?: number;
   /** Animate on mount instead of on scroll. */
   immediate?: boolean;
+  /** Grab a piece and fling it — it always springs back. Desktop only
+   * (`pointer: fine`) and off under reduced motion; makes the most sense
+   * with `by="chars"`. */
+  throwable?: boolean;
   className?: string;
   as?: 'div' | 'h1' | 'h2' | 'h3' | 'p' | 'span';
 };
+
+type DraggableInstance = { kill: () => void };
 
 /**
  * Split-text reveal. Pieces rise out of an overflow-hidden mask rather than
@@ -31,6 +37,7 @@ export function Reveal({
   stagger,
   delay = 0,
   immediate = false,
+  throwable = false,
   className,
   as: Tag = 'div',
 }: RevealProps) {
@@ -82,16 +89,68 @@ export function Reveal({
 
       let split: SplitText | null = null;
       let tween: gsap.core.Tween | null = null;
+      let draggables: DraggableInstance[] = [];
+
+      const killDraggables = () => {
+        draggables.forEach(d => d.kill());
+        draggables = [];
+      };
+
+      // Wired to the reveal tween's onComplete, not to mount: a letter
+      // can't be grabbed before it's finished arriving.
+      const enableThrow = async () => {
+        if (!split || !scope.current) return;
+        if (!window.matchMedia('(pointer: fine)').matches) return;
+
+        // SplitText's mask sets overflow:clip inline per char (verified in
+        // SplitText.js source) — a dragged letter would otherwise be
+        // clipped by its own mask the instant it moved.
+        scope.current
+          .querySelectorAll<HTMLElement>('.split-char-mask')
+          .forEach(el => (el.style.overflow = 'visible'));
+
+        // Draggable/InertiaPlugin only live in motion.heavy.ts, kept out of
+        // the shared chunk every section pays for — same pattern as
+        // Contact.tsx's copy-success burst.
+        const { Draggable } = await import('@/app/lib/motion.heavy');
+        // The import is async: theme change or print could have torn this
+        // instance down while it was in flight.
+        if (!split || !scope.current) return;
+
+        draggables = Draggable.create(split.chars, {
+          type: 'x,y',
+          inertia: true,
+          onDrag: function (this: { target: Element; deltaX: number }) {
+            gsap.set(this.target, { rotation: this.deltaX * 0.6 });
+          },
+          onThrowComplete: function (this: { target: Element }) {
+            gsap.to(this.target, {
+              x: 0,
+              y: 0,
+              rotation: 0,
+              duration: 0.9,
+              ease: 'elastic.out(1, 0.5)',
+            });
+          },
+        });
+      };
 
       // Splitting before webfonts settle measures the fallback face and breaks
       // lines in the wrong places.
       const run = () => {
         if (!scope.current) return;
+        killDraggables();
 
         split = new SplitText(scope.current, {
           type: by,
           mask: by,
           linesClass: 'overflow-hidden',
+          // Empty by default (verified in SplitText.js source) unless
+          // explicitly requested — without these, individual chars/words
+          // are anonymous divs that nothing (this feature, or print CSS)
+          // can target.
+          charsClass: 'split-char',
+          wordsClass: 'split-word',
         });
 
         tween = gsap.from(split[by], {
@@ -100,13 +159,22 @@ export function Reveal({
           ease: ease.out,
           stagger: stagger ?? defaultStagger,
           delay,
+          onComplete: throwable ? enableThrow : undefined,
           ...(immediate
             ? {}
             : { scrollTrigger: { trigger: scope.current, start: START, once: true } }),
         });
       };
 
+      // document.fonts.ready and the reduced-motion correction (a separate
+      // effect, on a separate component instance of this same hook) both
+      // resolve "soon after mount" — if reduced flips true and this effect
+      // gets cleaned up before fonts finish loading, this .then() would
+      // otherwise still fire afterward on a stale closure, creating a
+      // SplitText split that nothing left alive would ever revert.
+      let cancelled = false;
       document.fonts.ready.then(() => {
+        if (cancelled) return;
         run();
         ScrollTrigger.refresh();
       });
@@ -117,7 +185,10 @@ export function Reveal({
       // print invisible headings. revert() restores the plain original
       // text (exactly what it's for); afterprint re-splits so the on-screen
       // reveal still works if printing happens mid-visit.
-      const onBeforePrint = () => split?.revert();
+      const onBeforePrint = () => {
+        killDraggables();
+        split?.revert();
+      };
       const onAfterPrint = () => {
         run();
         ScrollTrigger.refresh();
@@ -126,8 +197,10 @@ export function Reveal({
       window.addEventListener('afterprint', onAfterPrint);
 
       return () => {
+        cancelled = true;
         window.removeEventListener('beforeprint', onBeforePrint);
         window.removeEventListener('afterprint', onAfterPrint);
+        killDraggables();
         tween?.kill();
         split?.revert();
       };
@@ -138,13 +211,18 @@ export function Reveal({
     // by default once a dependencies array is passed.
     {
       scope,
-      dependencies: [reduced, by, stagger, delay, immediate, theme],
+      dependencies: [reduced, by, stagger, delay, immediate, theme, throwable],
       revertOnUpdate: true,
     }
   );
 
   return (
-    <Tag ref={scope as React.Ref<never>} className={className}>
+    <Tag
+      ref={scope as React.Ref<never>}
+      className={className}
+      data-cursor={throwable ? 'grab' : undefined}
+      style={throwable ? { cursor: 'grab' } : undefined}
+    >
       {children}
     </Tag>
   );

@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import { gsap, useGSAP, ease } from '@/app/lib/motion';
 import { usePrefersReducedMotion } from '@/app/hooks/usePrefersReducedMotion';
 
-type CursorState = 'default' | 'link' | 'view';
+type CursorState = 'default' | 'link' | 'view' | 'grab';
 
 /**
  * Additive custom cursor. The native cursor is never hidden — this rides on top
@@ -36,6 +36,7 @@ export function Cursor() {
 
         const target = event.target as HTMLElement;
         if (target?.closest?.('[data-cursor="view"]')) setState('view');
+        else if (target?.closest?.('[data-cursor="grab"]')) setState('grab');
         else if (target?.closest?.('a, button, [role="button"]')) setState('link');
         else setState('default');
       };
@@ -55,7 +56,7 @@ export function Cursor() {
 
   if (reduced) return null;
 
-  const size = state === 'view' ? 72 : state === 'link' ? 36 : 8;
+  const size = state === 'view' ? 72 : state === 'grab' ? 44 : state === 'link' ? 36 : 8;
 
   // Centring uses negative margins rather than a translate class: GSAP owns the
   // transform property here and would overwrite it.
