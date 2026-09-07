@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { ScrollTrigger, useGSAP } from '@/app/lib/motion';
 import { TiltToggle } from '@/app/components/mobile/TiltToggle';
-import { SoundToggle } from '@/app/components/theme/SoundToggle';
+import { AudioToggle } from '@/app/components/theme/AudioToggle';
 
 const TIME_FORMAT = new Intl.DateTimeFormat('en-GB', {
   hour: '2-digit',
@@ -45,17 +45,21 @@ export function HUD({ sections }: { sections: string[] }) {
 
   return (
     <>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-x-0 bottom-0 z-[80] hidden justify-between px-[clamp(1.25rem,4vw,4rem)] pb-6 font-mono text-mono-label uppercase tracking-[0.18em] text-ink-mute md:flex"
-      >
-        <span data-numeric>
+      {/* aria-hidden lives on the individual decorative readouts, not this
+          container — it used to wrap the whole row, which put the
+          interactive audio toggle inside an aria-hidden subtree (an
+          axe aria-hidden-focus violation, and a WCAG 1.4.2 blocker now that
+          the radio can autoplay). */}
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[80] hidden justify-between px-[clamp(1.25rem,4vw,4rem)] pb-6 font-mono text-mono-label uppercase tracking-[0.18em] text-ink-mute md:flex">
+        <span aria-hidden="true" data-numeric>
           {current} / {total} &middot; {sections[index]}
         </span>
         <div className="flex items-center gap-4">
-          <SoundToggle />
+          <AudioToggle />
           {/* Rendered only after mount so server and client markup agree. */}
-          <span data-numeric>{time ? `${time} IST` : ''}</span>
+          <span aria-hidden="true" data-numeric>
+            {time ? `${time} IST` : ''}
+          </span>
         </div>
       </div>
 
@@ -69,7 +73,7 @@ export function HUD({ sections }: { sections: string[] }) {
           {current}/{total}
         </span>
         <div className="flex items-center gap-3">
-          <SoundToggle />
+          <AudioToggle />
           <TiltToggle />
         </div>
       </div>

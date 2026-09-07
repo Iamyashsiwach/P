@@ -6,6 +6,7 @@ export type CommandResult =
   | { kind: 'link'; href: string; lines?: string[] }
   | { kind: 'theme'; next: 'paper' | 'blueprint' | 'toggle'; lines?: string[] }
   | { kind: 'sound'; next: 'on' | 'off' | 'toggle'; lines?: string[] }
+  | { kind: 'music'; next: 'on' | 'off' | 'toggle'; lines?: string[] }
   | { kind: 'clear' }
   | { kind: 'close'; lines?: string[] };
 
@@ -225,6 +226,21 @@ export const commands: Command[] = [
         return { kind: 'sound', next: 'on', lines: ['Sound on.'] };
       }
       return { kind: 'sound', next: 'toggle', lines: ['Flipping sound.'] };
+    },
+  },
+  {
+    id: 'music',
+    aliases: ['music', 'music on', 'music off', 'radio'],
+    description: 'Turn the background radio on or off',
+    run: args => {
+      const a = args.trim().toLowerCase();
+      if (a === 'off' || a.includes('off')) {
+        return { kind: 'music', next: 'off', lines: ['Music off.'] };
+      }
+      if (a === 'on' || a.includes('on')) {
+        return { kind: 'music', next: 'on', lines: ['Music on.'] };
+      }
+      return { kind: 'music', next: 'toggle', lines: ['Flipping the radio.'] };
     },
   },
   // Separate entries, not aliases on `sound` above: run() only sees leftover

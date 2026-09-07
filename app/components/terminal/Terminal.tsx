@@ -4,7 +4,18 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/app/components/theme/ThemeProvider';
 import { getLenis, scrollToTarget } from '@/app/lib/lenis';
 import { resolveCommand, suggestions, type CommandResult } from '@/app/lib/commands';
-import { key, blip, thunk, enableSound, disableSound, isSoundEnabled } from '@/app/lib/audio';
+import {
+  key,
+  blip,
+  thunk,
+  enableSound,
+  disableSound,
+  isSoundEnabled,
+  enableMusic,
+  disableMusic,
+  isMusicMuted,
+} from '@/app/lib/audio';
+import { startRadio } from '@/app/lib/radio';
 
 type LogLine = { id: number; kind: 'input' | 'output'; text: string };
 
@@ -96,6 +107,20 @@ export function Terminal({ onRequestClose }: { onRequestClose: () => void }) {
           else if (result.next === 'on') enableSound();
           else if (isSoundEnabled()) disableSound();
           else enableSound();
+          return;
+        case 'music':
+          result.lines?.forEach(appendOutput);
+          if (result.next === 'off') {
+            disableMusic();
+          } else if (result.next === 'on') {
+            enableMusic();
+            startRadio();
+          } else if (isMusicMuted()) {
+            enableMusic();
+            startRadio();
+          } else {
+            disableMusic();
+          }
           return;
         case 'clear':
           setLines([]);
