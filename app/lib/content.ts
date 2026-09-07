@@ -29,23 +29,16 @@ export const nav = [
   { label: 'Who', href: '#about' },
   { label: 'Log', href: '#log' },
   { label: 'Stack', href: '#stack' },
-  { label: 'Certs', href: '#certifications' },
   { label: 'Work', href: '#work' },
+  { label: 'Certs', href: '#certifications' },
   { label: 'Proof', href: '#proof' },
   { label: 'Contact', href: '#contact' },
 ] as const;
 
-/** Section ids in document order — drives the HUD index. */
-export const sectionIds = [
-  'home',
-  'about',
-  'log',
-  'stack',
-  'certifications',
-  'work',
-  'proof',
-  'contact',
-];
+/** Section ids in document order — drives the HUD index. Certifications no
+ * longer gets its own entry: it is a column inside #work now, not a
+ * separately-scrolled section, and its bounding box mostly overlaps work's. */
+export const sectionIds = ['home', 'about', 'log', 'stack', 'work', 'proof', 'contact'];
 
 export const about = {
   eyebrow: '01 / Who',
@@ -85,7 +78,9 @@ export type Certification = {
 };
 
 export const certifications = {
-  eyebrow: '04 / Certifications',
+  // No number — this now renders as a small column label inside the merged
+  // #work section (see CertWork.tsx), not its own numbered section.
+  eyebrow: 'Certifications',
   heading: 'What I went and got certified in',
   items: [
     {
@@ -138,7 +133,7 @@ export const certifications = {
 } as const;
 
 export const work = {
-  eyebrow: '05 / Work',
+  eyebrow: '04 / Work',
   heading: 'Things I shipped',
   projects: [
     {
@@ -321,7 +316,7 @@ export const stack = {
 } as const;
 
 export const proof = {
-  eyebrow: '06 / Proof',
+  eyebrow: '05 / Proof',
   heading: 'Not just claims — the log',
   /** The plain-language framing a non-technical visitor needs: the sentence
    * has to make the point on its own, with the calendar grid as backup, not
@@ -333,7 +328,7 @@ export const proof = {
 } as const;
 
 export const contact = {
-  eyebrow: '07 / Contact',
+  eyebrow: '06 / Contact',
   heading: 'Let’s build something',
   line: 'Freelance work, full-time roles, or a project you cannot get anyone else to take on.',
 } as const;

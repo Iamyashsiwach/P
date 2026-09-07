@@ -70,7 +70,8 @@ export function Reveal({
         tween.kill();
       };
     },
-    { scope, dependencies: [reduced, delay, immediate] }
+    // revertOnUpdate: see the full-motion hook below.
+    { scope, dependencies: [reduced, delay, immediate], revertOnUpdate: true }
   );
 
   useGSAP(
@@ -115,7 +116,15 @@ export function Reveal({
         split?.revert();
       };
     },
-    { scope, dependencies: [reduced, by, stagger, delay, immediate, theme] }
+    // Without this, a SplitText/tween queued via document.fonts.ready before
+    // reduced motion's SSR-safe `false` default gets corrected can still
+    // play in full once fonts settle — @gsap/react defers cleanup to unmount
+    // by default once a dependencies array is passed.
+    {
+      scope,
+      dependencies: [reduced, by, stagger, delay, immediate, theme],
+      revertOnUpdate: true,
+    }
   );
 
   return (
