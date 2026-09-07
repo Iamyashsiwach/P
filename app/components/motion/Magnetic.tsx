@@ -65,7 +65,11 @@ export function Magnetic({ children, strength = 18, className }: MagneticProps) 
         el.removeEventListener('pointerleave', onLeave);
       };
     },
-    { scope: shell, dependencies: [reduced, strength] }
+    // Without this, pointermove listeners attached before reduced motion's
+    // SSR-safe `false` default gets corrected are never removed — @gsap/react
+    // defers cleanup to unmount by default once a dependencies array is
+    // passed.
+    { scope: shell, dependencies: [reduced, strength], revertOnUpdate: true }
   );
 
   return (

@@ -83,7 +83,11 @@ export function Marquee({ children, speed = 60, className }: MarqueeProps) {
         tween.kill();
       };
     },
-    { scope, dependencies: [reduced, speed] }
+    // Without this, the repeat:-1 tween created before reduced motion's
+    // SSR-safe `false` default gets corrected is never torn down — @gsap/react
+    // defers cleanup to unmount by default once a dependencies array is
+    // passed, so the marquee would keep scrolling forever regardless.
+    { scope, dependencies: [reduced, speed], revertOnUpdate: true }
   );
 
   return (

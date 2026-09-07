@@ -19,8 +19,7 @@ import { Hero } from './sections/Hero';
 import { About } from './sections/About';
 import { Log } from './sections/Log';
 import { Stack } from './sections/Stack';
-import { Certifications } from './sections/Certifications';
-import { Work } from './sections/Work';
+import { CertWork } from './sections/CertWork';
 import { Proof } from './sections/Proof';
 import { Contact } from './sections/Contact';
 
@@ -41,8 +40,7 @@ export default function Home() {
         <About />
         <Log />
         <Stack />
-        <Certifications />
-        <Work />
+        <CertWork />
         <Proof />
         <Contact />
       </main>

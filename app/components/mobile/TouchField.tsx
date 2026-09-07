@@ -7,15 +7,23 @@ import { usePrefersReducedMotion } from '@/app/hooks/usePrefersReducedMotion';
 import { useWebGLGate } from '@/app/components/webgl/useWebGLGate';
 import { getTilt } from '@/app/lib/tilt';
 
-const NOISE_SCALE = 0.0022;
-const TIME_SCALE = 0.00015;
+/* Tuned calmer than a first pass: the original settings (tight NOISE_SCALE,
+ * fast TIME_SCALE, long FADE_ALPHA trails) produced a dense tangle of thin
+ * curling threads — technically correct curl-noise, but it read as visual
+ * noise/glitch on a phone rather than a deliberate graphic. Larger-scale,
+ * slower-evolving noise gives broad, coherent swirls instead of tight
+ * turbulence; a higher fade alpha keeps trails short (dots with a small
+ * comet tail, not spaghetti); fewer, slightly bigger particles read as a
+ * deliberate scattering rather than a fog. */
+const NOISE_SCALE = 0.0012;
+const TIME_SCALE = 0.00008;
 const CURL_EPS = 0.0015;
-const DRIFT = 34;
-const MAX_SPEED = 85;
-const DAMPING = 0.94;
+const DRIFT = 20;
+const MAX_SPEED = 55;
+const DAMPING = 0.9;
 const TOUCH_RADIUS = 90;
 const TOUCH_FORCE = 480;
-const FADE_ALPHA = 0.09;
+const FADE_ALPHA = 0.14;
 /** Toned down from the original 0.7/0.85 — at full strength the field
  * competed with text everywhere it showed through, not just in the hero. */
 const INK_ALPHA = 0.35;
@@ -93,8 +101,10 @@ export function TouchField() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       // Fewer particles on a small screen — this runs on the phones WebGL
-      // already declined, so the budget has to be real.
-      count = width < 480 ? 650 : 1000;
+      // already declined, so the budget has to be real. Also fewer overall
+      // than the first pass: a sparser field of slightly bigger points reads
+      // as deliberate, where a dense one read as noise.
+      count = width < 480 ? 380 : 550;
       pos = new Float32Array(count * 2);
       vel = new Float32Array(count * 2);
       seed();
@@ -202,7 +212,7 @@ export function TouchField() {
 
         const hot = i % HOT_EVERY === 0;
         ctx.fillStyle = hot ? signal : ink;
-        const size = hot ? 2 : 1.4;
+        const size = hot ? 2.6 : 1.8;
         ctx.fillRect(x, y, size, size);
       }
     };

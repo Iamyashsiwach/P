@@ -29,7 +29,11 @@ function Metric({ value, prefix, suffix }: { value: number; prefix?: string; suf
 
       return () => tween.kill();
     },
-    { dependencies: [reduced, value] }
+    // revertOnUpdate: @gsap/react defers cleanup to unmount by default once
+    // a dependencies array is passed, so a tween created before reduced
+    // motion's SSR-safe `false` default gets corrected would otherwise
+    // never be torn down.
+    { dependencies: [reduced, value], revertOnUpdate: true }
   );
 
   return (
@@ -93,7 +97,8 @@ export function Log() {
 
       return () => tweens.forEach(t => t.kill());
     },
-    { scope, dependencies: [reduced] }
+    // See the Metric component above re: revertOnUpdate.
+    { scope, dependencies: [reduced], revertOnUpdate: true }
   );
 
   return (

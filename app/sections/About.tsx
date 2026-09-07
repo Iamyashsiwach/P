@@ -61,7 +61,7 @@ export function About() {
         split?.revert();
       };
     },
-    { scope: prose, dependencies: [reduced, theme] }
+    { scope: prose, dependencies: [reduced, theme], revertOnUpdate: true }
   );
 
   return (
