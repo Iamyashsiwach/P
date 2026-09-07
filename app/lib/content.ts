@@ -47,14 +47,17 @@ export const about = {
     { term: 'Location', value: 'Gurugram, IN' },
     { term: 'Currently', value: 'Associate Software Engineer, Accenture' },
     { term: 'Stack', value: 'TypeScript · Next.js · Node · Three.js' },
-    { term: 'Focus', value: 'Real-time systems, GPU rendering, agent tooling' },
-    { term: 'Shipping since', value: '2023' },
+    {
+      term: 'Focus',
+      value: 'Systems and cloud architecture, DevOps and MLOps, agent tooling and MCP',
+    },
+    { term: 'Shipping since', value: '2022' },
   ],
   paragraphs: [
     'I started building because I wanted things that did not exist yet — an air quality monitor for my parents’ flat, an AR game, a copy-trading bot at 3am during a hackathon.',
     'Most of what I know came from shipping small things badly and then fixing them. I have written the schema, the API, the frontend, the deploy config and the CSS for the same product often enough that I stopped thinking of them as separate jobs. Owning all of it is also what got me interested in why we were building any of it.',
     'That habit of owning the whole thing is what led me to run BlueLayer Studio for the better part of two years — client sites, start to finish, my own name on the invoice. These days most of that energy goes into shipping at Accenture, and into the parts of the stack I did not expect to end up caring about, like getting agents to do real work reliably.',
-    'Right now I am drawn to the parts of the web that are hard to fake: real-time systems, GPU rendering, and making things fast on a bad phone.',
+    'Right now I am drawn to the parts of engineering that are hard to fake: systems and cloud architecture, the DevOps and MLOps work that keeps things running once they ship, and building with MCP and agents rather than just around them.',
   ],
   portrait: { src: '/Hero_img.jpeg', alt: 'Yash Siwach' },
 } as const;
