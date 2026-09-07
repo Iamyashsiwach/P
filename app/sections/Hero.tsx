@@ -21,7 +21,13 @@ export function Hero() {
         <div className="col-span-12 lg:col-span-10">
           <p className="mono-label mb-8">{profile.eyebrow}</p>
 
-          <Reveal as="h1" by="chars" immediate className="font-display text-display-xl text-ink">
+          <Reveal
+            as="h1"
+            by="chars"
+            immediate
+            throwable
+            className="font-display text-display-xl text-ink"
+          >
             {profile.name}
           </Reveal>
 
