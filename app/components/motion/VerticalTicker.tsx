@@ -52,6 +52,21 @@ export function VerticalTicker({
       const sign = direction === 'up' ? -1 : 1;
       const wrap = gsap.utils.wrap(sign === -1 ? -cycle : 0, sign === -1 ? 0 : cycle);
 
+      // 'up' needs no extra setup: with the three copies stacked at their
+      // natural flow positions (0, cycle, 2*cycle), the second copy is
+      // already sitting below the window, ready to slide up into it as the
+      // first exits above. 'down' is the mirror case — the window needs a
+      // copy ABOVE it (negative flow position) ready to slide down in as
+      // the first copy exits below, but nothing sits above position 0 in
+      // normal DOM flow. A static negative margin on the track (not a GSAP
+      // transform, so the wrap modifier below never touches it) shifts the
+      // whole stack up by one cycle, turning 0/cycle/2cycle into the
+      // -cycle/0/cycle arrangement 'down' actually needs. Without this the
+      // window had nothing to show while the exiting copy cleared it —
+      // reported as the ticker "going empty".
+      const track = scope.current.querySelector<HTMLElement>('[data-ticker-track]');
+      if (track) track.style.marginTop = sign === 1 ? `-${cycle}px` : '';
+
       const tween = gsap.to(copies, {
         y: `+=${sign * cycle}`,
         duration: cycle / speed,
@@ -101,7 +116,7 @@ export function VerticalTicker({
       className={`overflow-hidden ${className ?? ''}`}
       style={{ height }}
     >
-      <div className="flex flex-col will-change-transform">
+      <div data-ticker-track className="flex flex-col will-change-transform">
         {/* Three copies: enough that at least two always cover the visible
             window while the third fills the gap the wrap leaves behind. */}
         {[0, 1, 2].map(i => (
