@@ -12,7 +12,7 @@
 export const profile = {
   name: 'Yash Siwach',
   eyebrow: 'Gurugram, IN · Associate Software Engineer @ Accenture',
-  statement: 'I build web products end to end — schema to shader — and I care how they get used.',
+  statement: 'I build software end to end — schema to shader — and I care how they get used.',
   email: 'me@yashsiwach.in',
   phone: '+91 7206099609',
   phoneHref: 'tel:+917206099609',
@@ -35,9 +35,14 @@ export const nav = [
   { label: 'Contact', href: '#contact' },
 ] as const;
 
-/** Section ids in document order — drives the HUD index. Certifications no
- * longer gets its own entry: it is a column inside #work now, not a
- * separately-scrolled section, and its bounding box mostly overlaps work's. */
+/** Section ids in document order — drives the HUD's "X / Y" scroll-position
+ * counter, which is a different count from the "01 / Who … 07 / Contact"
+ * eyebrow numbers below: the HUD counts physically distinct scrollable
+ * regions (Home included, Certifications excluded since it lives inside
+ * #work's DOM, not its own scrollable section), while the eyebrows number
+ * labeled content sections (Home excluded, Certifications included). Both
+ * happen to total 7, which is a coincidence of the current section count,
+ * not a guarantee — don't assume they'll always match if either list grows. */
 export const sectionIds = ['home', 'about', 'log', 'stack', 'work', 'proof', 'contact'];
 
 export const about = {
@@ -56,7 +61,7 @@ export const about = {
   paragraphs: [
     'I started building because I wanted things that did not exist yet — an air quality monitor for my parents’ flat, an AR game, a copy-trading bot at 3am during a hackathon.',
     'Most of what I know came from shipping small things badly and then fixing them. I have written the schema, the API, the frontend, the deploy config and the CSS for the same product often enough that I stopped thinking of them as separate jobs. Owning all of it is also what got me interested in why we were building any of it.',
-    'That habit of owning the whole thing is what led me to run BlueLayer Studio for the better part of two years — client sites, start to finish, my own name on the invoice. These days most of that energy goes into shipping at Accenture, and into the parts of the stack I did not expect to end up caring about, like getting agents to do real work reliably.',
+    'That habit of owning the whole thing is what led me to run Blue Layer Studio for the better part of two years — client sites, start to finish, my own name on the invoice, growing from just me to a team of five or six working across time zones. These days most of that energy goes into shipping at Accenture.',
     'Right now I am drawn to the parts of engineering that are hard to fake: systems and cloud architecture, the DevOps and MLOps work that keeps things running once they ship, and building with MCP and agents rather than just around them.',
   ],
   portrait: { src: '/Hero_img.jpeg', alt: 'Yash Siwach' },
@@ -81,9 +86,13 @@ export type Certification = {
 };
 
 export const certifications = {
-  // No number — this now renders as a small column label inside the merged
-  // #work section (see CertWork.tsx), not its own numbered section.
-  eyebrow: 'Certifications',
+  // Numbered like every other section even though it renders as a small
+  // column label inside the merged #work section (see CertWork.tsx), not
+  // a full-width section of its own — it's still real, distinct content,
+  // and the nav lists it as its own item ("Certs"), so it needs its own
+  // number in that sequence (01 Who … 07 Contact) rather than being the
+  // one nav entry with nothing to show for it.
+  eyebrow: '05 / Certifications',
   heading: 'What I went and got certified in',
   items: [
     {
@@ -139,6 +148,55 @@ export const work = {
   eyebrow: '04 / Work',
   heading: 'Things I shipped',
   projects: [
+    {
+      title: 'Archery Tournament Manager',
+      year: '2026',
+      role: 'Solo build',
+      blurb:
+        'Tournament management for my archery academy — coaches register archers, judges score qualification and matches, everyone sees live rankings and field target boards.',
+      tech: ['Next.js', 'Supabase', 'TypeScript'],
+      href: 'https://archery-tms.vercel.app',
+      image: '/archery-tms.png',
+    },
+    {
+      title: 'Tripsee',
+      year: '2026',
+      role: 'Solo build',
+      blurb:
+        'Travel discovery and booking site — browse destinations, plan a trip. Docker-containerized, served behind Nginx.',
+      tech: ['Next.js', 'Docker', 'TypeScript'],
+      href: 'https://traveltripsee.vercel.app',
+      image: '/traveltripsee.png',
+    },
+    {
+      title: 'GreenBytes',
+      year: '2025',
+      role: 'Solo build — frontend, backend and ML pipeline',
+      blurb:
+        'Crop disease detection for farmers — a photo plus a few diagnostic questions, fused through a YOLOv8 + TabNet model for a diagnosis. FastAPI backend, deployed on Azure.',
+      tech: ['Next.js', 'FastAPI', 'PyTorch', 'YOLOv8', 'Azure'],
+      href: 'https://greenbytes-ui.vercel.app',
+      image: '/greenbytes.png',
+    },
+    {
+      title: 'MGNREGA District Dashboard',
+      year: '2025',
+      role: 'Solo build',
+      blurb:
+        'District-level performance dashboard for a national rural employment scheme — bilingual (Hindi/English), built for low-literacy rural users, with automatic district detection.',
+      tech: ['Next.js', 'PostgreSQL', 'Docker', 'GitHub Actions'],
+      image: '/mgnrega-dashboard.png',
+    },
+    {
+      title: 'SparkSync',
+      year: '2025',
+      role: 'Solo build',
+      blurb:
+        'Dating app for the South African market, web and mobile. GitHub Actions deploys straight to production.',
+      tech: ['Next.js', 'GitHub Actions', 'TypeScript'],
+      href: 'https://sparksync.in',
+      image: '/sparksync.png',
+    },
     {
       title: 'Blue Layer Studio',
       year: '2024',
@@ -253,9 +311,9 @@ export const log = {
         },
         {
           date: '2023.09',
-          title: 'Gas cylinder regulator',
+          title: 'Gas Cylinder Regulator — team hardware project, software',
           detail:
-            'A safer home gas cylinder rig — wheels so it can be moved without lifting, and an emergency shut-off valve. Built for elderly users handling cylinders alone.',
+            'A safer home gas cylinder rig — wheels so it can be moved without lifting, and an emergency shut-off valve. Built with a team; I handled the software. For elderly users handling cylinders alone.',
           image: '/2023-3.png',
         },
         {
@@ -287,15 +345,24 @@ export const stack = {
       items: [
         { name: 'TypeScript', note: 'default for anything that outlives a weekend' },
         { name: 'JavaScript', note: 'where the tooling insists' },
+        { name: 'Python', note: 'FastAPI backends, the ML pipeline — GreenBytes' },
         { name: 'C#', note: 'Unity, the AR game' },
+        { name: 'Arduino', note: 'hardware projects — air quality monitor, gas cylinder rig' },
       ],
     },
     {
       label: 'Data',
       items: [
         { name: 'MongoDB', note: 'document stores, client projects' },
-        { name: 'RAG', note: 'retrieval over case studies, Blue Layer' },
-        { name: 'Claude / Anthropic API', note: 'agent workflows — Claude Certified Developer' },
+        { name: 'RAG', note: "retrieval-augmented search, Blue Layer's case studies" },
+        {
+          name: 'Anthropic Claude SDK',
+          note: 'MCP and the Claude Agent SDK — Claude Certified Developer',
+        },
+        {
+          name: 'PyTorch / YOLOv8',
+          note: 'multimodal crop-health detection — vision + tabular fusion',
+        },
       ],
     },
     {
@@ -309,9 +376,12 @@ export const stack = {
     {
       label: 'Infra',
       items: [
-        { name: 'AWS', note: 'Accenture infra' },
+        { name: 'AWS', note: 'day-to-day at Accenture' },
+        { name: 'Azure', note: 'production deployment, the crop-health project' },
+        { name: 'Docker', note: 'multi-stage builds' },
+        { name: 'Terraform', note: 'infrastructure as code' },
         { name: 'Vercel', note: 'hosting and analytics' },
-        { name: 'Git', note: 'and the CI around it' },
+        { name: 'Git / GitHub Actions', note: 'version control, CI/CD' },
         { name: 'Figma', note: 'where this design started' },
       ],
     },
@@ -319,19 +389,19 @@ export const stack = {
 } as const;
 
 export const proof = {
-  eyebrow: '05 / Proof',
+  eyebrow: '06 / Proof',
   heading: 'Not just claims — the log',
   /** The plain-language framing a non-technical visitor needs: the sentence
    * has to make the point on its own, with the calendar grid as backup, not
    * the other way round. Filled in with the real count at render time. */
-  captionTemplate: (activeDays: number) => `${activeDays} days I showed up and shipped something.`,
+  captionTemplate: (activeDays: number) => `${activeDays} active days on GitHub.`,
   unavailable:
     'Live activity feed unavailable right now — everything else on this page is still real, this one just did not load.',
   activityUnavailable: 'Recent activity unavailable right now.',
 } as const;
 
 export const contact = {
-  eyebrow: '06 / Contact',
+  eyebrow: '07 / Contact',
   heading: 'Let’s build something',
   line: 'Freelance work, full-time roles, or a project you cannot get anyone else to take on.',
 } as const;

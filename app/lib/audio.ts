@@ -1,9 +1,9 @@
 'use client';
 
 /**
- * Fully synthesised sound — zero audio files, zero bundle weight. Every
- * voice, and the generative radio in radio.ts, is a handful of Web Audio
- * nodes with an envelope.
+ * UI sound is fully synthesised — zero audio files, every voice a handful
+ * of Web Audio nodes with an envelope. Music (radio.ts) is a real recorded
+ * track, looped through this same graph.
  *
  * The contract is non-negotiable: nothing plays until enableSound() or
  * enableMusic() is called, and that must only ever happen from inside a real
@@ -27,7 +27,6 @@ let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
 let uiBus: GainNode | null = null;
 let musicBus: GainNode | null = null;
-let reverbSend: GainNode | null = null;
 let analyser: AnalyserNode | null = null;
 let enabled = false;
 let musicEnabled = false;
@@ -63,91 +62,6 @@ if (typeof document !== 'undefined') {
   });
 }
 
-/**
- * One-pole lowpass applied while filling, with the coefficient itself
- * decaying over the buffer's length — early reflections stay bright, the
- * tail goes dark. That asymmetry (highs decaying faster than lows) is most
- * of the difference between "a room" and "a burst of filtered noise."
- * Independent noise per channel decorrelates L/R for width.
- */
-function createReverbImpulse(context: AudioContext): AudioBuffer {
-  const duration = 2.2;
-  const preDelaySec = 0.02;
-  const rate = context.sampleRate;
-  const length = Math.floor(rate * duration);
-  const preDelaySamples = Math.floor(rate * preDelaySec);
-  const buffer = context.createBuffer(2, length, rate);
-
-  for (let ch = 0; ch < 2; ch++) {
-    const data = buffer.getChannelData(ch);
-    let lp = 0;
-    for (let i = 0; i < length; i++) {
-      if (i < preDelaySamples) {
-        data[i] = 0;
-        continue;
-      }
-      const t = (i - preDelaySamples) / rate;
-      const envelope = Math.exp(-t * 3.2);
-      const cutoff = 0.5 * Math.exp(-t * 1.1) + 0.02;
-      const raw = (Math.random() * 2 - 1) * envelope;
-      lp += (raw - lp) * cutoff;
-      data[i] = lp;
-    }
-  }
-  return buffer;
-}
-
-/**
- * Builds the shared reverb send chain once. Under low core counts, a real
- * convolver is skipped for a two-delay feedback network — a fraction of the
- * cost, and it still reads as "a space" rather than "dry."
- */
-function buildReverbChain(context: AudioContext, input: BiquadFilterNode, wet: GainNode) {
-  const lowCpu = (navigator.hardwareConcurrency ?? 8) < 4;
-
-  if (lowCpu) {
-    const delayA = context.createDelay(1);
-    delayA.delayTime.value = 0.31;
-    const delayB = context.createDelay(1);
-    delayB.delayTime.value = 0.47;
-    const feedback = context.createGain();
-    feedback.gain.value = 0.35;
-
-    input.connect(delayA);
-    delayA.connect(delayB);
-    delayB.connect(feedback);
-    feedback.connect(delayA);
-    delayB.connect(wet);
-    return;
-  }
-
-  const convolver = context.createConvolver();
-  convolver.normalize = true;
-  convolver.buffer = createReverbImpulse(context);
-  input.connect(convolver);
-  convolver.connect(wet);
-}
-
-/** Post-reverb tone shaping per theme — the only place a theme change
- * touches the room itself. The impulse response is generated once, ever;
- * regenerating it on a theme toggle would drop a stall into the view
- * transition. */
-let reverbToneFilter: BiquadFilterNode | null = null;
-let reverbWet: GainNode | null = null;
-
-export function setMusicTheme(theme: 'paper' | 'blueprint') {
-  if (!ctx || !reverbToneFilter || !reverbWet) return;
-  const now = ctx.currentTime;
-  const freq = theme === 'blueprint' ? 2200 : 3400;
-  const wet = theme === 'blueprint' ? 0.32 : 0.26;
-  reverbToneFilter.frequency.cancelScheduledValues(now);
-  reverbToneFilter.frequency.setValueAtTime(reverbToneFilter.frequency.value, now);
-  reverbToneFilter.frequency.linearRampToValueAtTime(freq, now + 1.5);
-  reverbWet.gain.cancelScheduledValues(now);
-  reverbWet.gain.setValueAtTime(reverbWet.gain.value, now);
-  reverbWet.gain.linearRampToValueAtTime(wet, now + 1.5);
-}
-
 function ensureContext(): AudioContext | null {
   if (typeof window === 'undefined') return null;
   if (ctx) return ctx;
@@ -180,27 +94,11 @@ function ensureContext(): AudioContext | null {
   uiBus.gain.value = 1;
   uiBus.connect(master);
 
-  // Music: dry signal and the reverb return both land on musicBus, whose
-  // own gain is the fade/mute control for the entire radio.
+  // Music: the radio's track loops into musicBus, whose own gain is the
+  // fade/mute control.
   musicBus = ctx.createGain();
   musicBus.gain.value = 0.0001;
   musicBus.connect(master);
-
-  reverbSend = ctx.createGain();
-  reverbSend.gain.value = 1;
-  const reverbHP = ctx.createBiquadFilter();
-  reverbHP.type = 'highpass';
-  reverbHP.frequency.value = 160;
-  reverbSend.connect(reverbHP);
-
-  reverbToneFilter = ctx.createBiquadFilter();
-  reverbToneFilter.type = 'lowpass';
-  reverbToneFilter.frequency.value = 3400;
-  reverbWet = ctx.createGain();
-  reverbWet.gain.value = 0.26;
-  reverbToneFilter.connect(reverbWet);
-  reverbWet.connect(musicBus);
-  buildReverbChain(ctx, reverbHP, reverbToneFilter);
 
   // Analyser taps musicBus — post-fade, post-mute, pre-master, so muting
   // drives the visual read to zero for free and a UI blip can never spike
@@ -293,12 +191,12 @@ export function isMusicMuted(): boolean {
   }
 }
 
-/** The connect points radio.ts needs: `bus` for dry voice output and as the
- * overall fade control, `send` as the shared reverb input. Only meaningful
- * after a gesture has called ensureContext via enableSound/enableMusic. */
+/** The connect point radio.ts needs: `bus` is both where the track connects
+ * and the overall fade/mute control. Only meaningful after a gesture has
+ * called ensureContext via enableSound/enableMusic. */
 export function getMusicGraph() {
-  if (!ctx || !musicBus || !reverbSend || !analyser) return null;
-  return { ctx, bus: musicBus, send: reverbSend, analyser };
+  if (!ctx || !musicBus || !analyser) return null;
+  return { ctx, bus: musicBus, analyser };
 }
 
 let levelData: Uint8Array | null = null;

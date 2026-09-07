@@ -61,7 +61,7 @@ export function CertWork() {
 
           <div>
             <p id="certifications" className="mono-label border-b border-border pb-3">
-              Certifications
+              {certifications.eyebrow}
             </p>
             <VerticalTicker direction="up" height={420}>
               {certifications.items.map((cert, i) => (
