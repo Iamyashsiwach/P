@@ -15,31 +15,33 @@ const instrumentSerif = Instrument_Serif({
   display: 'swap',
 });
 
+const description =
+  'Associate Software Engineer at Accenture, Gurugram. I build software end to end — schema to shader — and care how it gets used.';
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://yashsiwach.in'),
   title: {
-    default: 'Yash Siwach — Fullstack Engineer',
+    default: 'Yash Siwach — Profile',
     template: '%s — Yash Siwach',
   },
-  description:
-    'Fullstack engineer in Gurugram. I build web products end to end — Next.js, TypeScript, Postgres, Three.js. Some of what I have shipped is here.',
+  description,
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: 'Yash Siwach — Fullstack Engineer',
-    description:
-      'Fullstack engineer in Gurugram. I build web products end to end — Next.js, TypeScript, Postgres, Three.js.',
+    title: 'Yash Siwach — Profile',
+    description,
     url: 'https://yashsiwach.in',
     siteName: 'Yash Siwach',
     locale: 'en_US',
     type: 'website',
+    images: [{ url: '/Hero_img.jpeg', width: 1254, height: 1254, alt: 'Yash Siwach' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Yash Siwach — Fullstack Engineer',
-    description:
-      'Fullstack engineer in Gurugram. I build web products end to end — Next.js, TypeScript, Postgres, Three.js.',
+    title: 'Yash Siwach — Profile',
+    description,
+    images: ['/Hero_img.jpeg'],
   },
   icons: {
     icon: [
@@ -60,7 +62,12 @@ const personSchema = {
   '@type': 'Person',
   name: 'Yash Siwach',
   url: 'https://yashsiwach.in',
-  jobTitle: 'Software Engineer',
+  image: 'https://yashsiwach.in/Hero_img.jpeg',
+  jobTitle: 'Associate Software Engineer',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Accenture',
+  },
   sameAs: [
     'https://twitter.com/iamyashsiwach',
     'https://linkedin.com/in/yash-siwach',

@@ -7,6 +7,7 @@ import {
   disableSound,
   enableMusic,
   disableMusic,
+  isMusicEnabled,
   isMusicMuted,
   subscribeMusic,
   getAudioLevel,
@@ -59,8 +60,13 @@ export function AudioToggle({ className }: { className?: string }) {
     return () => gsap.ticker.remove(tick);
   }, []);
 
+  // Decided from the real isMusicEnabled(), not the displayed `on` — before
+  // any gesture, `on` reads true (see the comment above) while music hasn't
+  // actually started yet. Branching on `on` there would make the very first
+  // click silently mute a session that was never playing, and the chip
+  // would need a second click to do anything audible.
   const toggle = () => {
-    if (on) {
+    if (isMusicEnabled()) {
       disableSound();
       disableMusic();
     } else {

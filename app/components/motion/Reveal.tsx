@@ -24,6 +24,10 @@ type RevealProps = {
 
 type DraggableInstance = { kill: () => void };
 
+// div/p/span map to ARIA's "generic" role, which prohibits aria-label —
+// h1/h2/h3 map to "heading", which already allows it.
+const GENERIC_TAGS = new Set(['div', 'p', 'span']);
+
 /**
  * Split-text reveal. Pieces rise out of an overflow-hidden mask rather than
  * fading, which reads as physical rather than as a CSS transition.
@@ -219,6 +223,15 @@ export function Reveal({
   return (
     <Tag
       ref={scope as React.Ref<never>}
+      // SplitText (in the non-reduced-motion effect above) sets aria-label
+      // to the full text on this same element so screen readers hear one
+      // sentence instead of one announcement per split char/word. A plain
+      // div/p/span has role="generic", which the ARIA spec prohibits
+      // aria-label on — "group" is the real spec role that allows it there.
+      // Heading tags need no help: role="heading" already permits an
+      // author-supplied name, and overriding it to "group" would stop them
+      // being announced as headings at all, breaking heading navigation.
+      role={GENERIC_TAGS.has(Tag) ? 'group' : undefined}
       className={className}
       data-cursor={throwable ? 'grab' : undefined}
       style={throwable ? { cursor: 'grab' } : undefined}

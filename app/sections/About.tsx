@@ -104,6 +104,10 @@ export function About() {
 
         <div
           ref={prose}
+          // SplitText sets aria-label (the full text) on this element and
+          // aria-hidden on each split word — see Reveal.tsx for why a plain
+          // div (role="generic") can't carry aria-label without this.
+          role="group"
           className="col-span-12 mt-10 space-y-6 md:col-span-7 md:col-start-6 md:mt-16"
         >
           {about.paragraphs.map(paragraph => (

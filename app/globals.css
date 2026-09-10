@@ -12,7 +12,10 @@
     /* Ink — warm near-black, never pure #000 */
     --ink: 24 12% 10%;
     --ink-dim: 26 8% 38%;
-    --ink-mute: 28 6% 55%;
+    /* 44% L, not the original 55% — that read at 3.12:1 against --paper,
+       below WCAG AA's 4.5:1 floor for normal-size text (this token is used
+       at 11-12px throughout: mono-label, timestamps, secondary metadata). */
+    --ink-mute: 28 6% 44%;
 
     /* One accent, used sparingly */
     --signal: 8 78% 46%;
@@ -304,7 +307,7 @@ html.lenis {
     --paper-3: 36 16% 90%;
     --ink: 24 12% 10%;
     --ink-dim: 26 8% 38%;
-    --ink-mute: 28 6% 55%;
+    --ink-mute: 28 6% 44%;
     --signal: 8 78% 46%;
     --border: 32 12% 85%;
 

@@ -165,7 +165,7 @@ export const work = {
       blurb:
         'Travel discovery and booking site — browse destinations, plan a trip. Docker-containerized, served behind Nginx.',
       tech: ['Next.js', 'Docker', 'TypeScript'],
-      href: 'https://traveltripsee.vercel.app',
+      href: 'https://tripseetravel.in',
       image: '/traveltripsee.png',
     },
     {

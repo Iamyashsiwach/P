@@ -16,7 +16,10 @@ let started = false;
 
 async function ensureBuffer(context: AudioContext): Promise<AudioBuffer> {
   if (buffer) return buffer;
-  const res = await fetch(TRACK_URL);
+  // Low priority: this is a 3MB fetch kicked off on every load (see
+  // RadioMount), and it must never compete with the page's own critical
+  // resources for bandwidth during the initial render.
+  const res = await fetch(TRACK_URL, { priority: 'low' });
   const data = await res.arrayBuffer();
   buffer = await context.decodeAudioData(data);
   return buffer;

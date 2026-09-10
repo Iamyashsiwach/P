@@ -15,10 +15,10 @@
  * have opposite defaults and get toggled from different places — but they
  * share one graph and one combined on-screen control (AudioToggle).
  *
- * Music defaults to on and RadioMount tries to start it on every load with
- * no gesture required — browsers only let that actually play once they
- * trust this origin for audio, otherwise it stays silent until the first
- * click/keydown (see RadioMount). Only an explicit mute is persisted
+ * Music defaults to on and starts on the first click/keydown anywhere on the
+ * page (see RadioMount) — every browser requires a real gesture before
+ * audio plays at all, with no exception for a fresh visitor, so there's no
+ * way to skip that first interaction. Only an explicit mute is persisted
  * (localStorage), so a visitor who turns it off stays off on future visits
  * until they turn it back on.
  */
