@@ -19,7 +19,7 @@ const description =
   'Associate Software Engineer at Accenture, Gurugram. I build software end to end — schema to shader — and care how it gets used.';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://yashsiwach.in'),
+  metadataBase: new URL('https://www.yashsiwach.in'),
   title: {
     default: 'Yash Siwach — Profile',
     template: '%s — Yash Siwach',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Yash Siwach — Profile',
     description,
-    url: 'https://yashsiwach.in',
+    url: 'https://www.yashsiwach.in',
     siteName: 'Yash Siwach',
     locale: 'en_US',
     type: 'website',
@@ -61,8 +61,8 @@ const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Yash Siwach',
-  url: 'https://yashsiwach.in',
-  image: 'https://yashsiwach.in/Hero_img.jpeg',
+  url: 'https://www.yashsiwach.in',
+  image: 'https://www.yashsiwach.in/Hero_img.jpeg',
   jobTitle: 'Associate Software Engineer',
   worksFor: {
     '@type': 'Organization',
