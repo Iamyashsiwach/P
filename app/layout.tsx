@@ -3,8 +3,6 @@ import { ReactNode } from 'react';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { Instrument_Serif } from 'next/font/google';
-import { ThemeScript } from '@/app/components/theme/ThemeScript';
-import { ThemeProvider } from '@/app/components/theme/ThemeProvider';
 import './globals.css';
 
 const instrumentSerif = Instrument_Serif({
@@ -94,21 +92,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang="en"
       className={`${GeistSans.variable} ${GeistMono.variable} ${instrumentSerif.variable}`}
-      // ThemeScript sets data-theme and style.colorScheme on this element
-      // before hydration, outside React's own render — React must not warn
-      // about attributes it never rendered itself.
-      suppressHydrationWarning
     >
       <head>
-        <ThemeScript />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
       </head>
-      <body className="bg-background text-foreground font-sans">
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
+      <body className="bg-background text-foreground font-sans">{children}</body>
     </html>
   );
 }

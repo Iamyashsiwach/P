@@ -4,7 +4,6 @@ export type CommandResult =
   | { kind: 'text'; lines: string[] }
   | { kind: 'goto'; href: string; lines?: string[] }
   | { kind: 'link'; href: string; lines?: string[] }
-  | { kind: 'theme'; next: 'paper' | 'blueprint' | 'toggle'; lines?: string[] }
   | { kind: 'sound'; next: 'on' | 'off' | 'toggle'; lines?: string[] }
   | { kind: 'music'; next: 'on' | 'off' | 'toggle'; lines?: string[] }
   | { kind: 'print' }
@@ -196,22 +195,6 @@ export const commands: Command[] = [
       return gh
         ? { kind: 'link', href: gh.href, lines: [`Opening ${gh.href}`] }
         : { kind: 'text', lines: ['No GitHub link on file.'] };
-    },
-  },
-  {
-    id: 'theme',
-    aliases: ['theme', 'blueprint mode', 'blueprint', 'normal mode'],
-    description: 'Switch between Normal and Blueprint',
-    suggested: true,
-    run: args => {
-      const a = args.trim().toLowerCase();
-      if (a.includes('normal') || a.includes('paper') || a.includes('light')) {
-        return { kind: 'theme', next: 'paper', lines: ['Back to Normal.'] };
-      }
-      if (a.includes('blueprint') || a.includes('dark')) {
-        return { kind: 'theme', next: 'blueprint', lines: ['Welcome to Blueprint.'] };
-      }
-      return { kind: 'theme', next: 'toggle', lines: ['Flipping the switch.'] };
     },
   },
   {

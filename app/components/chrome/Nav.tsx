@@ -4,7 +4,6 @@ import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { gsap, useGSAP, ScrollTrigger, Flip, ease, duration } from '@/app/lib/motion';
 import { nav, profile } from '@/app/lib/content';
-import { ThemeToggle } from '@/app/components/theme/ThemeToggle';
 import { TerminalTrigger } from '@/app/components/terminal/TerminalTrigger';
 import { blip } from '@/app/lib/audio';
 
@@ -115,7 +114,6 @@ export function Nav() {
           />
 
           <TerminalTrigger className="ml-3 hidden sm:inline-flex" />
-          <ThemeToggle className="ml-3 hidden sm:inline-flex" />
 
           <a
             href={profile.resume}
@@ -185,12 +183,10 @@ export function Nav() {
               Résumé
             </a>
           </li>
-          {/* Closes the menu on either button too — previously only the
-              plain links did, leaving the panel open over whatever these
-              opened. */}
-          <li className="flex gap-3 py-3" onClick={() => setMenuOpen(false)}>
+          {/* Closes the menu on this button too — previously only the plain
+              links did, leaving the panel open over whatever it opened. */}
+          <li className="py-3" onClick={() => setMenuOpen(false)}>
             <TerminalTrigger />
-            <ThemeToggle />
           </li>
         </ul>
       </div>

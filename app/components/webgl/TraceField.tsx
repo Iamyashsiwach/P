@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useThemeColors } from './useThemeColors';
-import { useTheme } from '@/app/components/theme/ThemeProvider';
 import { FluidSim } from './gpgpu/FluidSim';
 import { hasGpgpuSupport } from './gpgpu/support';
 import { getAudioLevel } from '@/app/lib/audio';
@@ -203,7 +202,6 @@ const fragmentShader = /* glsl */ `
   uniform vec3  uInk;
   uniform vec3  uSignal;
   uniform float uOpacity;
-  uniform float uBlueprint;
   uniform float uAudio;
 
   varying float vHot;
@@ -222,11 +220,6 @@ const fragmentShader = /* glsl */ `
     // the whole field would flicker in unison and read as a rendering
     // fault rather than something breathing.
     alpha *= 1.0 + uAudio * 0.12;
-
-    // Blueprint mode: crisper, brighter linework against the dark ground —
-    // no second draw call or second material for it.
-    alpha = mix(alpha, alpha * 1.35, uBlueprint);
-    color = mix(color, color * 1.15, uBlueprint);
 
     // Hot particles also carry a little more weight, so nodes read as denser.
     gl_FragColor = vec4(color, alpha);
@@ -247,7 +240,6 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
   const lastAudioLevel = useRef(0);
   const { viewport, invalidate, gl } = useThree();
   const themeColors = useThemeColors();
-  const { theme } = useTheme();
 
   const gpgpuCapable = useMemo(
     () => hasGpgpuSupport(gl.getContext() as WebGL2RenderingContext),
@@ -295,17 +287,15 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
       uMorph: { value: 0 },
       uDpr: { value: 1 },
       uMouse: { value: new THREE.Vector3(0, 0, 0) },
-      // Paper mode's actual colors, seeded directly rather than read from
-      // the hook: this only ever matters for the one frame before the sync
-      // effect below runs (e.g. a hard load straight into Blueprint mode via
-      // ?theme=blueprint), and keeping the hook out of this memo's deps means
-      // toggling the theme later never recreates the whole uniforms object
-      // — which would snap uTime/uScatter/uMorph back to their initial
-      // values and visibly reset the field.
+      // Actual colors seeded directly rather than read from the hook: this
+      // only ever matters for the one frame before the sync effect below
+      // runs, and keeping the hook out of this memo's deps means the
+      // uniforms object is never recreated after mount — which would snap
+      // uTime/uScatter/uMorph back to their initial values and visibly
+      // reset the field.
       uInk: { value: new THREE.Color('#6E655C') },
       uSignal: { value: new THREE.Color('#CE3A22') },
       uOpacity: { value: 0.72 },
-      uBlueprint: { value: 0 },
       uFluid: { value: BLACK_TEXEL },
       uFluidStrength: { value: 0 },
       // Updated live in useFrame below (like uDpr/uMouse) rather than fixed
@@ -323,18 +313,16 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
     [orbit, flat]
   );
 
-  // Sync colors on every theme change (and once on mount). frameloop stops
-  // past the hero, so without an explicit invalidate() a theme toggle while
-  // scrolled down would leave the canvas showing stale colors indefinitely.
+  // Corrects uInk/uSignal from their hardcoded seed values (above) to the
+  // actual CSS-computed colors, once on mount.
   useEffect(() => {
     const mat = material.current;
     if (!mat) return;
 
     mat.uniforms.uInk.value.copy(themeColors.ink);
     mat.uniforms.uSignal.value.copy(themeColors.signal);
-    mat.uniforms.uBlueprint.value = theme === 'blueprint' ? 1 : 0;
     invalidate();
-  }, [themeColors, theme, invalidate]);
+  }, [themeColors, invalidate]);
 
   useFrame((state, delta) => {
     const mat = material.current;

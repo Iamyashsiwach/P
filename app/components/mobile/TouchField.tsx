@@ -83,24 +83,12 @@ export function TouchField() {
     let pos = new Float32Array(0);
     let vel = new Float32Array(0);
 
-    // Cached so the hot loop below never calls getComputedStyle — it used
-    // to call it three times per frame (ink, signal, paper-trail), on
-    // exactly the devices that already failed the WebGL gate. Recomputed
-    // only when the theme actually changes.
-    let paperRaw = '';
-    let inkRaw = '';
-    let signalRaw = '';
-    const updateColorCache = () => {
-      paperRaw = readColorVar('--paper');
-      inkRaw = readColorVar('--ink-mute');
-      signalRaw = readColorVar('--signal');
-    };
-    updateColorCache();
-    const colorObserver = new MutationObserver(updateColorCache);
-    colorObserver.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-theme'],
-    });
+    // Cached once so the hot loop below never calls getComputedStyle — it
+    // used to call it three times per frame (ink, signal, paper-trail), on
+    // exactly the devices that already failed the WebGL gate.
+    const paperRaw = readColorVar('--paper');
+    const inkRaw = readColorVar('--ink-mute');
+    const signalRaw = readColorVar('--signal');
 
     const seed = () => {
       for (let i = 0; i < count; i++) {
@@ -249,7 +237,6 @@ export function TouchField() {
 
     return () => {
       gsap.ticker.remove(tick);
-      colorObserver.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('pointermove', onPointerMove);

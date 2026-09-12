@@ -44,15 +44,13 @@
 
     --radius: 2px;
 
-    /* Font role variables, indirected so a theme (or a future one) can swap
-       the whole typographic voice without touching tailwind.config.ts. */
+    /* Font role variables, indirected so a future theme could swap the
+       whole typographic voice without touching tailwind.config.ts. */
     --font-body: var(--font-geist-sans);
     --font-heading: var(--font-display);
     --font-ui: var(--font-geist-mono);
 
-    /* Type scale, indirected so Blueprint can rescale it (Geist Mono reads
-       larger than this pairing at the same font-size) without touching
-       section padding or grid gap. */
+    /* Type scale, indirected the same way. */
     --fs-display-xl: clamp(3rem, 11vw, 9rem);
     --fs-display-l: clamp(2rem, 6vw, 4.5rem);
     --fs-display-m: clamp(1.5rem, 3.5vw, 2.5rem);
@@ -62,61 +60,6 @@
     --section-pad: clamp(4rem, 9vh, 7rem);
     --grid-gap: clamp(1rem, 2vw, 2rem);
     --rule-weight: 1px;
-  }
-
-  /*
-   * Blueprint. Every colour on this site is hsl(var(--token)) — no component
-   * hardcodes one — so this single block re-skins the entire page with zero
-   * component edits. The extra `:root` specificity over a bare attribute
-   * selector is deliberate: it must win outright, not depend on source order
-   * against the block above.
-   */
-  :root[data-theme='blueprint'] {
-    /* Surfaces — deep drafting-table blue, never pure black */
-    --paper: 212 65% 15%;
-    --paper-2: 212 55% 19%;
-    --paper-3: 212 48% 24%;
-
-    /* Ink — crisp near-white, cool-toned to match the blue */
-    --ink: 200 35% 95%;
-    --ink-dim: 205 26% 76%;
-    --ink-mute: 205 20% 58%;
-
-    /* One accent, still used sparingly */
-    --signal: 190 85% 55%;
-    --steel: 205 30% 52%;
-
-    --border: 212 40% 34%;
-    --input: 212 40% 34%;
-    --radius: 0px;
-    --rule-weight: 2px;
-
-    --font-body: var(--font-geist-mono);
-    --font-heading: var(--font-geist-mono);
-
-    /* Geist Mono's glyphs run noticeably wider/taller than the paper-mode
-       sans/serif pairing at the same declared font-size — without scaling
-       these down, identical CSS font-sizes read as visibly larger text in
-       Blueprint. Scoped to just the type-scale tokens (not --section-pad /
-       --grid-gap / spacing) so this changes text size only, not overall
-       density.
-       The 0.8 factor was measured, not guessed: canvas.measureText() on the
-       same sentence put Geist Mono ~27% wider than Geist Sans (this site's
-       body pairing) and ~73% wider than Instrument Serif (the display
-       pairing, an unusually condensed display face) at equal font-size.
-       Fully compensating for the serif ratio would shrink the hero name to
-       barely bigger than a subheading, so 0.8 is a deliberate middle point:
-       it closes most of the gap on both pairings without hollowing out
-       Blueprint's headline weight. */
-    --fs-display-xl: clamp(2.4rem, 8.8vw, 7.2rem);
-    --fs-display-l: clamp(1.6rem, 4.8vw, 3.6rem);
-    --fs-display-m: clamp(1.2rem, 2.8vw, 2rem);
-    --fs-body: 0.85rem;
-
-    /* ~60% denser than paper mode: this is where "minimalist but not
-       whitespace-heavy" actually happens, not by removing content. */
-    --section-pad: clamp(2.25rem, 5vh, 3.5rem);
-    --grid-gap: clamp(0.5rem, 1vw, 1rem);
   }
 
   * {
@@ -189,21 +132,11 @@
 /*
  * On a short mobile viewport, the desktop --section-pad per edge stacks into
  * a gap that reads as dead space rather than breathing room — tighten it
- * below the sm breakpoint. Left unlayered (like the rules below) rather than
- * inside @layer utilities: Tailwind's layer order is base < components <
- * utilities, so a bare `:root` override that lived in @layer utilities would
- * always beat the `:root[data-theme='blueprint']` block above regardless of
- * specificity, breaking the blueprint-mode value on mobile. Unlayered rules
- * sit after every named layer, so ordinary specificity decides between the
- * two selectors below instead.
+ * below the sm breakpoint.
  */
 @media (max-width: 639.98px) {
   :root {
     --section-pad: clamp(2rem, 5vh, 3rem);
-  }
-
-  :root[data-theme='blueprint'] {
-    --section-pad: clamp(1.75rem, 4vh, 2.75rem);
   }
 }
 
@@ -241,67 +174,19 @@ html.lenis {
 }
 
 /*
- * Blueprint's grid layer: a faint graph-paper pattern, static — no
- * animation. A technical drawing doesn't move, and this reads as calm and
- * precise rather than an effect layered on top. No animated filter:blur()
- * and no animated SVG gradient here regardless — an earlier version of this
- * site animated 51 SVG gradients at once and crashed Firefox (see README).
- */
-.blueprint-overlay {
-  background-image:
-    repeating-linear-gradient(0deg, hsl(0 0% 100% / 0.05) 0 1px, transparent 1px 40px),
-    repeating-linear-gradient(90deg, hsl(0 0% 100% / 0.05) 0 1px, transparent 1px 40px);
-}
-
-/*
- * The paper <-> Blueprint morph. ThemeProvider calls
- * document.startViewTransition() and sets --vt-x/--vt-y to the toggle
- * button's centre before it does, so the new state expands from the button
- * that was pressed rather than the viewport centre.
- *
- * The default cross-fade is replaced with an expanding circle on the
- * incoming state; the outgoing state holds still underneath it instead of
- * fading, so it reads as the new theme sweeping over the old one.
- */
-@media (prefers-reduced-motion: no-preference) {
-  ::view-transition-old(root) {
-    animation: none;
-  }
-
-  ::view-transition-new(root) {
-    /* Same curve as ease.out in app/lib/motion.ts (0.16, 1, 0.3, 1), so the
-       morph feels like the same object as everything else that arrives. */
-    animation: theme-reveal 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  @keyframes theme-reveal {
-    from {
-      clip-path: circle(0% at var(--vt-x, 50%) var(--vt-y, 50%));
-    }
-    to {
-      clip-path: circle(150% at var(--vt-x, 50%) var(--vt-y, 50%));
-    }
-  }
-}
-
-/*
  * Print / résumé mode. No component branches on "am I printing" — this is
  * entirely a stylesheet, plus one JS lifecycle hook (Reveal.tsx's
  * beforeprint/afterprint SplitText revert, so a section that hasn't
  * scrolled into view yet isn't sitting at yPercent:110 on paper) and a
  * terminal `print` command that just calls window.print().
  *
- * Unlayered, at the very end of the file, for the same reason the mobile
- * --section-pad override above is: a bare `:root` override living inside
- * any Tailwind layer would always lose to the `:root[data-theme='blueprint']`
- * block in @layer base regardless of specificity. Unlayered rules sit after
- * every named layer, and this is the last thing in the file, so ordinary
- * source-order-at-equal-specificity decides — including against the mobile
- * override above, which this needs to beat too on a printed phone.
+ * Unlayered, at the very end of the file: a bare `:root` override living
+ * inside any Tailwind layer would still need to win over the mobile
+ * --section-pad override above at equal specificity, and unlayered rules
+ * sit after every named layer, so ordinary source-order decides.
  */
 @media print {
-  :root,
-  :root[data-theme='blueprint'] {
+  :root {
     --paper: 40 30% 97%;
     --paper-2: 38 22% 94%;
     --paper-3: 36 16% 90%;
