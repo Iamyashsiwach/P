@@ -43,11 +43,11 @@ function readColorVar(varName: string) {
 }
 
 /**
- * Mobile's answer to the desktop WebGL hero: a canvas-2D curl-noise flow
- * field, cheap enough to run continuously on a mid-tier phone. Mounted only
- * when the device didn't qualify for WebGL and has a coarse pointer — a
- * different experience for a different device class, not a downgrade of the
- * desktop one.
+ * The fallback for a coarse-pointer device that doesn't clear useWebGLGate's
+ * bar (old hardware, no WebGL2, a metered connection) — a canvas-2D
+ * curl-noise flow field, cheap enough to run continuously on weak hardware.
+ * A phone that does clear that bar gets the real Scene/TraceField instead,
+ * same as desktop; this only exists for the ones that can't.
  *
  * Curl of a scalar noise field (∂n/∂y, -∂n/∂x) rather than the noise vector
  * itself: a curl field has zero divergence, so particles swirl and never

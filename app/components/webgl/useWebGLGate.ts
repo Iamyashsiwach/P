@@ -22,11 +22,13 @@ function hasWebGL2() {
 }
 
 /**
- * Decides whether this device gets the 3D scene at all. Everything that
- * fails here sees nothing in its place — the hero's text and layout still
- * work fine without it, there just isn't a fallback graphic. Environments
- * that block WebGL2 outright (an aggressive browser privacy mode, for one)
- * fail this gate the same as a genuinely incapable device.
+ * Decides whether this device gets the 3D scene at all — phone or desktop,
+ * same bar: hardware concurrency, device memory, a real WebGL2 context, and
+ * not on a metered connection. No screen-width cutoff, deliberately: a
+ * modern phone that clears the same hardware checks a laptop would gets the
+ * same scene, not a downgraded one. TouchField is the fallback for whatever
+ * doesn't clear this bar and has a coarse pointer; everything else just sees
+ * the hero's text and layout with no graphic at all.
  *
  * Returns false during SSR and on the first client render, so the WebGL chunk
  * is only ever requested after these checks pass.
@@ -43,19 +45,12 @@ export function useWebGLGate() {
 
     const nav = navigator as Navigator2;
 
-    const wide = window.matchMedia('(min-width: 768px)');
-    const evaluate = () =>
-      setCapable(
-        wide.matches &&
-          !nav.connection?.saveData &&
-          (nav.hardwareConcurrency ?? 8) >= 4 &&
-          (nav.deviceMemory ?? 8) >= 4 &&
-          hasWebGL2()
-      );
-
-    evaluate();
-    wide.addEventListener('change', evaluate);
-    return () => wide.removeEventListener('change', evaluate);
+    setCapable(
+      !nav.connection?.saveData &&
+        (nav.hardwareConcurrency ?? 8) >= 4 &&
+        (nav.deviceMemory ?? 8) >= 4 &&
+        hasWebGL2()
+    );
   }, [reduced]);
 
   return capable;
