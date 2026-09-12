@@ -25,17 +25,18 @@ const DAMPING = 0.9;
 const TOUCH_RADIUS = 90;
 const TOUCH_FORCE = 480;
 const FADE_ALPHA = 0.14;
-/** Toned down from the original 0.7/0.85 — at full strength the field
- * competed with text everywhere it showed through, not just in the hero. */
-const INK_ALPHA = 0.35;
-const SIGNAL_ALPHA = 0.5;
+/** Toned down twice now — 0.7/0.85 competed with text everywhere it showed
+ * through, then 0.35/0.5 still read as busy directly behind the hero name
+ * and tagline, the one place this graphic can't win a fight with content. */
+const INK_ALPHA = 0.16;
+const SIGNAL_ALPHA = 0.28;
 /** getTilt() reports roughly ±18 degrees; this scales one degree of phone
  * tilt to a wind-like force, so opting into TiltToggle turns tilting the
  * phone into stirring the field. */
 const TILT_FORCE = 2.6;
-/** Every 11th particle carries the accent — same "a minority run hot"
- * language TraceField uses, so the two feel like one system. */
-const HOT_EVERY = 11;
+/** Every 20th particle carries the accent (was 11th) — fewer red dots
+ * competing for attention against the hero text. */
+const HOT_EVERY = 20;
 
 function readColorVar(varName: string) {
   return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
@@ -108,10 +109,11 @@ export function TouchField() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       // Fewer particles on a small screen — this runs on the phones WebGL
-      // already declined, so the budget has to be real. Also fewer overall
-      // than the first pass: a sparser field of slightly bigger points reads
-      // as deliberate, where a dense one read as noise.
-      count = width < 480 ? 380 : 550;
+      // already declined, so the budget has to be real. Cut again from
+      // 380/550: even at low alpha, that many dots still read as a busy
+      // graphic sitting on top of the hero name and tagline instead of a
+      // quiet backdrop behind them.
+      count = width < 480 ? 160 : 240;
       pos = new Float32Array(count * 2);
       vel = new Float32Array(count * 2);
       seed();
