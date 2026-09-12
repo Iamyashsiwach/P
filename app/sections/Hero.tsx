@@ -15,7 +15,12 @@ export function Hero() {
     <section
       id="home"
       aria-labelledby="hero-name"
-      className="relative flex min-h-[100svh] items-end pb-[clamp(4rem,10vh,8rem)] pt-32"
+      // Bottom-aligned on desktop, where the graphic occupies the upper
+      // portion and the text sits below it. On mobile the graphic is now
+      // compact and pinned near the nav (see TraceField's aspect-ratio
+      // compensation), so bottom-pinning the text there just leaves a big
+      // dead gap between the two — centered reads as one balanced group.
+      className="relative flex min-h-[100svh] items-center pb-[clamp(4rem,10vh,8rem)] pt-32 md:items-end"
     >
       <div className="grid-shell">
         <div className="col-span-12 lg:col-span-10">

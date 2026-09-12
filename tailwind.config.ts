@@ -1,11 +1,6 @@
 import type { Config } from 'tailwindcss';
-import plugin from 'tailwindcss/plugin';
 
 const config = {
-  // No .dark block exists (or is planned) — this repurposes the slot for the
-  // paper/Blueprint toggle so any future `dark:` utility resolves the same
-  // way `draft:` does, rather than tracking two separate theme mechanisms.
-  darkMode: ['selector', '[data-theme="blueprint"]'],
   content: ['./app/**/*.{ts,tsx}', './lib/**/*.{ts,tsx}'],
   prefix: '',
   theme: {
@@ -27,9 +22,7 @@ const config = {
       },
       fontSize: {
         // Indirected through --fs-* (defined in globals.css), same pattern as
-        // fontFamily above — Blueprint overrides just these to compensate for
-        // Geist Mono reading larger than the paper-mode pairing at the same
-        // declared size, without touching section padding or grid gap.
+        // fontFamily above.
         'display-xl': ['var(--fs-display-xl)', { lineHeight: '0.92', letterSpacing: '-0.04em' }],
         'display-l': ['var(--fs-display-l)', { lineHeight: '1.0', letterSpacing: '-0.03em' }],
         'display-m': ['var(--fs-display-m)', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
@@ -104,14 +97,7 @@ const config = {
       },
     },
   },
-  plugins: [
-    require('tailwindcss-animate'),
-    // `draft:tracking-normal` etc. — reads as intent (this is a Blueprint
-    // override) rather than `dark:` borrowed for a mode that isn't dark mode.
-    plugin(({ addVariant }) => {
-      addVariant('draft', '&:is([data-theme="blueprint"] *)');
-    }),
-  ],
+  plugins: [require('tailwindcss-animate')],
 } satisfies Config;
 
 export default config;

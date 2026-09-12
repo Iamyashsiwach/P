@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import * as THREE from 'three';
-import { useTheme } from '@/app/components/theme/ThemeProvider';
 
 /** --ink/--signal are stored as an "H S% L%" triple, not a hsl() string. */
 function readColor(varName: string): THREE.Color {
@@ -11,21 +10,14 @@ function readColor(varName: string): THREE.Color {
   return new THREE.Color().setHSL(h / 360, s / 100, l / 100);
 }
 
-/**
- * Re-reads --ink/--signal off the root whenever the theme changes, so
- * TraceField's colors track Blueprint mode instead of freezing at whatever was
- * true on first mount.
- */
+/** Reads --ink/--signal off the root once — kept as a hook (not a plain
+ * function call) so TraceField only touches the DOM after mount, matching
+ * every other read in that component. */
 export function useThemeColors() {
-  const { theme } = useTheme();
-  const [colors, setColors] = useState(() => ({
+  const [colors] = useState(() => ({
     ink: readColor('--ink'),
     signal: readColor('--signal'),
   }));
-
-  useEffect(() => {
-    setColors({ ink: readColor('--ink'), signal: readColor('--signal') });
-  }, [theme]);
 
   return colors;
 }

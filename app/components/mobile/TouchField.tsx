@@ -25,28 +25,29 @@ const DAMPING = 0.9;
 const TOUCH_RADIUS = 90;
 const TOUCH_FORCE = 480;
 const FADE_ALPHA = 0.14;
-/** Toned down from the original 0.7/0.85 — at full strength the field
- * competed with text everywhere it showed through, not just in the hero. */
-const INK_ALPHA = 0.35;
-const SIGNAL_ALPHA = 0.5;
+/** Toned down twice now — 0.7/0.85 competed with text everywhere it showed
+ * through, then 0.35/0.5 still read as busy directly behind the hero name
+ * and tagline, the one place this graphic can't win a fight with content. */
+const INK_ALPHA = 0.16;
+const SIGNAL_ALPHA = 0.28;
 /** getTilt() reports roughly ±18 degrees; this scales one degree of phone
  * tilt to a wind-like force, so opting into TiltToggle turns tilting the
  * phone into stirring the field. */
 const TILT_FORCE = 2.6;
-/** Every 11th particle carries the accent — same "a minority run hot"
- * language TraceField uses, so the two feel like one system. */
-const HOT_EVERY = 11;
+/** Every 20th particle carries the accent (was 11th) — fewer red dots
+ * competing for attention against the hero text. */
+const HOT_EVERY = 20;
 
 function readColorVar(varName: string) {
   return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
 }
 
 /**
- * Mobile's answer to the desktop WebGL hero: a canvas-2D curl-noise flow
- * field, cheap enough to run continuously on a mid-tier phone. Mounted only
- * when the device didn't qualify for WebGL and has a coarse pointer — a
- * different experience for a different device class, not a downgrade of the
- * desktop one.
+ * The fallback for a coarse-pointer device that doesn't clear useWebGLGate's
+ * bar (old hardware, no WebGL2, a metered connection) — a canvas-2D
+ * curl-noise flow field, cheap enough to run continuously on weak hardware.
+ * A phone that does clear that bar gets the real Scene/TraceField instead,
+ * same as desktop; this only exists for the ones that can't.
  *
  * Curl of a scalar noise field (∂n/∂y, -∂n/∂x) rather than the noise vector
  * itself: a curl field has zero divergence, so particles swirl and never
@@ -83,24 +84,12 @@ export function TouchField() {
     let pos = new Float32Array(0);
     let vel = new Float32Array(0);
 
-    // Cached so the hot loop below never calls getComputedStyle — it used
-    // to call it three times per frame (ink, signal, paper-trail), on
-    // exactly the devices that already failed the WebGL gate. Recomputed
-    // only when the theme actually changes.
-    let paperRaw = '';
-    let inkRaw = '';
-    let signalRaw = '';
-    const updateColorCache = () => {
-      paperRaw = readColorVar('--paper');
-      inkRaw = readColorVar('--ink-mute');
-      signalRaw = readColorVar('--signal');
-    };
-    updateColorCache();
-    const colorObserver = new MutationObserver(updateColorCache);
-    colorObserver.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-theme'],
-    });
+    // Cached once so the hot loop below never calls getComputedStyle — it
+    // used to call it three times per frame (ink, signal, paper-trail), on
+    // exactly the devices that already failed the WebGL gate.
+    const paperRaw = readColorVar('--paper');
+    const inkRaw = readColorVar('--ink-mute');
+    const signalRaw = readColorVar('--signal');
 
     const seed = () => {
       for (let i = 0; i < count; i++) {
@@ -120,10 +109,11 @@ export function TouchField() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       // Fewer particles on a small screen — this runs on the phones WebGL
-      // already declined, so the budget has to be real. Also fewer overall
-      // than the first pass: a sparser field of slightly bigger points reads
-      // as deliberate, where a dense one read as noise.
-      count = width < 480 ? 380 : 550;
+      // already declined, so the budget has to be real. Cut again from
+      // 380/550: even at low alpha, that many dots still read as a busy
+      // graphic sitting on top of the hero name and tagline instead of a
+      // quiet backdrop behind them.
+      count = width < 480 ? 160 : 240;
       pos = new Float32Array(count * 2);
       vel = new Float32Array(count * 2);
       seed();
@@ -249,7 +239,6 @@ export function TouchField() {
 
     return () => {
       gsap.ticker.remove(tick);
-      colorObserver.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('pointermove', onPointerMove);

@@ -1,13 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useTheme } from '@/app/components/theme/ThemeProvider';
 import { getLenis, scrollToTarget } from '@/app/lib/lenis';
 import { resolveCommand, suggestions, type CommandResult } from '@/app/lib/commands';
 import {
   key,
   blip,
-  thunk,
   enableSound,
   disableSound,
   isSoundEnabled,
@@ -39,7 +37,6 @@ function focusableElements(container: HTMLElement): HTMLElement[] {
  * with it.
  */
 export function Terminal({ onRequestClose }: { onRequestClose: () => void }) {
-  const { setTheme, toggle } = useTheme();
   const [value, setValue] = useState('');
   const [lines, setLines] = useState<LogLine[]>(() =>
     BOOT_LINES.map(text => ({ id: nextId(), kind: 'output' as const, text }))
@@ -93,14 +90,6 @@ export function Terminal({ onRequestClose }: { onRequestClose: () => void }) {
           result.lines?.forEach(appendOutput);
           window.open(result.href, '_blank', 'noopener,noreferrer');
           return;
-        case 'theme':
-          result.lines?.forEach(appendOutput);
-          thunk();
-          // Origin the view-transition wipe from the dialog itself — there's
-          // no fixed button to expand from when the change comes from here.
-          if (result.next === 'toggle') toggle(dialogRef.current);
-          else setTheme(result.next, dialogRef.current);
-          return;
         case 'sound':
           result.lines?.forEach(appendOutput);
           if (result.next === 'off') disableSound();
@@ -142,7 +131,7 @@ export function Terminal({ onRequestClose }: { onRequestClose: () => void }) {
           return;
       }
     },
-    [appendOutput, toggle, setTheme, onRequestClose]
+    [appendOutput, onRequestClose]
   );
 
   const submit = useCallback(

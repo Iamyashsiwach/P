@@ -94,11 +94,11 @@ export function Contact() {
       className="section-rhythm"
       // The fixed HUD bar sits over whatever's at the very bottom of the
       // page once you've scrolled as far as you can go — normally that's
-      // empty section padding, but Blueprint's --section-pad is compressed
-      // (~36-56px) versus the HUD's own footprint, so at some viewport
-      // heights the copyright row printed underneath it instead of above
-      // it. Inline so it always wins over section-rhythm's padding-block,
-      // the same reason HUD's own mobile row sets padding-bottom inline.
+      // empty section padding, but --section-pad's own clamp bottoms out
+      // at 4rem, less than the HUD's footprint, so at some viewport heights
+      // the copyright row printed underneath it instead of above it.
+      // Inline so it always wins over section-rhythm's padding-block, the
+      // same reason HUD's own mobile row sets padding-bottom inline.
       style={{ paddingBottom: 'max(var(--section-pad), 6rem)' }}
     >
       <div className="grid-shell">
@@ -109,7 +109,7 @@ export function Contact() {
 
           <a
             href={`mailto:${profile.email}`}
-            className="group mt-10 block font-display text-[clamp(2rem,7vw,6rem)] leading-none text-ink draft:text-[clamp(1.6rem,5.6vw,4.8rem)]"
+            className="group mt-10 block font-display text-[clamp(2rem,7vw,6rem)] leading-none text-ink"
           >
             <span className="bg-gradient-to-r from-signal to-signal bg-[length:0%_1px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 group-hover:bg-[length:100%_1px]">
               {profile.email}

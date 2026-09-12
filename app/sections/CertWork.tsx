@@ -46,9 +46,7 @@ export function CertWork() {
                       className="h-14 w-14 shrink-0 border border-border object-cover"
                     />
                     <div className="min-w-0">
-                      <h3 className="truncate font-display text-base text-ink draft:text-sm">
-                        {project.title}
-                      </h3>
+                      <h3 className="truncate font-display text-base text-ink">{project.title}</h3>
                       <p className="mt-0.5 truncate font-mono text-xs text-ink-mute">
                         {project.year} · {project.role}
                       </p>
@@ -73,9 +71,7 @@ export function CertWork() {
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <div className="min-w-0">
-                    <h3 className="truncate font-display text-base text-ink draft:text-sm">
-                      {cert.title}
-                    </h3>
+                    <h3 className="truncate font-display text-base text-ink">{cert.title}</h3>
                     <p className="mt-0.5 truncate font-mono text-xs text-ink-mute">
                       {cert.issuer} · {cert.date}
                     </p>

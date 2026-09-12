@@ -3,7 +3,6 @@
 import React, { useRef } from 'react';
 import { gsap, useGSAP, SplitText, ScrollTrigger, ease, duration, START } from '@/app/lib/motion';
 import { usePrefersReducedMotion } from '@/app/hooks/usePrefersReducedMotion';
-import { useTheme } from '@/app/components/theme/ThemeProvider';
 
 type RevealProps = {
   children: React.ReactNode;
@@ -47,20 +46,10 @@ export function Reveal({
 }: RevealProps) {
   const scope = useRef<HTMLElement>(null);
   const reduced = usePrefersReducedMotion();
-  // Blueprint mode swaps the heading/body font, which changes line-wrap geometry
-  // — a `by="lines"` split computed under the old font no longer matches how
-  // the text would actually wrap, so re-run the split whenever the theme
-  // changes, not just on mount.
-  const { theme } = useTheme();
 
   // Reduced motion forbids movement, not change. A plain opacity fade — no
   // SplitText, no y-offset — still gives the arrival a felt moment without
   // being a vestibular trigger, instead of the page reading as inert.
-  //
-  // Kept in its own hook, without `theme` in its dependencies: a theme
-  // toggle must not replay this fade on every Reveal-wrapped element on the
-  // page simultaneously, which is exactly the kind of sudden motion a
-  // reduced-motion visitor turned this setting on to avoid.
   useGSAP(
     () => {
       if (!reduced || !scope.current) return;
@@ -117,8 +106,8 @@ export function Reveal({
         // the shared chunk every section pays for — same pattern as
         // Contact.tsx's copy-success burst.
         const { Draggable } = await import('@/app/lib/motion.heavy');
-        // The import is async: theme change or print could have torn this
-        // instance down while it was in flight.
+        // The import is async: print could have torn this instance down
+        // while it was in flight.
         if (!split || !scope.current) return;
 
         draggables = Draggable.create(split.chars, {
@@ -215,7 +204,7 @@ export function Reveal({
     // by default once a dependencies array is passed.
     {
       scope,
-      dependencies: [reduced, by, stagger, delay, immediate, theme, throwable],
+      dependencies: [reduced, by, stagger, delay, immediate, throwable],
       revertOnUpdate: true,
     }
   );

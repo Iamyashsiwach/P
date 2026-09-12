@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useThemeColors } from './useThemeColors';
-import { useTheme } from '@/app/components/theme/ThemeProvider';
 import { FluidSim } from './gpgpu/FluidSim';
 import { hasGpgpuSupport } from './gpgpu/support';
 import { getAudioLevel } from '@/app/lib/audio';
@@ -59,6 +58,39 @@ const COUNT = 40000;
 // so the two were sampling the fluid texture at different places for the
 // same physical point on screen.
 const MESH_OFFSET: [number, number, number] = [1.5, 1.3, 0];
+
+/**
+ * This layout was tuned against a landscape aspect ratio. A PerspectiveCamera
+ * only compensates vertically for a narrower viewport — aspect scales the
+ * horizontal frustum directly — so on a phone's portrait aspect the diagram
+ * fills proportionally more of the width and crosses into the hero text
+ * instead of arcing above it. Pulling the camera back for narrower-than-this
+ * aspects fixes that, but the diagram is now smaller on screen too (that's
+ * the point), and simply scaling MESH_OFFSET's Y by the same ratio only
+ * preserves its *centroid*'s screen position — a smaller shape centered at
+ * the same point has its top edge sitting closer to center than before,
+ * which opens a gap between it and the nav rather than closing one. What
+ * actually needs to stay put is the top edge, so the compensation targets
+ * that instead: TOP_REACH approximates how far above MESH_OFFSET's Y the
+ * diagram's highest point extends (NODES_ORBIT's max node Y of ~1.0 plus
+ * ~0.62 of curve spread) — solving for the offset that keeps
+ * (offset + TOP_REACH) / cameraZ constant reproduces the same top-edge
+ * angular position regardless of how far the camera has pulled back.
+ * 16:10 as the reference aspect: a common laptop screen ratio (1440x900,
+ * 2560x1600), narrow enough that it never fires for an actual desktop/
+ * laptop viewport.
+ */
+const REFERENCE_ASPECT = 16 / 10;
+const BASE_CAMERA_Z = 9;
+const TOP_REACH = 1.6;
+
+function offsetYForCameraZ(z: number) {
+  return (z / BASE_CAMERA_Z) * (MESH_OFFSET[1] + TOP_REACH) - TOP_REACH;
+}
+
+function cameraZForAspect(aspect: number) {
+  return aspect < REFERENCE_ASPECT ? BASE_CAMERA_Z * (REFERENCE_ASPECT / aspect) : BASE_CAMERA_Z;
+}
 
 function buildCurveTexture(nodes: [number, number, number][], spread: number) {
   const links = nodes.length - 1;
@@ -203,7 +235,6 @@ const fragmentShader = /* glsl */ `
   uniform vec3  uInk;
   uniform vec3  uSignal;
   uniform float uOpacity;
-  uniform float uBlueprint;
   uniform float uAudio;
 
   varying float vHot;
@@ -223,11 +254,6 @@ const fragmentShader = /* glsl */ `
     // fault rather than something breathing.
     alpha *= 1.0 + uAudio * 0.12;
 
-    // Blueprint mode: crisper, brighter linework against the dark ground —
-    // no second draw call or second material for it.
-    alpha = mix(alpha, alpha * 1.35, uBlueprint);
-    color = mix(color, color * 1.15, uBlueprint);
-
     // Hot particles also carry a little more weight, so nodes read as denser.
     gl_FragColor = vec4(color, alpha);
   }
@@ -240,14 +266,14 @@ const pointerUv = new THREE.Vector2();
 
 export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<number> }) {
   const material = useRef<THREE.ShaderMaterial>(null);
+  const points = useRef<THREE.Points>(null);
   // Onset energy (uAudioPulse) is derived here, not read off the analyser
   // directly: it's how much louder this frame is than the last, decaying
   // afterward — a struck bell should feel struck, not just raise a level.
   const audioPulse = useRef(0);
   const lastAudioLevel = useRef(0);
-  const { viewport, invalidate, gl } = useThree();
+  const { viewport, invalidate, gl, camera, size } = useThree();
   const themeColors = useThemeColors();
-  const { theme } = useTheme();
 
   const gpgpuCapable = useMemo(
     () => hasGpgpuSupport(gl.getContext() as WebGL2RenderingContext),
@@ -295,17 +321,15 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
       uMorph: { value: 0 },
       uDpr: { value: 1 },
       uMouse: { value: new THREE.Vector3(0, 0, 0) },
-      // Paper mode's actual colors, seeded directly rather than read from
-      // the hook: this only ever matters for the one frame before the sync
-      // effect below runs (e.g. a hard load straight into Blueprint mode via
-      // ?theme=blueprint), and keeping the hook out of this memo's deps means
-      // toggling the theme later never recreates the whole uniforms object
-      // — which would snap uTime/uScatter/uMorph back to their initial
-      // values and visibly reset the field.
+      // Actual colors seeded directly rather than read from the hook: this
+      // only ever matters for the one frame before the sync effect below
+      // runs, and keeping the hook out of this memo's deps means the
+      // uniforms object is never recreated after mount — which would snap
+      // uTime/uScatter/uMorph back to their initial values and visibly
+      // reset the field.
       uInk: { value: new THREE.Color('#6E655C') },
       uSignal: { value: new THREE.Color('#CE3A22') },
       uOpacity: { value: 0.72 },
-      uBlueprint: { value: 0 },
       uFluid: { value: BLACK_TEXEL },
       uFluidStrength: { value: 0 },
       // Updated live in useFrame below (like uDpr/uMouse) rather than fixed
@@ -323,18 +347,36 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
     [orbit, flat]
   );
 
-  // Sync colors on every theme change (and once on mount). frameloop stops
-  // past the hero, so without an explicit invalidate() a theme toggle while
-  // scrolled down would leave the canvas showing stale colors indefinitely.
+  // Corrects uInk/uSignal from their hardcoded seed values (above) to the
+  // actual CSS-computed colors, once on mount.
   useEffect(() => {
     const mat = material.current;
     if (!mat) return;
 
     mat.uniforms.uInk.value.copy(themeColors.ink);
     mat.uniforms.uSignal.value.copy(themeColors.signal);
-    mat.uniforms.uBlueprint.value = theme === 'blueprint' ? 1 : 0;
     invalidate();
-  }, [themeColors, theme, invalidate]);
+  }, [themeColors, invalidate]);
+
+  // Fits the diagram to the viewport's aspect ratio — see cameraZForAspect's
+  // comment above for why the camera distance and MESH_OFFSET's Y both need
+  // to move together. `size` is R3F's own resize-reactive viewport size, so
+  // this re-runs on a window resize or a phone rotating; useLayoutEffect
+  // (not useEffect) so the correction lands before the first frame paints.
+  useLayoutEffect(() => {
+    const mat = material.current;
+    const mesh = points.current;
+    if (!mat || !mesh) return;
+
+    const z = cameraZForAspect(size.width / size.height);
+    camera.position.z = z;
+    if (camera instanceof THREE.PerspectiveCamera) camera.updateProjectionMatrix();
+
+    const offsetY = offsetYForCameraZ(z);
+    mesh.position.y = offsetY;
+    mat.uniforms.uMeshOffset.value.set(MESH_OFFSET[0], offsetY);
+    invalidate();
+  }, [camera, size.width, size.height, invalidate]);
 
   useFrame((state, delta) => {
     const mat = material.current;
@@ -377,7 +419,7 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
   });
 
   return (
-    <points geometry={geometry} frustumCulled={false} position={MESH_OFFSET}>
+    <points ref={points} geometry={geometry} frustumCulled={false} position={MESH_OFFSET}>
       <shaderMaterial
         ref={material}
         uniforms={uniforms}
