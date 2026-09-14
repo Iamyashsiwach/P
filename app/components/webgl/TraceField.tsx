@@ -128,7 +128,27 @@ function buildCurveTexture(nodes: [number, number, number][], spread: number) {
     }
   }
 
-  const texture = new THREE.DataTexture(data, SAMPLES, total, THREE.RGBAFormat, THREE.FloatType);
+  // Half float, not float. RGBA32F is NOT texture-filterable in WebGL2 core —
+  // sampling one with LinearFilter requires OES_texture_float_linear, which
+  // plenty of mobile GPUs (Mali in particular, and iOS) don't expose. On those,
+  // the sampler silently returns (0,0,0,1) rather than erroring, so every
+  // particle reads position 0 and the whole diagram collapses to a point:
+  // a canvas that renders nothing, with no console error to explain it.
+  // That's invisible on any desktop GPU, where float-linear is a given.
+  // RGBA16F is filterable in core ES 3.0, so it keeps the smooth
+  // interpolation along the curve while actually working on a phone — and
+  // half's ~0.004 precision at these coordinates (max |5.2|) is far finer
+  // than the ~0.01 spacing between baked samples, so it's visually identical.
+  const half = new Uint16Array(data.length);
+  for (let i = 0; i < data.length; i++) half[i] = THREE.DataUtils.toHalfFloat(data[i]);
+
+  const texture = new THREE.DataTexture(
+    half,
+    SAMPLES,
+    total,
+    THREE.RGBAFormat,
+    THREE.HalfFloatType
+  );
   texture.minFilter = THREE.LinearFilter;
   texture.magFilter = THREE.LinearFilter;
   texture.wrapS = THREE.RepeatWrapping;
