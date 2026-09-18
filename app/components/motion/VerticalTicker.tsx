@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { gsap, useGSAP } from '@/app/lib/motion';
 import { usePrefersReducedMotion } from '@/app/hooks/usePrefersReducedMotion';
 
@@ -25,8 +25,14 @@ type VerticalTickerProps = {
  * living in an untouched list elsewhere), this list of certifications/work
  * items IS the primary content — real, tabbable links included. Only the
  * first copy stays in the accessibility tree and tab order; the copies that
- * exist purely to fill the wrap gap are marked `inert`, not just visually
- * hidden, so they cannot be tabbed into or announced.
+ * exist purely to fill the wrap gap are aria-hidden with their links pulled
+ * out of the tab order, so they cannot be tabbed into or announced.
+ *
+ * Not `inert`, which this used to be: inert also removes an element from
+ * hit-testing, and at almost any moment part of the visible window is a
+ * filler copy — so a row a visitor could plainly see was dead to a real
+ * click. Screen readers and keyboard users only ever need the first copy;
+ * a mouse or finger needs whichever copy happens to be under it.
  */
 export function VerticalTicker({
   children,
@@ -37,6 +43,14 @@ export function VerticalTicker({
 }: VerticalTickerProps) {
   const scope = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
+
+  // React never sets tabIndex on these nodes itself, so this survives
+  // re-renders; it re-runs anyway in case children swapped out the nodes.
+  useEffect(() => {
+    scope.current
+      ?.querySelectorAll<HTMLElement>('[data-ticker-copy][aria-hidden] :is(a, button)')
+      .forEach(el => (el.tabIndex = -1));
+  });
 
   useGSAP(
     () => {
@@ -89,8 +103,8 @@ export function VerticalTicker({
       // The wrap modifier leaves each copy sitting at whatever mid-cycle
       // translateY it last had — harmless while the CSS clip hides the
       // other two, but the print stylesheet un-clips the container and
-      // un-hides only the one non-inert copy (the print CSS in globals.css
-      // hides [data-ticker-copy][inert]). Left alone, that surviving copy
+      // un-hides only the one real copy (the print CSS in globals.css
+      // hides [data-ticker-copy][aria-hidden]). Left alone, that surviving copy
       // still renders at its last live scroll offset instead of at rest,
       // overlapping whatever content sits above or below it on paper. Same
       // fix as Reveal.tsx's SplitText revert: pause and zero the transform
@@ -143,7 +157,7 @@ export function VerticalTicker({
         {/* Three copies: enough that at least two always cover the visible
             window while the third fills the gap the wrap leaves behind. */}
         {[0, 1, 2].map(i => (
-          <div key={i} data-ticker-copy inert={i > 0 || undefined}>
+          <div key={i} data-ticker-copy aria-hidden={i > 0 || undefined}>
             {children}
           </div>
         ))}

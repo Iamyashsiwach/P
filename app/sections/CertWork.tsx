@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import Image from 'next/image';
 import { work, certifications } from '@/app/lib/content';
 import { SectionHeading } from '@/app/components/chrome/SectionHeading';
@@ -58,25 +59,63 @@ export function CertWork() {
           </div>
 
           <div>
-            <p id="certifications" className="mono-label border-b border-border pb-3">
-              {certifications.eyebrow}
+            <p
+              id="certifications"
+              className="mono-label flex items-baseline justify-between gap-4 border-b border-border pb-3"
+            >
+              <span className="whitespace-nowrap">{certifications.eyebrow}</span>
+              <a
+                href={certifications.profile}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="whitespace-nowrap transition-colors hover:text-ink"
+              >
+                {/* Too wide beside the label at phone width — visually
+                    shortened there, still read in full by screen readers. */}
+                <span className="sr-only sm:not-sr-only">All badges on </span>Credly{' '}
+                <span aria-hidden="true">↗</span>
+              </a>
             </p>
             <VerticalTicker direction="up" height={420}>
               {certifications.items.map((cert, i) => (
-                <div
+                <a
                   key={cert.title}
-                  className="flex items-baseline gap-3 border-b border-border py-4 pr-2"
+                  href={cert.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cursor="view"
+                  className="flex items-baseline gap-3 border-b border-border py-4 pr-2 transition-colors hover:bg-paper-2"
                 >
                   <span data-numeric className="shrink-0 font-mono text-xs text-ink-mute">
                     {String(i + 1).padStart(2, '0')}
                   </span>
+                  {/* Wraps rather than truncates, unlike the Work rows: on a
+                      phone the expiry date is what got cut off, and it's
+                      half of what a visitor is here to verify. */}
                   <div className="min-w-0">
-                    <h3 className="truncate font-display text-base text-ink">{cert.title}</h3>
-                    <p className="mt-0.5 truncate font-mono text-xs text-ink-mute">
-                      {cert.issuer} · {cert.date}
+                    <h3 className="font-display text-base text-ink">{cert.title}</h3>
+                    <p className="mt-0.5 font-mono text-xs text-ink-mute">
+                      {/* Each phrase stays whole, so a wrap lands between
+                          "Issued …" and "Expires …", never inside a date;
+                          the nbsp keeps a line from starting with "·". */}
+                      {[cert.issuer, ...cert.date.split(' · ')].map((part, j) => (
+                        <React.Fragment key={part}>
+                          {j > 0 && ' · '}
+                          <span className="whitespace-nowrap">{part}</span>
+                        </React.Fragment>
+                      ))}
                     </p>
                   </div>
-                </div>
+                  {/* Touch screens have no hover or custom cursor to signal a
+                      link — this is the only cue there that a row is
+                      clickable to verify. */}
+                  <span
+                    aria-hidden="true"
+                    className="ml-auto shrink-0 font-mono text-xs text-ink-mute"
+                  >
+                    ↗
+                  </span>
+                </a>
               ))}
             </VerticalTicker>
           </div>

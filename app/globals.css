@@ -228,7 +228,7 @@ html.lenis {
   }
 
   /* The auto-scroll tickers are a fixed-height clipped window holding three
-     stacked copies, two of them `inert` filler that only exists to cover
+     stacked copies, two of them aria-hidden filler that only exists to cover
      the wrap. There is no scrolling on paper, so the clip has to open and
      the filler has to disappear, or Work and Certifications print clipped
      to 420px and tripled. */
@@ -237,7 +237,7 @@ html.lenis {
     overflow: visible !important;
   }
 
-  [data-ticker-copy][inert] {
+  [data-ticker-copy][aria-hidden] {
     display: none !important;
   }
 
