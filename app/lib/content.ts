@@ -81,8 +81,8 @@ export type Certification = {
   title: string;
   issuer: string;
   date: string;
-  skills?: string[];
-  credentialId?: string;
+  /** Public verification page — every cert listed here must be checkable. */
+  href: string;
 };
 
 export const certifications = {
@@ -94,52 +94,43 @@ export const certifications = {
   // one nav entry with nothing to show for it.
   eyebrow: '05 / Certifications',
   heading: 'What I went and got certified in',
+  profile: 'https://www.credly.com/users/yash-siwach',
   items: [
     {
-      title: 'Claude Certified Developer',
+      title: 'AWS Certified Solutions Architect – Associate',
+      issuer: 'AWS',
+      date: 'Issued Sep 2026 · Expires Sep 2029',
+      href: 'https://www.credly.com/badges/8743bb6d-2186-42c7-958d-45e5025ceb5b',
+    },
+    {
+      title: 'Claude Certified Architect – Professional',
+      issuer: 'Anthropic',
+      date: 'Issued Sep 2026 · Expires Sep 2027',
+      href: 'https://www.credly.com/badges/9835a215-5c9a-4cc5-964d-4dc62c14521e',
+    },
+    {
+      title: 'Claude Certified Architect – Foundations',
+      issuer: 'Anthropic',
+      date: 'Issued Sep 2026 · Expires Sep 2027',
+      href: 'https://www.credly.com/badges/7e844bdb-7f3d-4292-9d8c-d2e4e97fe6f9',
+    },
+    {
+      title: 'GitHub Copilot',
+      issuer: 'Microsoft',
+      date: 'Issued Sep 2026 · Expires Sep 2028',
+      href: 'https://learn.microsoft.com/api/credentials/share/en-us/Yash-8987/71C6A552AD79C507?sharingId=F3F9629D5D45EC9E',
+    },
+    {
+      title: 'AWS Partner: Technical Accredited',
+      issuer: 'AWS',
+      date: 'Issued Sep 2026',
+      href: 'https://www.credly.com/badges/fbe58bae-f577-4653-bbcf-500b78a55eb1',
+    },
+    {
+      title: 'Claude Certified Developer – Foundations',
       issuer: 'Anthropic',
       date: 'Issued Aug 2026 · Expires Aug 2027',
-      skills: ['Model Context Protocol (MCP)', 'Claude Agent SDK'],
-    },
-    {
-      title: 'GitHub Foundations',
-      issuer: 'DataCamp',
-      date: 'Issued Jul 2026',
-      credentialId: '905,059',
-      skills: ['GitHub'],
-    },
-    {
-      title: 'Using MySQL Database with PHP',
-      issuer: 'Coursera',
-      date: 'Issued May 2024',
-    },
-    {
-      title: 'Clean Data in SQL using MySQL Workbench',
-      issuer: 'Coursera',
-      date: 'Issued May 2024',
-    },
-    {
-      title: 'Build a MERN Application using Next.js',
-      issuer: 'Coursera',
-      date: 'Issued May 2024',
-    },
-    {
-      title: "Angela Yu's iOS Bootcamp Course",
-      issuer: 'Udemy',
-      date: 'Issued Feb 2024',
-      skills: ['Swift', 'iOS Development'],
-    },
-    {
-      title: 'Introduction to Cyber Attacks',
-      issuer: 'New York University',
-      date: 'Issued Aug 2023',
-      skills: ['Cloud Security'],
-    },
-    {
-      title: 'Principles of UX/UI Design',
-      issuer: 'Meta',
-      date: 'Issued Apr 2023',
-      skills: ['User Experience (UX)', 'User Interface Design'],
+      href: 'https://www.credly.com/badges/0292ec26-4d6d-4615-9b0d-b150851c932a',
     },
   ] satisfies Certification[],
 } as const;
@@ -357,7 +348,7 @@ export const stack = {
         { name: 'RAG', note: "retrieval-augmented search, Blue Layer's case studies" },
         {
           name: 'Anthropic Claude SDK',
-          note: 'MCP and the Claude Agent SDK — Claude Certified Developer',
+          note: 'MCP and the Claude Agent SDK — Claude Certified Architect',
         },
         {
           name: 'PyTorch / YOLOv8',
@@ -376,7 +367,7 @@ export const stack = {
     {
       label: 'Infra',
       items: [
-        { name: 'AWS', note: 'day-to-day at Accenture' },
+        { name: 'AWS', note: 'day-to-day at Accenture — Solutions Architect Associate' },
         { name: 'Azure', note: 'production deployment, the crop-health project' },
         { name: 'Docker', note: 'multi-stage builds' },
         { name: 'Terraform', note: 'infrastructure as code' },
