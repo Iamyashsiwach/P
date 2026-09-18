@@ -132,6 +132,24 @@ export const certifications = {
       date: 'Issued Aug 2026 · Expires Aug 2027',
       href: 'https://www.credly.com/badges/0292ec26-4d6d-4615-9b0d-b150851c932a',
     },
+    {
+      title: 'GitHub Foundations',
+      issuer: 'DataCamp',
+      date: 'Issued Jul 2026',
+      href: 'https://www.datacamp.com/completed/statement-of-accomplishment/track/a6eaa9a945a13dee9cd7c4470716fb324e04d1c5',
+    },
+    {
+      title: 'Introduction to Cyber Attacks',
+      issuer: 'New York University',
+      date: 'Issued Aug 2023',
+      href: 'https://www.coursera.org/account/accomplishments/verify/8W8PWE46S26X',
+    },
+    {
+      title: 'Principles of UX/UI Design',
+      issuer: 'Meta',
+      date: 'Issued Apr 2023',
+      href: 'https://www.coursera.org/account/accomplishments/verify/WCEKDRQCCW4B',
+    },
   ] satisfies Certification[],
 } as const;
 
