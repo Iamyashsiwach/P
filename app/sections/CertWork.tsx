@@ -49,7 +49,7 @@ export function CertWork() {
                     <div className="min-w-0">
                       <h3 className="truncate font-display text-base text-ink">{project.title}</h3>
                       <p className="mt-0.5 truncate font-mono text-xs text-ink-mute">
-                        {project.year} · {project.role}
+                        {project.role}
                       </p>
                     </div>
                   </Row>
