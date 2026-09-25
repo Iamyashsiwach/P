@@ -7,14 +7,31 @@ type Navigator2 = Navigator & {
   connection?: { saveData?: boolean };
 };
 
-/** Probe for a real WebGL2 context, then hand it straight back. */
+// CPU rasterizers standing in for a missing or blocklisted GPU.
+const SOFTWARE_RENDERER = /swiftshader|llvmpipe|softpipe|basic render driver|software/i;
+
+/**
+ * Probe for a hardware-accelerated WebGL2 context, then hand it straight
+ * back. A software-rendered context still "works", but then every frame of
+ * the 40k-particle scene is drawn on the CPU: measured with Lighthouse, the
+ * same page went from ~4s to ~7.5s of main-thread work and TBT roughly
+ * tripled. PageSpeed Insights runs on GPU-less machines, which is where its
+ * 1–2s of TBT came from — and real visitors without GPU acceleration (VMs,
+ * remote desktops, blocklisted drivers) got the same jank.
+ *
+ * Checked by renderer string because failIfMajorPerformanceCaveat, the
+ * flag meant for exactly this, still hands back a context for Chrome's
+ * SwiftShader-over-ANGLE (verified), so it catches nothing here.
+ */
 function hasWebGL2() {
   try {
     const canvas = document.createElement('canvas');
     const gl = canvas.getContext('webgl2');
     if (!gl) return false;
+    const info = gl.getExtension('WEBGL_debug_renderer_info');
+    const renderer = String(gl.getParameter(info ? info.UNMASKED_RENDERER_WEBGL : gl.RENDERER));
     gl.getExtension('WEBGL_lose_context')?.loseContext();
-    return true;
+    return !SOFTWARE_RENDERER.test(renderer);
   } catch {
     return false;
   }
@@ -22,8 +39,8 @@ function hasWebGL2() {
 
 /**
  * Decides whether this device gets the 3D scene at all — phone or desktop,
- * same bar: hardware concurrency, a real WebGL2 context, and not on a
- * metered connection. No screen-width cutoff, deliberately: a modern phone
+ * same bar: hardware concurrency, a hardware-accelerated WebGL2 context,
+ * and not on a metered connection. No screen-width cutoff, deliberately: a modern phone
  * that clears the same hardware checks a laptop would gets the same scene,
  * not a downgraded one. TouchField is the fallback for whatever doesn't
  * clear this bar and has a coarse pointer; everything else just sees the

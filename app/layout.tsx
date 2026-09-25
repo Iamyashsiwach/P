@@ -33,6 +33,12 @@ const instrumentSerif = Instrument_Serif({
 const description =
   'Associate Software Engineer at Accenture, Gurugram. I build software end to end — schema to shader — and care how it gets used.';
 
+// Site-wide defaults only. Every route under this layout inherits these, so
+// nothing here may name a specific page: a canonical or og:url set here made
+// /book and every post declare themselves duplicates of the home page, and
+// Google ended up listing /book under the home page's title. Each page sets
+// its own canonical (app/page.tsx, app/book/...). twitter: carries no
+// title/description so X falls back to each page's own og: tags.
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.yashsiwach.in'),
   title: {
@@ -40,13 +46,9 @@ export const metadata: Metadata = {
     template: '%s — Yash Siwach',
   },
   description,
-  alternates: {
-    canonical: '/',
-  },
   openGraph: {
     title: 'Yash Siwach — Profile',
     description,
-    url: 'https://www.yashsiwach.in',
     siteName: 'Yash Siwach',
     locale: 'en_US',
     type: 'website',
@@ -54,8 +56,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Yash Siwach — Profile',
-    description,
     images: ['/Hero_img.jpeg'],
   },
   icons: {
