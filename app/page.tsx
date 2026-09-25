@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import type { Metadata } from 'next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 
@@ -23,6 +24,12 @@ import { Stack } from './sections/Stack';
 import { CertWork } from './sections/CertWork';
 import { Proof } from './sections/Proof';
 import { Contact } from './sections/Contact';
+
+// Title, description and og:image come from the layout defaults, which are
+// the home page's; only the canonical has to live here (see layout.tsx).
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+};
 
 export default function Home() {
   return (

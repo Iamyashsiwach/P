@@ -32,8 +32,10 @@ export async function generateMetadata({ params }: BookPostPageProps) {
   }
 
   return {
-    title: `${post.title} | Yash Siwach Book`,
+    // The layout template already appends " — Yash Siwach".
+    title: post.title,
     description: post.excerpt,
+    alternates: { canonical: `/book/${post.slug}` },
     keywords: post.tags.join(', '),
     openGraph: {
       title: post.title,
