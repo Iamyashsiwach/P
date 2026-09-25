@@ -403,7 +403,8 @@ export const proof = {
   /** The plain-language framing a non-technical visitor needs: the sentence
    * has to make the point on its own, with the calendar grid as backup, not
    * the other way round. Filled in with the real count at render time. */
-  captionTemplate: (activeDays: number) => `${activeDays} active days on GitHub.`,
+  captionTemplate: (activeDays: number) => `${activeDays} active days on GitHub in the past year.`,
+  note: 'Live from my personal GitHub',
   unavailable:
     'Live activity feed unavailable right now — everything else on this page is still real, this one just did not load.',
   activityUnavailable: 'Recent activity unavailable right now.',
