@@ -14,15 +14,18 @@ const GITHUB_LOGIN = (() => {
   return match?.[1] ?? 'iamyashsiwach';
 })();
 
-/** Fixed to calendar-year 2025 rather than the API's default rolling
- * 365-day window — a deliberate choice, not shown anywhere in the UI copy. */
-const RANGE_FROM = '2025-01-01T00:00:00Z';
-const RANGE_TO = '2026-01-01T00:00:00Z';
+/** Seconds GitHub responses are cached for, server-side. The section polls
+ * /api/github while it's on screen, so this is what "live" means in
+ * practice — and it keeps even heavy traffic to one call per minute. */
+const REVALIDATE = 60;
 
+// No from/to: GitHub then uses a rolling window ending now (the past year),
+// so the stats keep moving. This used to be pinned to calendar-year 2025,
+// which quietly stopped counting anything new on Jan 1.
 const QUERY = /* GraphQL */ `
-  query ($login: String!, $from: DateTime!, $to: DateTime!) {
+  query ($login: String!) {
     user(login: $login) {
-      contributionsCollection(from: $from, to: $to) {
+      contributionsCollection {
         contributionCalendar {
           totalContributions
           weeks {
@@ -66,9 +69,8 @@ function computeStreak(days: ContributionDay[]): number {
   return longest;
 }
 
-/** Cached for an hour by Next's fetch cache — a portfolio doesn't need
- * live-to-the-second contribution data, and this keeps every render of
- * Proof.tsx plus every hit on /api/github off GitHub's rate limit. */
+/** Cached for REVALIDATE seconds by Next's fetch cache, which keeps every
+ * render of Proof.tsx plus every hit on /api/github off GitHub's rate limit. */
 export async function getGithub(): Promise<GithubResult> {
   const token = process.env.GITHUB_TOKEN;
   if (!token) return { ok: false, reason: 'no-token' };
@@ -80,11 +82,8 @@ export async function getGithub(): Promise<GithubResult> {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        query: QUERY,
-        variables: { login: GITHUB_LOGIN, from: RANGE_FROM, to: RANGE_TO },
-      }),
-      next: { revalidate: 3600 },
+      body: JSON.stringify({ query: QUERY, variables: { login: GITHUB_LOGIN } }),
+      next: { revalidate: REVALIDATE },
     });
 
     if (res.status === 401 || res.status === 403) {
@@ -191,7 +190,7 @@ function describeEvent(e: GithubEvent): ActivityItem | null {
 }
 
 /** Recent public activity — a REST endpoint, unlike the calendar, so this
- * is a plain GET rather than GraphQL. Same token, same hourly cache. */
+ * is a plain GET rather than GraphQL. Same token, same cache window. */
 export async function getRecentActivity(): Promise<ActivityResult> {
   const token = process.env.GITHUB_TOKEN;
   if (!token) return { ok: false, reason: 'no-token' };
@@ -204,7 +203,7 @@ export async function getRecentActivity(): Promise<ActivityResult> {
           Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github+json',
         },
-        next: { revalidate: 3600 },
+        next: { revalidate: REVALIDATE },
       }
     );
 
