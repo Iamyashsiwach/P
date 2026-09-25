@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 
@@ -36,12 +37,28 @@ export default function Home() {
 
       <main>
         <Hero />
-        <About />
-        <Log />
-        <Stack />
-        <CertWork />
-        <Proof />
-        <Contact />
+        {/* Nothing here suspends — each boundary exists so React hydrates
+            the sections below the fold as separate units, yielding to the
+            main thread between them, instead of the whole page in one
+            ~180ms task on a mid-range phone. Server HTML is unaffected. */}
+        <Suspense>
+          <About />
+        </Suspense>
+        <Suspense>
+          <Log />
+        </Suspense>
+        <Suspense>
+          <Stack />
+        </Suspense>
+        <Suspense>
+          <CertWork />
+        </Suspense>
+        <Suspense>
+          <Proof />
+        </Suspense>
+        <Suspense>
+          <Contact />
+        </Suspense>
       </main>
 
       <HUD sections={sectionIds} />
