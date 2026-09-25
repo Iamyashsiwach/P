@@ -300,7 +300,18 @@ export function TraceField({ scrollRef }: { scrollRef: React.MutableRefObject<nu
     [gl]
   );
 
-  const fluid = useMemo(() => (gpgpuCapable ? new FluidSim(FLUID_SIZE) : null), [gpgpuCapable]);
+  // No fluid layer on touch screens. It's driven by cursor drag, and on a
+  // phone the only equivalent is a finger drag that also scrolls the page,
+  // so it barely ever shows — yet it cost every mobile load extra render
+  // targets and shader compiles on the main thread. The particles render
+  // exactly as they do without it: uFluidStrength just stays 0.
+  const fluid = useMemo(
+    () =>
+      gpgpuCapable && !window.matchMedia('(pointer: coarse)').matches
+        ? new FluidSim(FLUID_SIZE)
+        : null,
+    [gpgpuCapable]
+  );
   useEffect(() => () => fluid?.dispose(), [fluid]);
 
   const orbit = useMemo(() => buildCurveTexture(NODES_ORBIT, 0.62), []);
