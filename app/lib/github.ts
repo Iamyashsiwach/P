@@ -159,7 +159,7 @@ export async function getGithub(): Promise<GithubResult> {
 export type ActivityItem = { id: string; text: string; url: string; date: string };
 export type ActivityResult =
   | { ok: true; data: ActivityItem[] }
-  | { ok: false; reason: 'no-token' | 'rate-limited' | 'error' };
+  | { ok: false; reason: 'rate-limited' | 'error' };
 
 type GithubEvent = {
   id: string;
@@ -171,6 +171,14 @@ type GithubEvent = {
     ref_type?: string;
     pull_request?: { merged?: boolean };
   };
+};
+
+type GithubRepository = {
+  full_name: string;
+  html_url: string;
+  pushed_at: string | null;
+  size: number;
+  fork: boolean;
 };
 
 /** Translates a raw public event into a plain-English line — never the raw
@@ -216,15 +224,14 @@ function describeEvent(e: GithubEvent): ActivityItem | null {
   }
 }
 
-/** Public events work anonymously too. A configured token raises the rate
- * limit, but an expired token should fall back to anonymous access. */
-export async function getRecentActivity(): Promise<ActivityResult> {
+async function getActivityItems<T>(
+  path: string
+): Promise<{ ok: true; data: T[] } | { ok: false; reason: 'rate-limited' | 'error' }> {
   const token = process.env.GITHUB_TOKEN;
 
   try {
-    const url = `https://api.github.com/users/${GITHUB_LOGIN}/events/public?per_page=30`;
     const request = (authToken?: string) =>
-      fetch(url, {
+      fetch(`https://api.github.com/users/${GITHUB_LOGIN}/${path}`, {
         headers: {
           ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
           Accept: 'application/vnd.github+json',
@@ -239,15 +246,41 @@ export async function getRecentActivity(): Promise<ActivityResult> {
     if (res.status === 403 || res.status === 429) return { ok: false, reason: 'rate-limited' };
     if (!res.ok) return { ok: false, reason: 'error' };
 
-    const events: GithubEvent[] = await res.json();
-    const items = events
-      .map(describeEvent)
-      .filter((item): item is ActivityItem => item !== null)
-      .sort((a, b) => b.date.localeCompare(a.date))
-      .slice(0, 5);
-
-    return { ok: true, data: items };
+    const data = await res.json();
+    return Array.isArray(data) ? { ok: true, data } : { ok: false, reason: 'error' };
   } catch {
     return { ok: false, reason: 'error' };
   }
+}
+
+/** GitHub can delay public events for hours. Repository push timestamps
+ * fill that gap until the corresponding events arrive. Both sources work
+ * without a token, and either can keep the feed available on its own. */
+export async function getRecentActivity(): Promise<ActivityResult> {
+  const [events, pushes] = await Promise.all([
+    getActivityItems<GithubEvent>('events/public?per_page=30'),
+    getActivityItems<GithubRepository>('repos?type=owner&sort=pushed&direction=desc&per_page=5'),
+  ]);
+
+  if (!events.ok && !pushes.ok) return events;
+  const items = events.ok
+    ? events.data.map(describeEvent).filter((item): item is ActivityItem => item !== null)
+    : [];
+  const pendingPushes = pushes.ok
+    ? pushes.data.flatMap(repo => {
+        if (!repo.pushed_at || repo.size === 0 || repo.fork) return [];
+        const push = {
+          id: `push:${repo.full_name}:${repo.pushed_at}`,
+          text: `Pushed to ${repo.full_name}`,
+          url: repo.html_url,
+          date: repo.pushed_at,
+        };
+        return items.some(item => item.text === push.text && item.date >= push.date) ? [] : [push];
+      })
+    : [];
+
+  return {
+    ok: true,
+    data: [...pendingPushes, ...items].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 5),
+  };
 }
