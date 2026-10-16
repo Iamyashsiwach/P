@@ -8,12 +8,10 @@ import { getGithub, getRecentActivity } from '@/app/lib/github';
  * never import a server-only module that touches a secret, even one that
  * never actually sends the token to the browser.
  *
- * Next 15 no longer caches GET route handlers by default, so this is explicit
- * about it: one minute, matching the fetch cache in github.ts. (Segment
- * config must be a literal, so it can't import that constant.)
+ * Run at request time, keeping the shared upstream fetch cache in github.ts.
+ * Do not prerender or CDN-cache a missing-token/upstream failure response.
  */
-export const revalidate = 60;
-export const dynamic = 'force-static';
+export const revalidate = 0;
 
 export async function GET() {
   const [contributions, activity] = await Promise.all([getGithub(), getRecentActivity()]);
@@ -21,7 +19,7 @@ export async function GET() {
     { contributions, activity },
     {
       headers: {
-        'Cache-Control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=300',
+        'Cache-Control': 'no-store',
       },
     }
   );

@@ -1,11 +1,13 @@
 import { profile } from '@/app/lib/content';
+import { parseContributionCalendar } from './github-calendar';
 
 /**
  * Server-only. GITHUB_TOKEN must never reach the client bundle — this module
  * is imported only by an async server component (Proof.tsx) and a route
  * handler (api/github/route.ts), never by anything with 'use client'.
  *
- * The contribution calendar is GraphQL-only; there is no REST equivalent.
+ * Prefer GraphQL when a token is configured; otherwise read the same
+ * calendar from GitHub's public profile. Public activity needs no token.
  */
 
 const GITHUB_LOGIN = (() => {
@@ -16,8 +18,11 @@ const GITHUB_LOGIN = (() => {
 
 /** Seconds GitHub responses are cached for, server-side. The section polls
  * /api/github while it's on screen, so this is what "live" means in
- * practice — and it keeps even heavy traffic to one call per minute. */
+ * practice. Public REST requests use five minutes to stay below GitHub's
+ * lower unauthenticated rate limit. */
 const REVALIDATE = 60;
+const PUBLIC_REVALIDATE = 300;
+const REQUEST_TIMEOUT_MS = 10_000;
 
 // No from/to: GitHub then uses a rolling window ending now (the past year),
 // so the stats keep moving. This used to be pinned to calendar-year 2025,
@@ -69,12 +74,17 @@ function computeStreak(days: ContributionDay[]): number {
   return longest;
 }
 
-/** Cached for REVALIDATE seconds by Next's fetch cache, which keeps every
- * render of Proof.tsx plus every hit on /api/github off GitHub's rate limit. */
-export async function getGithub(): Promise<GithubResult> {
-  const token = process.env.GITHUB_TOKEN;
-  if (!token) return { ok: false, reason: 'no-token' };
+function statsFromWeeks(weeks: ContributionWeek[], totalContributions?: number): GithubStats {
+  const allDays = weeks.flat();
+  return {
+    totalContributions: totalContributions ?? allDays.reduce((total, day) => total + day.count, 0),
+    activeDays: allDays.filter(day => day.count > 0).length,
+    longestStreak: computeStreak(allDays),
+    weeks,
+  };
+}
 
+async function getAuthenticatedContributions(token: string): Promise<GithubResult> {
   try {
     const res = await fetch('https://api.github.com/graphql', {
       method: 'POST',
@@ -84,6 +94,7 @@ export async function getGithub(): Promise<GithubResult> {
       },
       body: JSON.stringify({ query: QUERY, variables: { login: GITHUB_LOGIN } }),
       next: { revalidate: REVALIDATE },
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     });
 
     if (res.status === 401 || res.status === 403) {
@@ -111,19 +122,35 @@ export async function getGithub(): Promise<GithubResult> {
         }))
     );
 
-    const allDays = weeks.flat();
-    const activeDays = allDays.filter(d => d.count > 0).length;
-    const longestStreak = computeStreak(allDays);
-
     return {
       ok: true,
-      data: {
-        totalContributions: calendar.totalContributions,
-        activeDays,
-        longestStreak,
-        weeks,
-      },
+      data: statsFromWeeks(weeks, calendar.totalContributions),
     };
+  } catch {
+    return { ok: false, reason: 'error' };
+  }
+}
+
+/** Fetch caching is shared by the initial render and the live endpoint.
+ * An absent, expired, or rate-limited token must not hide public stats. */
+export async function getGithub(): Promise<GithubResult> {
+  const token = process.env.GITHUB_TOKEN;
+  if (token) {
+    const result = await getAuthenticatedContributions(token);
+    if (result.ok) return result;
+  }
+
+  try {
+    const res = await fetch(`https://github.com/users/${GITHUB_LOGIN}/contributions`, {
+      headers: { Accept: 'text/html', 'Accept-Language': 'en-US' },
+      next: { revalidate: REVALIDATE },
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
+    if (res.status === 403 || res.status === 429) return { ok: false, reason: 'rate-limited' };
+    if (!res.ok) return { ok: false, reason: 'error' };
+
+    const weeks = parseContributionCalendar(await res.text());
+    return weeks ? { ok: true, data: statsFromWeeks(weeks) } : { ok: false, reason: 'error' };
   } catch {
     return { ok: false, reason: 'error' };
   }
@@ -189,32 +216,34 @@ function describeEvent(e: GithubEvent): ActivityItem | null {
   }
 }
 
-/** Recent public activity — a REST endpoint, unlike the calendar, so this
- * is a plain GET rather than GraphQL. Same token, same cache window. */
+/** Public events work anonymously too. A configured token raises the rate
+ * limit, but an expired token should fall back to anonymous access. */
 export async function getRecentActivity(): Promise<ActivityResult> {
   const token = process.env.GITHUB_TOKEN;
-  if (!token) return { ok: false, reason: 'no-token' };
 
   try {
-    const res = await fetch(
-      `https://api.github.com/users/${GITHUB_LOGIN}/events/public?per_page=30`,
-      {
+    const url = `https://api.github.com/users/${GITHUB_LOGIN}/events/public?per_page=30`;
+    const request = (authToken?: string) =>
+      fetch(url, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
           Accept: 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28',
         },
-        next: { revalidate: REVALIDATE },
-      }
-    );
+        next: { revalidate: authToken ? REVALIDATE : PUBLIC_REVALIDATE },
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      });
+    let res = await request(token);
+    if (token && (res.status === 401 || res.status === 403)) res = await request();
 
-    if (res.status === 401) return { ok: false, reason: 'no-token' };
-    if (res.status === 403) return { ok: false, reason: 'rate-limited' };
+    if (res.status === 403 || res.status === 429) return { ok: false, reason: 'rate-limited' };
     if (!res.ok) return { ok: false, reason: 'error' };
 
     const events: GithubEvent[] = await res.json();
     const items = events
       .map(describeEvent)
       .filter((item): item is ActivityItem => item !== null)
+      .sort((a, b) => b.date.localeCompare(a.date))
       .slice(0, 5);
 
     return { ok: true, data: items };

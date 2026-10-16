@@ -25,6 +25,9 @@ import { CertWork } from './sections/CertWork';
 import { Proof } from './sections/Proof';
 import { Contact } from './sections/Contact';
 
+// Retry the initial GitHub data even if its build-time request failed.
+export const revalidate = 60;
+
 // Title, description and og:image come from the layout defaults, which are
 // the home page's; only the canonical has to live here (see layout.tsx).
 export const metadata: Metadata = {

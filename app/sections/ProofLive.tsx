@@ -31,7 +31,9 @@ function Heatmap({ stats }: { stats: GithubStats | null }) {
   // columns instead of 7 rows x 53 columns: the whole thing rendered as a
   // handful of very tall stretched bars instead of a compact calendar.
   // Explicit fixed-pixel row/column tracks avoid that ambiguity entirely.
-  const cells = weeks.flatMap(week => Array.from({ length: 7 }, (_, di) => week[di] ?? null));
+  const cells = weeks.flatMap(week =>
+    Array.from({ length: 7 }, (_, di) => week.find(day => day?.weekday === di) ?? null)
+  );
 
   return (
     <div
@@ -108,8 +110,8 @@ function ActivityFeed({ items }: { items: ActivityItem[] | null }) {
  * server already put in the HTML, then — only while the section is on
  * screen and the tab is visible — refetches /api/github every minute, so
  * stats and the activity feed stay current and the "Xm ago" labels keep
- * moving. Nothing is fetched at page load, so it costs the initial load
- * nothing. A failed refresh keeps the last good data rather than flipping
+ * moving. Returning to a visible tab refreshes immediately. A failed
+ * refresh keeps the last good data rather than flipping
  * the section to "unavailable".
  */
 export function ProofLive({
@@ -128,33 +130,46 @@ export function ProofLive({
     const el = column.current?.closest('section') ?? column.current;
     if (!el) return;
     let timer: number | undefined;
+    let visible = false;
+    let controller: AbortController | undefined;
 
     const refresh = async () => {
-      if (document.visibilityState !== 'visible') return;
+      if (!visible || document.visibilityState !== 'visible' || controller) return;
+      controller = new AbortController();
       try {
-        const res = await fetch('/api/github');
+        const res = await fetch('/api/github', { cache: 'no-store', signal: controller.signal });
         if (res.ok) {
           const json: { contributions: GithubResult; activity: ActivityResult } = await res.json();
+          if (controller.signal.aborted) return;
           if (json.contributions.ok) setStats(json.contributions.data);
           if (json.activity.ok) setActivity(json.activity.data);
         }
       } catch {
         // Keep what's on screen; the next tick tries again.
+      } finally {
+        if (!controller.signal.aborted) setTick(t => t + 1);
+        controller = undefined;
       }
-      setTick(t => t + 1);
     };
 
-    const io = new IntersectionObserver(([entry]) => {
+    const syncRefresh = () => {
       window.clearInterval(timer);
-      if (entry.isIntersecting) {
+      if (visible && document.visibilityState === 'visible') {
         refresh();
         timer = window.setInterval(refresh, REFRESH_MS);
       }
+    };
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      syncRefresh();
     });
     io.observe(el);
+    document.addEventListener('visibilitychange', syncRefresh);
     return () => {
       io.disconnect();
       window.clearInterval(timer);
+      document.removeEventListener('visibilitychange', syncRefresh);
+      controller?.abort();
     };
   }, []);
 
