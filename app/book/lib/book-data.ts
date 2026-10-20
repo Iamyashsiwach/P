@@ -11,6 +11,9 @@ export interface BookPost {
   published: boolean;
 }
 
+// What the locked /book page may reveal once the gate is passed.
+export type BookChapter = Pick<BookPost, 'slug' | 'title'>;
+
 // 📖 My Life Story - Book Chapters
 // Each book post represents a chapter in your life story
 // To add a new chapter, copy the template at the bottom and customize it
