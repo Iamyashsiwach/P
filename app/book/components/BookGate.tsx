@@ -122,23 +122,24 @@ export function BookGate() {
         ) : (
           <motion.div key="wall" className="w-full max-w-md text-center" {...MATERIALIZE}>
             <p className="text-sm text-neutral-400 font-serif tracking-widest uppercase mb-6">
-              Friends &amp; family
+              Chapters
             </p>
             <h1 className="text-4xl md:text-5xl font-serif font-light text-neutral-200 tracking-tight leading-[1.1] mb-5">
-              You might be here by mistake.
+              A quiet corner, for friends and family.
             </h1>
             <p className="font-serif text-neutral-400 leading-relaxed mb-10">
-              This part of the site is open to friends and family for now.
+              These chapters are personal writing, shared with a few people for now. Looking for my
+              work? The portfolio is this way.
             </p>
 
             <Link href="/" className={PILL}>
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              Take me back
+              See my portfolio
             </Link>
 
             <form onSubmit={submit} className="mt-14 pt-10 border-t border-neutral-900" noValidate>
               <label htmlFor="book-gate-answer" className="block font-serif text-neutral-400 mb-5">
-                Family or a friend? Tell me the name of Yash&apos;s dog to stay.
+                Family or a friend? Tell me the name of Yash&apos;s dog to come in.
               </label>
               <motion.div animate={shake} className="flex items-center gap-3">
                 <input

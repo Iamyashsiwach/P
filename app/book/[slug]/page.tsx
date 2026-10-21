@@ -35,6 +35,8 @@ export async function generateMetadata({ params }: BookPostPageProps) {
     // The layout template already appends " — Yash Siwach".
     title: post.title,
     description: post.excerpt,
+    // Personal writing — kept out of search results, see app/book/page.tsx.
+    robots: { index: false },
     alternates: { canonical: `/book/${post.slug}` },
     keywords: post.tags.join(', '),
     openGraph: {

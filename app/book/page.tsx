@@ -14,6 +14,10 @@ const description = 'Chapters — personal writing by Yash Siwach.';
 export const metadata: Metadata = {
   title: 'Chapters',
   description,
+  // Private writing behind a friends-and-family wall: it must not be what a
+  // recruiter finds when they search the name. noindex (not a robots.txt
+  // Disallow) because Google has to crawl the page to see the directive.
+  robots: { index: false },
   alternates: { canonical: '/book' },
   openGraph: {
     title: 'Chapters — Yash Siwach',
