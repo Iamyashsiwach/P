@@ -18,28 +18,22 @@ const nextConfig = {
     };
   },
   async redirects() {
-    // Destinations go straight to the book host: no redirect chains.
-    const book = `https://${BOOK_HOST}`;
     return [
-      { source: '/blog', destination: book, permanent: true },
-      { source: '/blog/:slug', destination: `${book}/:slug`, permanent: true },
-      // Renamed chapter; must precede the generic /book/* rules.
+      // On the book host the /book prefix is redundant.
       {
         source: '/book/chapter-1-the-beginning',
-        destination: `${book}/Understanding`,
+        has: onBookHost,
+        destination: '/Understanding',
         permanent: true,
       },
-      // On the book host the /book prefix is redundant.
       { source: '/book', has: onBookHost, destination: '/', permanent: true },
       { source: '/book/:path*', has: onBookHost, destination: '/:path*', permanent: true },
-      // On every other host the book has moved.
-      { source: '/book', missing: onBookHost, destination: book, permanent: true },
-      {
-        source: '/book/:path*',
-        missing: onBookHost,
-        destination: `${book}/:path*`,
-        permanent: true,
-      },
+      // The book is a separate site now; the portfolio has no trace of it, so
+      // its old URLs land on the home page.
+      { source: '/book', missing: onBookHost, destination: '/', permanent: true },
+      { source: '/book/:path*', missing: onBookHost, destination: '/', permanent: true },
+      { source: '/blog', missing: onBookHost, destination: '/', permanent: true },
+      { source: '/blog/:slug', missing: onBookHost, destination: '/', permanent: true },
     ];
   },
 };

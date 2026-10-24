@@ -1,8 +1,7 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import { BookOpen, Home } from 'lucide-react';
-import { PORTFOLIO_URL } from '@/app/lib/urls';
+import { BookOpen } from 'lucide-react';
 
 export function BookNavbar() {
   const bookNavItems = [
@@ -10,11 +9,6 @@ export function BookNavbar() {
       name: 'All Chapters',
       link: '/',
       icon: <BookOpen className="h-4 w-4" />,
-    },
-    {
-      name: 'Portfolio',
-      link: PORTFOLIO_URL,
-      icon: <Home className="h-4 w-4" />,
     },
   ];
 
