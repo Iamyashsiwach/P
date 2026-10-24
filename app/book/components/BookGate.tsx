@@ -6,6 +6,7 @@ import { AnimatePresence, MotionConfig, motion, useAnimationControls } from 'fra
 import { unlockBook } from '../actions';
 import type { BookChapter } from '../lib/book-data';
 import { BookNavbar } from './BookNavbar';
+import { PORTFOLIO_URL } from '@/app/lib/urls';
 
 type Status = 'idle' | 'wrong' | 'error';
 
@@ -91,7 +92,7 @@ export function BookGate() {
                 const chapterNumber = chapterMatch ? chapterMatch[1] : index + 1;
 
                 return (
-                  <Link key={chapter.slug} href={`/book/${chapter.slug}`} className="group block">
+                  <Link key={chapter.slug} href={`/${chapter.slug}`} className="group block">
                     <div className="flex items-baseline gap-6 py-6 border-b border-neutral-900 hover:border-neutral-700 transition-colors duration-300">
                       <span className="text-sm text-neutral-600 font-mono w-12 flex-shrink-0">
                         {String(chapterNumber).padStart(2, '0')}
@@ -112,7 +113,7 @@ export function BookGate() {
 
             <div className="mt-20 text-center">
               <Link
-                href="/"
+                href={PORTFOLIO_URL}
                 className="text-sm text-neutral-600 hover:text-neutral-400 transition-colors font-serif tracking-wider"
               >
                 ← Portfolio
@@ -132,7 +133,7 @@ export function BookGate() {
               work? The portfolio is this way.
             </p>
 
-            <Link href="/" className={PILL}>
+            <Link href={PORTFOLIO_URL} className={PILL}>
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               See my portfolio
             </Link>

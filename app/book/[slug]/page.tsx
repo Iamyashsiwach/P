@@ -37,12 +37,12 @@ export async function generateMetadata({ params }: BookPostPageProps) {
     description: post.excerpt,
     // Personal writing — kept out of search results, see app/book/page.tsx.
     robots: { index: false },
-    alternates: { canonical: `/book/${post.slug}` },
+    alternates: { canonical: `/${post.slug}` },
     keywords: post.tags.join(', '),
     openGraph: {
       title: post.title,
       description: post.excerpt,
-      url: `https://www.yashsiwach.in/book/${post.slug}`,
+      url: `/${post.slug}`,
       siteName: 'Yash Siwach',
       images: post.image
         ? [

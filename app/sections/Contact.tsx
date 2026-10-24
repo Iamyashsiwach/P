@@ -9,6 +9,7 @@ import { Magnetic } from '@/app/components/motion/Magnetic';
 import { GithubMark, XMark, LinkedinMark } from '@/app/components/icons/Brand';
 import { usePrefersReducedMotion } from '@/app/hooks/usePrefersReducedMotion';
 import { blip } from '@/app/lib/audio';
+import { BOOK_URL } from '@/app/lib/urls';
 
 const marks = {
   GitHub: GithubMark,
@@ -162,7 +163,7 @@ export function Contact() {
           </ul>
 
           <Link
-            href="/book"
+            href={BOOK_URL}
             className="mt-10 inline-block border border-border p-4 font-mono text-xs leading-relaxed text-ink-mute transition-colors hover:border-ink hover:text-ink"
           >
             The Book
