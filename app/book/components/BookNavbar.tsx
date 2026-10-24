@@ -2,17 +2,18 @@
 import React from 'react';
 import Link from 'next/link';
 import { BookOpen, Home } from 'lucide-react';
+import { PORTFOLIO_URL } from '@/app/lib/urls';
 
 export function BookNavbar() {
   const bookNavItems = [
     {
       name: 'All Chapters',
-      link: '/book',
+      link: '/',
       icon: <BookOpen className="h-4 w-4" />,
     },
     {
       name: 'Portfolio',
-      link: '/',
+      link: PORTFOLIO_URL,
       icon: <Home className="h-4 w-4" />,
     },
   ];

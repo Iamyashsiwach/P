@@ -18,11 +18,11 @@ export const metadata: Metadata = {
   // recruiter finds when they search the name. noindex (not a robots.txt
   // Disallow) because Google has to crawl the page to see the directive.
   robots: { index: false },
-  alternates: { canonical: '/book' },
+  alternates: { canonical: '/' },
   openGraph: {
     title: 'Chapters — Yash Siwach',
     description,
-    url: '/book',
+    url: '/',
     siteName: 'Yash Siwach',
     type: 'website',
     images: [{ url: '/Hero_img.jpeg', width: 1254, height: 1254, alt: 'Yash Siwach' }],

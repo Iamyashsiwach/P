@@ -99,7 +99,7 @@ export function BookPostContent({ post, allPosts = [] }: BookPostContentProps) {
       {/* Minimal Back Button */}
       <div className="fixed top-8 left-8 z-40">
         <Link
-          href="/book"
+          href="/"
           className="text-neutral-600 hover:text-neutral-400 transition-colors text-sm font-mono"
         >
           ←
@@ -230,7 +230,7 @@ export function BookPostContent({ post, allPosts = [] }: BookPostContentProps) {
           <div className="flex items-center justify-between gap-4">
             {previousPost ? (
               <Link
-                href={`/book/${previousPost.slug}`}
+                href={`/${previousPost.slug}`}
                 className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors duration-300 font-mono tracking-wide"
               >
                 ← Previous
@@ -241,7 +241,7 @@ export function BookPostContent({ post, allPosts = [] }: BookPostContentProps) {
 
             {nextPost ? (
               <Link
-                href={`/book/${nextPost.slug}`}
+                href={`/${nextPost.slug}`}
                 className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors duration-300 font-mono tracking-wide"
               >
                 Next →
