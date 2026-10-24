@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { gsap } from '@/app/lib/motion';
 import { contact, profile } from '@/app/lib/content';
@@ -159,6 +160,16 @@ export function Contact() {
               );
             })}
           </ul>
+
+          <Link
+            href="https://book.yashsiwach.in"
+            className="mt-10 inline-block border border-border p-4 font-mono text-xs leading-relaxed text-ink-mute transition-colors hover:border-ink hover:text-ink"
+          >
+            The Book
+            <span className="mt-1 block text-ink-mute">
+              a long-form thing I&rsquo;m writing &#8599;
+            </span>
+          </Link>
         </div>
 
         <div className="col-span-12 mt-24 flex flex-wrap justify-between gap-4 border-t border-border pt-6 font-mono text-mono-label uppercase tracking-[0.18em] text-ink-mute">
