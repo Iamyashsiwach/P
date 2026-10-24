@@ -1,12 +1,10 @@
 'use client';
 import React, { useCallback, useRef, useState, useTransition } from 'react';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
 import { AnimatePresence, MotionConfig, motion, useAnimationControls } from 'framer-motion';
 import { unlockBook } from '../actions';
 import type { BookChapter } from '../lib/book-data';
 import { BookNavbar } from './BookNavbar';
-import { PORTFOLIO_URL } from '@/app/lib/urls';
 
 type Status = 'idle' | 'wrong' | 'error';
 
@@ -110,15 +108,6 @@ export function BookGate() {
                 );
               })}
             </div>
-
-            <div className="mt-20 text-center">
-              <Link
-                href={PORTFOLIO_URL}
-                className="text-sm text-neutral-600 hover:text-neutral-400 transition-colors font-serif tracking-wider"
-              >
-                ← Portfolio
-              </Link>
-            </div>
           </motion.div>
         ) : (
           <motion.div key="wall" className="w-full max-w-md text-center" {...MATERIALIZE}>
@@ -129,14 +118,8 @@ export function BookGate() {
               A quiet corner, for friends and family.
             </h1>
             <p className="font-serif text-neutral-400 leading-relaxed mb-10">
-              These chapters are personal writing, shared with a few people for now. Looking for my
-              work? The portfolio is this way.
+              These chapters are personal writing, shared with a few people for now.
             </p>
-
-            <Link href={PORTFOLIO_URL} className={PILL}>
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              See my portfolio
-            </Link>
 
             <form onSubmit={submit} className="mt-14 pt-10 border-t border-neutral-900" noValidate>
               <label htmlFor="book-gate-answer" className="block font-serif text-neutral-400 mb-5">
