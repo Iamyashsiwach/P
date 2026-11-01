@@ -124,12 +124,12 @@ export function Log() {
 
               <ul>
                 {group.entries.map(entry => {
-                  const isOpen = open === entry.date;
+                  const isOpen = open === entry.title;
                   return (
-                    <li key={entry.date} data-log-row className="border-b border-border">
+                    <li key={entry.title} data-log-row className="border-b border-border">
                       <button
                         type="button"
-                        onClick={() => setOpen(isOpen ? null : entry.date)}
+                        onClick={() => setOpen(isOpen ? null : entry.title)}
                         aria-expanded={isOpen}
                         className="flex w-full items-baseline gap-6 py-5 text-left transition-colors hover:text-signal"
                       >
@@ -161,7 +161,7 @@ export function Log() {
                               </p>
                             )}
                           </div>
-                          {entry.image && (
+                          {'image' in entry && entry.image && (
                             <Image
                               src={entry.image}
                               alt=""
