@@ -165,10 +165,10 @@ export function Log() {
                             <Image
                               src={entry.image}
                               alt=""
-                              width={320}
-                              height={220}
-                              sizes="(max-width: 768px) 100vw, 320px"
-                              className="border border-border object-cover"
+                              width={176}
+                              height={121}
+                              sizes="176px"
+                              className="self-start border border-border object-cover"
                             />
                           )}
                         </div>
