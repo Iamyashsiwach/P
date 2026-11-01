@@ -285,15 +285,15 @@ export const log = {
       entries: [
         {
           date: '2026',
-          title: 'Joined Accenture',
+          title: 'Accenture: the solo era ends',
           detail:
-            'Started as an Associate Software Engineer in Gurugram. The move from shipping solo projects to building inside a team, with review, standards and a delivery schedule that does not care how you feel about it.',
+            'Associate Software Engineer, Gurugram. For a while I was the entire org chart: designer, developer, ops, and the person who gets paged. Now there are code reviews, standards and other humans, and I am learning that a team is just an exoskeleton for the ego you leave at the door. Character development, but make it salaried.',
         },
         {
           date: '2026',
-          title: 'Archery coaching certification, NIS Kolkata',
+          title: 'Archery coaching certificate, National Institute of Sports (NIS) Kolkata',
           detail:
-            'Six-week certification course in sports coaching, archery. Coaching is a different skill from shooting: you break a movement down, watch it, and fix one thing at a time.',
+            'Six weeks, certificate course in sports coaching, archery. Shooting is you against gravity and your own pulse. Coaching is watching someone else’s flaw and choosing the one thing worth saying out loud. Herrigel spent years learning to stop aiming; I got six weeks and a certificate. The bullseye is just an opinion held very precisely.',
         },
       ],
     },
@@ -302,16 +302,16 @@ export const log = {
       entries: [
         {
           date: '2025',
-          title: 'Amazon ML Challenge — 12th rank',
+          title: 'Amazon ML Challenge: 12th overall',
           detail:
-            'Finished 12th, which earned an interview for an ML internship. Cleared the coding round and the first interview, and was not selected after the second. Not the result I wanted, but a good look at where the bar actually is, and what to work on next.',
-          metric: { value: 12, prefix: '#', label: 'rank' },
+            'Twelfth, which on a leaderboard is both elite and rude. The finale took the top ten, so I got to watch it from outside with my loss function. Consolation prize: an ML-intern interview. Cleared the coding round, cleared interview one, got filtered after interview two. A rejection is just a gradient: it tells you which way is downhill, and you only get one by taking the step. Not selected, still a W, no cap.',
+          metric: { value: 12, prefix: '#', label: 'overall' },
         },
         {
           date: '2025',
-          title: 'VIT Vellore M.Sc. AI/ML — joined, then left',
+          title: 'VIT Vellore M.Sc. AI/ML: joined, then left',
           detail:
-            'Joined the M.Sc. in AI/ML at VIT Vellore. Partway through I realised the classroom route was not what I wanted: I learn fastest by building and shipping, so I left and put that time into doing exactly that. Dropping out of a plan you chose is not comfortable, and it was still the right call.',
+            'Enrolled in the M.Sc. in AI/ML at VIT Vellore, then walked out when it hit me that I was studying the thing instead of building the thing. Sunk cost is a fallacy for a reason: the semester was already spent, and the only live question was the next one. Socrates said the unexamined life is not worth living; nobody mentioned the examination might end in a withdrawal form. Lowkey the most uncomfortable correct decision I have made.',
         },
       ],
     },
@@ -320,24 +320,24 @@ export const log = {
       entries: [
         {
           date: '2024.10',
-          title: 'TON Hackathon Bootcamp — 2nd place',
+          title: 'TON Hackathon Bootcamp: 2nd place',
           detail:
-            'TonMate, a copy-trading platform for TON, took second place and a $1,500 prize. Built with Jayanth and Kartik.',
+            'TonMate, a copy-trading platform on TON, took second place and a $1,500 prize. Built with Jayanth and Kartik. Aristotle said humans learn by imitation; we automated the imitation and it paid. Copy-trading is just mimesis with a wallet, and honestly, it’s giving philosophy.',
           metric: { value: 1500, prefix: '$', label: 'prize' },
           image: '/2024-1.jpeg',
         },
         {
           date: '2024.06',
-          title: 'Aleo Chandigarh zkMeetup — chapter lead',
+          title: 'Aleo Chandigarh zkMeetup: chapter lead',
           detail:
-            'Ran the Chandigarh zkMeetup on zero-knowledge proofs, with people who work on privacy and security for a living.',
+            'Ran the Chandigarh zkMeetup on zero-knowledge proofs, the ultimate flex: proving you know something without telling anyone what it is. The room was people who do privacy and security for a living, which is how you know to ask more questions than you answer. Socratic ignorance, but with a venue.',
           image: '/2024-3.jpeg',
         },
         {
           date: '2024.04',
-          title: 'Starknet India Roadshow — chapter lead',
+          title: 'Starknet India Roadshow: chapter lead',
           detail:
-            'Organised the Starknet India Roadshow: workshops, gaming sessions, and 32,000 STRK in prizes.',
+            'Organised the Starknet India Roadshow: workshops, gaming sessions, and 32,000 STRK in prizes. Turns out people will show up to learn about validity rollups if there is a leaderboard attached. Incentive design is just applied anthropology, and the tokens were the peer review.',
           metric: { value: 32000, suffix: ' STRK', label: 'in prizes' },
           image: '/2024-2.jpeg',
         },
@@ -350,21 +350,21 @@ export const log = {
           date: '2023.11',
           title: 'TECHHACKS 3.0, Chitkara University',
           detail:
-            'First 24-hour hackathon. Spent it on blockchain and NFTs, and learned what I could actually ship under a clock.',
+            'First 24-hour hackathon, subject: blockchain and NFTs, because of course. Learned that deadlines are physics: the idea you have at hour one and the thing you can ship at hour twenty-four are two different species. Sleep got descoped. Best crash course in what I can actually ship under a clock.',
           image: '/2023-2.jpeg',
         },
         {
           date: '2023.09',
-          title: 'Gas Cylinder Regulator — team hardware project, software',
+          title: 'Gas Cylinder Regulator: team hardware project, software',
           detail:
-            'A safer home gas cylinder rig — wheels so it can be moved without lifting, and an emergency shut-off valve. Built with a team; I handled the software. For elderly users handling cylinders alone.',
+            'A cylinder rig on wheels so nobody has to lift it, plus an emergency shut-off valve, built for elderly users handling gas alone. Team project; I wrote the software. A null pointer is one thing, a gas valve is another, and the stakes made me a more honest programmer. The best engineering is the kind where nothing happens.',
           image: '/2023-3.png',
         },
         {
           date: '2023.03',
           title: 'Government of Rajasthan hackathon, Jaipur',
           detail:
-            'Built a peer-to-peer cash lending and investing app with my team at Rajasthan University.',
+            'Built a peer-to-peer cash lending and investing app with my team at Rajasthan University. Trust, but make it an API. Money is a shared hallucination with good UX, and we just shortened the distance between the people who have it and the people who need it.',
           image: '/2023-1.jpeg',
         },
       ],
