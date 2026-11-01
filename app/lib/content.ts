@@ -281,6 +281,41 @@ export const log = {
   heading: 'Changelog',
   years: [
     {
+      year: '2026',
+      entries: [
+        {
+          date: '2026',
+          title: 'Joined Accenture',
+          detail:
+            'Started as an Associate Software Engineer in Gurugram. The move from shipping solo projects to building inside a team, with review, standards and a delivery schedule that does not care how you feel about it.',
+        },
+        {
+          date: '2026',
+          title: 'Archery coaching certification, NIS Kolkata',
+          detail:
+            'Six-week certification course in sports coaching, archery. Coaching is a different skill from shooting: you break a movement down, watch it, and fix one thing at a time.',
+        },
+      ],
+    },
+    {
+      year: '2025',
+      entries: [
+        {
+          date: '2025',
+          title: 'Amazon ML Challenge — 12th rank',
+          detail:
+            'Finished 12th, which earned an interview for an ML internship. Cleared the coding round and the first interview, and was not selected after the second. Not the result I wanted, but a good look at where the bar actually is, and what to work on next.',
+          metric: { value: 12, prefix: '#', label: 'rank' },
+        },
+        {
+          date: '2025',
+          title: 'VIT Vellore M.Sc. AI/ML — joined, then left',
+          detail:
+            'Joined the M.Sc. in AI/ML at VIT Vellore. Partway through I realised the classroom route was not what I wanted: I learn fastest by building and shipping, so I left and put that time into doing exactly that. Dropping out of a plan you chose is not comfortable, and it was still the right call.',
+        },
+      ],
+    },
+    {
       year: '2024',
       entries: [
         {
