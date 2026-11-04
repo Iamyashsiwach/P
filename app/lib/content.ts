@@ -291,9 +291,9 @@ export const log = {
         },
         {
           date: '2026',
-          title: 'Archery coaching certification, NIS Kolkata',
+          title: 'Archery coaching certification, National Institute of Sports, Kolkata',
           detail:
-            'Six-week certification course in sports coaching, archery. Coaching is a different skill from shooting: you break a movement down, watch it, and fix one thing at a time.',
+            'Six-week certification course in sports coaching, archery, at the National Institute of Sports (NIS), Kolkata. Coaching is a different skill from shooting: you break a movement down, watch it, and fix one thing at a time.',
         },
       ],
     },
@@ -302,10 +302,10 @@ export const log = {
       entries: [
         {
           date: '2025',
-          title: 'Amazon ML Challenge — 12th rank',
+          title: 'Amazon ML Challenge — 12th overall',
           detail:
-            'Finished 12th, which earned an interview for an ML internship. Cleared the coding round and the first interview, and was not selected after the second. Not the result I wanted, but a good look at where the bar actually is, and what to work on next.',
-          metric: { value: 12, prefix: '#', label: 'rank' },
+            'Finished 12th overall, which earned an interview for an ML internship. Cleared the coding round and the first interview, and was not selected after the second. Not the result I wanted, but a good look at where the bar actually is, and what to work on next.',
+          metric: { value: 12, prefix: '#', label: 'overall' },
         },
         {
           date: '2025',
