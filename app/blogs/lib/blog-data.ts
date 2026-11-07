@@ -320,7 +320,7 @@ project was not voice-built.
   {
     slug: 'one-nextjs-app-many-subdomains',
     title: 'One Next.js app, several subdomains',
-    date: '2026-11-07',
+    date: '2026-10-25',
     excerpt:
       'How this blog is served from the same Next.js deployment as my portfolio, using host-based rewrites, and what to check before trusting the setup.',
     tags: ['nextjs', 'vercel', 'architecture'],
@@ -395,7 +395,7 @@ If the domain's DNS is already on Vercel, adding the subdomain to the project is
   {
     slug: 'the-redirect-that-404d-my-blog-images',
     title: 'The redirect that quietly 404’d my blog images',
-    date: '2026-11-07',
+    date: '2026-10-31',
     excerpt:
       'A file that exists is not a URL that works. How a host redirect swallowed my assets, and the test I added so it cannot happen again.',
     tags: ['nextjs', 'debugging', 'testing'],
@@ -444,7 +444,7 @@ Now a dead link and a link the redirect would eat both fail before anything ship
   {
     slug: 'testing-typescript-on-node-20-without-a-runner',
     title: 'Testing a TypeScript module on Node 20 without adding a runner',
-    date: '2026-11-07',
+    date: '2026-11-04',
     excerpt:
       'No test runner, Node 20 cannot run .ts, and I wanted one check that fails when my data is wrong. The compiler already in node_modules was enough.',
     tags: ['testing', 'typescript', 'node'],
