@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="t d" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title id="t">How PromiseKeeper fits together</title>
+  <desc id="d">A requester and a data owner talk in one Switch room with three agents: coordinator, builder and sender. Local code holds a receipt ledger, checks the CSV and its hash, and runs a release gate that exits 0 to allow a draft or 3 to refuse and retract it.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#1d1814"/>
+    </marker>
+    <marker id="arrow-signal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#c8321e"/>
+    </marker>
+  </defs>
+  <rect width="1600" height="900" fill="#faf8f4"/>
+
+  <!-- column labels -->
+  <g font-size="18" letter-spacing="3" fill="#6b645f" font-family="ui-monospace, 'SF Mono', Menlo, monospace">
+    <text x="60" y="95">PEOPLE</text>
+    <text x="500" y="95">ONE SWITCH ROOM · DISCORD OR SLACK</text>
+    <text x="1200" y="95">LOCAL CODE</text>
+  </g>
+
+  <!-- people -->
+  <g stroke="#d9d3ca" stroke-width="2" fill="#f1ede6">
+    <rect x="60" y="225" width="340" height="130" rx="14"/>
+    <rect x="60" y="515" width="340" height="130" rx="14"/>
+  </g>
+  <g fill="#1d1814">
+    <text x="90" y="285" font-size="30" font-weight="600">Requester</text>
+    <text x="90" y="323" font-size="20" fill="#6b645f">Asks, confirms the scope</text>
+    <text x="90" y="575" font-size="30" font-weight="600">Data owner</text>
+    <text x="90" y="613" font-size="20" fill="#6b645f">Reviews the file, signs off</text>
+  </g>
+
+  <!-- room -->
+  <rect x="500" y="130" width="600" height="700" rx="24" fill="#f6f3ee" stroke="#1d1814" stroke-width="2"/>
+  <g stroke="#d9d3ca" stroke-width="2" fill="#faf8f4">
+    <rect x="540" y="220" width="520" height="130" rx="14"/>
+    <rect x="540" y="400" width="520" height="130" rx="14"/>
+    <rect x="540" y="580" width="520" height="130" rx="14"/>
+  </g>
+  <g fill="#1d1814">
+    <text x="570" y="280" font-size="30" font-weight="600">Coordinator</text>
+    <text x="570" y="318" font-size="19" fill="#6b645f">Confirms scope · records agreement · routes</text>
+    <text x="570" y="460" font-size="30" font-weight="600">Builder</text>
+    <text x="570" y="498" font-size="19" fill="#6b645f">Writes the CSV · fixes failures · verifies once</text>
+    <text x="570" y="640" font-size="30" font-weight="600">Sender</text>
+    <text x="570" y="678" font-size="19" fill="#6b645f">Checks approval · drafts · retracts on change</text>
+  </g>
+  <!-- @mention handoffs -->
+  <g stroke="#1d1814" stroke-width="2.5" fill="none" marker-end="url(#arrow)">
+    <path d="M800 350 V398"/>
+    <path d="M800 530 V578"/>
+  </g>
+  <text x="815" y="381" font-size="17" fill="#6b645f">@mention</text>
+  <text x="815" y="561" font-size="17" fill="#6b645f">@mention</text>
+
+  <!-- people to room -->
+  <g stroke="#1d1814" stroke-width="2.5" fill="none" marker-end="url(#arrow)">
+    <path d="M400 290 H536"/>
+    <path d="M400 580 H450 V330 H536"/>
+  </g>
+  <text x="420" y="276" font-size="17" fill="#6b645f">chat</text>
+  <text x="408" y="566" font-size="17" fill="#6b645f">chat</text>
+
+  <!-- room to local code -->
+  <g stroke="#1d1814" stroke-width="2.5" fill="none" marker-end="url(#arrow)">
+    <path d="M1060 285 H1196"/>
+    <path d="M1060 465 H1196"/>
+    <path d="M1060 645 H1196"/>
+  </g>
+
+  <!-- local code -->
+  <g stroke="#d9d3ca" stroke-width="2" fill="#f1ede6">
+    <rect x="1200" y="220" width="340" height="130" rx="14"/>
+    <rect x="1200" y="400" width="340" height="130" rx="14"/>
+    <rect x="1200" y="580" width="340" height="130" rx="14"/>
+  </g>
+  <g fill="#1d1814">
+    <text x="1230" y="280" font-size="30" font-weight="600">Receipt ledger</text>
+    <text x="1230" y="318" font-size="19" fill="#6b645f">Scope, receipts, approvals</text>
+    <text x="1230" y="460" font-size="30" font-weight="600">CSV checks + hash</text>
+    <text x="1230" y="498" font-size="19" fill="#6b645f">Columns, rows, deny patterns</text>
+    <text x="1230" y="640" font-size="30" font-weight="600">Release gate</text>
+    <text x="1230" y="678" font-size="19" fill="#6b645f">Approved receipt + file match</text>
+  </g>
+  <!-- checks feed the ledger; ledger feeds the gate -->
+  <path d="M1370 400 V352" stroke="#1d1814" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M1540 285 H1580 V645 H1544" stroke="#1d1814" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- gate outcomes -->
+  <path d="M1300 710 V748" stroke="#1d1814" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M1440 710 V748" stroke="#c8321e" stroke-width="2.5" fill="none" marker-end="url(#arrow-signal)"/>
+  <rect x="1200" y="750" width="165" height="70" rx="12" fill="#faf8f4" stroke="#1d1814" stroke-width="2"/>
+  <rect x="1375" y="750" width="165" height="70" rx="12" fill="#faf8f4" stroke="#c8321e" stroke-width="2"/>
+  <g font-size="19" text-anchor="middle">
+    <text x="1282" y="780" fill="#1d1814" font-weight="600">exit 0</text>
+    <text x="1282" y="804" fill="#6b645f" font-size="17">draft allowed</text>
+    <text x="1457" y="780" fill="#c8321e" font-weight="600">exit 3</text>
+    <text x="1457" y="804" fill="#6b645f" font-size="17">refuse + retract</text>
+  </g>
+</svg>

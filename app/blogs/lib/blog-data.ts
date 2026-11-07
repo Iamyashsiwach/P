@@ -119,6 +119,11 @@ Every step of the story leans on a specific Switch capability:
 - **A new team installs the whole workflow.** One parameterized template defines all
   three agents, the room, its first document and the kickoff.
 
+Here is the whole system in one picture. The middle box is the Switch room; the right
+column is plain local code that the agents call.
+
+![How the pieces fit: the requester and data owner talk to the coordinator in one Switch room with the builder and sender. Local code checks the CSV, keeps the receipt ledger and runs the release gate.](/blog-assets/promise-keeper/architecture.svg)
+
 ## Catch the first version's privacy mistake
 
 The request is specific: export all three sample orders with \`order_number\` and
@@ -311,18 +316,6 @@ project was not voice-built.
 - The [1:36 Discord walkthrough](/blog-assets/promise-keeper/promise-keeper-live-demo.mp4) shows the request, failed check, independent review, and stale-draft block.
 - The [README](https://github.com/Iamyashsiwach/promise-keeper/blob/main/README.md) has the architecture and quick setup.
 - Switch docs: [install Switch Console](https://docs.switchagents.ai/switch-rooms/getting-started/install-switch-console), [getting started](https://docs.switchagents.ai/switch-rooms/getting-started/index), [room templates](https://docs.switchagents.ai/switch-rooms/administer/room-templates) and [shared context](https://docs.switchagents.ai/switch-rooms/using/shared-context).`,
-  },
-  {
-    slug: 'hello-world',
-    title: 'Hello, world',
-    date: '2026-11-07',
-    excerpt: 'What this is, and what to expect.',
-    tags: ['meta'],
-    content: `I write things down once I have finished figuring them out, mostly so I stop figuring them out again.
-
-Expect notes on building for the web (Next.js, Three.js, the occasional shader), cloud and infrastructure on AWS, and whatever I am learning at work. Every so often something with no business being a hobby, like archery, will sneak in.
-
-Posts show up here when they are done, not before.`,
   },
 ];
 
