@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import ReactMarkdown, { type Components } from 'react-markdown';
@@ -61,6 +62,23 @@ const markdown: Components = {
       {children}
     </pre>
   ),
+  strong: ({ children }) => <strong className="font-medium text-ink">{children}</strong>,
+  // Every screenshot so far is 1920x1080; width/height only reserve the aspect
+  // ratio, the image still scales to the column.
+  img: ({ src, alt }) =>
+    typeof src === 'string' ? (
+      <span className="my-2 block">
+        <Image
+          src={src}
+          alt={alt ?? ''}
+          width={1920}
+          height={1080}
+          sizes="(min-width: 768px) 800px, 100vw"
+          className="h-auto w-full border border-border"
+        />
+        {alt && <span className="mt-3 block text-sm text-ink-mute">{alt}</span>}
+      </span>
+    ) : null,
   hr: () => <hr className="rule my-12" />,
 };
 
@@ -83,6 +101,22 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <h1 className="mt-6 font-display text-display-l text-ink">{post.title}</h1>
           <hr className="rule mt-10" />
         </header>
+
+        {post.video && (
+          <figure className="mt-10">
+            <video
+              controls
+              playsInline
+              preload="none"
+              poster={post.video.poster}
+              className="aspect-video w-full border border-border bg-ink"
+            >
+              <source src={post.video.src} type="video/mp4" />
+              <track kind="captions" src={post.video.captions} srcLang="en" label="English" />
+            </video>
+            <figcaption className="mt-3 text-sm text-ink-mute">{post.video.caption}</figcaption>
+          </figure>
+        )}
 
         {/* Inline code gets a chip; fenced code is already boxed by <pre>. */}
         <div className="mt-10 space-y-6 text-body text-ink-dim [&_:not(pre)>code]:bg-paper-2 [&_:not(pre)>code]:px-1.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-[0.9em]">
