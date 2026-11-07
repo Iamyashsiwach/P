@@ -75,6 +75,8 @@ export type Project = {
   tech: string[];
   href?: string;
   image: string;
+  /** Pinned to the top of Work with a "Featured" tag. One at a time. */
+  featured?: boolean;
 };
 
 export type Certification = {
@@ -171,16 +173,6 @@ export const work = {
   heading: 'Things I shipped',
   projects: [
     {
-      title: 'Saarthi',
-      year: '2026',
-      role: 'Solo build',
-      blurb:
-        'An AI co-driver for long-haul truck drivers. It watches for the first signs of drowsiness, plans the next tea break and keeps the driver company. Launch site with a live demo of each, built around Ollie the owl.',
-      tech: ['Next.js', 'Three.js', 'TypeScript'],
-      href: 'https://saarthi.yashsiwach.in',
-      image: '/saarthi.jpg',
-    },
-    {
       title: 'Archery Tournament Manager',
       year: '2026',
       role: 'Solo build',
@@ -189,6 +181,17 @@ export const work = {
       tech: ['Next.js', 'Supabase', 'TypeScript'],
       href: 'https://archerytms.yashsiwach.in',
       image: '/archery-tms.png',
+      featured: true,
+    },
+    {
+      title: 'Saarthi',
+      year: '2026',
+      role: 'Solo build',
+      blurb:
+        'An AI co-driver for long-haul truck drivers. It watches for the first signs of drowsiness, plans the next tea break and keeps the driver company. Launch site with a live demo of each, built around Ollie the owl.',
+      tech: ['Next.js', 'Three.js', 'TypeScript'],
+      href: 'https://saarthi.yashsiwach.in',
+      image: '/saarthi.jpg',
     },
     {
       title: 'Tripsee',

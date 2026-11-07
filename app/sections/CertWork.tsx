@@ -47,7 +47,16 @@ export function CertWork() {
                       className="h-14 w-14 shrink-0 border border-border object-cover"
                     />
                     <div className="min-w-0">
-                      <h3 className="truncate font-display text-base text-ink">{project.title}</h3>
+                      <div className="flex items-baseline gap-2">
+                        <h3 className="truncate font-display text-base text-ink">
+                          {project.title}
+                        </h3>
+                        {'featured' in project && project.featured && (
+                          <span className="shrink-0 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-signal">
+                            Featured
+                          </span>
+                        )}
+                      </div>
                       <p className="mt-0.5 truncate font-mono text-xs text-ink-mute">
                         {project.role}
                       </p>
