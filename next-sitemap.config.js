@@ -11,8 +11,9 @@ module.exports = {
   sitemapSize: 5000,
   // /book and its chapters are private writing behind a friends-and-family
   // wall and are noindex (see app/book/page.tsx), so they stay out of the
-  // sitemap — listing a noindex URL there is a contradictory signal.
-  exclude: ['/api/*', '/404', '/500', '/book', '/book/*'],
+  // sitemap — listing a noindex URL there is a contradictory signal. /blogs is
+  // its own host with its own sitemap (app/blogs/sitemap.ts).
+  exclude: ['/api/*', '/404', '/500', '/book', '/book/*', '/blogs', '/blogs/*'],
   robotsTxtOptions: {
     policies: [
       {
