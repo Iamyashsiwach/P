@@ -187,7 +187,7 @@ export const work = {
       blurb:
         'Tournament management for my archery academy — coaches register archers, judges score qualification and matches, everyone sees live rankings and field target boards.',
       tech: ['Next.js', 'Supabase', 'TypeScript'],
-      href: 'https://archery-tms-v2.vercel.app',
+      href: 'https://archerytms.yashsiwach.in',
       image: '/archery-tms.png',
     },
     {
