@@ -47,7 +47,16 @@ export function CertWork() {
                       className="h-14 w-14 shrink-0 border border-border object-cover"
                     />
                     <div className="min-w-0">
-                      <h3 className="truncate font-display text-base text-ink">{project.title}</h3>
+                      <div className="flex items-baseline gap-2">
+                        <h3 className="truncate font-display text-base text-ink">
+                          {project.title}
+                        </h3>
+                        {'featured' in project && project.featured && (
+                          <span className="shrink-0 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-signal">
+                            Featured
+                          </span>
+                        )}
+                      </div>
                       <p className="mt-0.5 truncate font-mono text-xs text-ink-mute">
                         {project.role}
                       </p>
@@ -84,11 +93,33 @@ export function CertWork() {
                   target="_blank"
                   rel="noopener noreferrer"
                   data-cursor="view"
-                  className="flex items-baseline gap-3 border-b border-border py-4 pr-2 transition-colors hover:bg-paper-2"
+                  className="flex items-center gap-3 border-b border-border py-4 pr-2 transition-colors hover:bg-paper-2"
                 >
                   <span data-numeric className="shrink-0 font-mono text-xs text-ink-mute">
                     {String(i + 1).padStart(2, '0')}
                   </span>
+                  {/* Badge art where the issuer publishes one, otherwise a
+                      plain mark of the same size so the rows stay aligned.
+                      Multiply drops the white backing some badges ship with
+                      onto the paper colour. */}
+                  {'badge' in cert && cert.badge ? (
+                    <Image
+                      src={cert.badge}
+                      alt=""
+                      width={56}
+                      height={56}
+                      data-print-hide
+                      className="h-14 w-14 shrink-0 object-contain mix-blend-multiply"
+                    />
+                  ) : (
+                    <span
+                      aria-hidden="true"
+                      data-print-hide
+                      className="flex h-14 w-14 shrink-0 items-center justify-center border border-border font-mono text-xs text-ink-mute"
+                    >
+                      {'mark' in cert ? cert.mark : null}
+                    </span>
+                  )}
                   {/* Wraps rather than truncates, unlike the Work rows: on a
                       phone the expiry date is what got cut off, and it's
                       half of what a visitor is here to verify. */}
