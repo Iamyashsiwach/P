@@ -83,6 +83,10 @@ export type Certification = {
   date: string;
   /** Public verification page — every cert listed here must be checkable. */
   href: string;
+  /** Badge art in public/certs, 160px square. Absent when the issuer offers none. */
+  badge?: string;
+  /** Short mark shown in the badge's place so every row still lines up. */
+  mark?: string;
 };
 
 export const certifications = {
@@ -101,54 +105,63 @@ export const certifications = {
       issuer: 'AWS',
       date: 'Issued Sep 2026 · Expires Sep 2029',
       href: 'https://www.credly.com/badges/8743bb6d-2186-42c7-958d-45e5025ceb5b',
+      badge: '/certs/aws-solutions-architect-associate.png',
     },
     {
       title: 'Claude Certified Architect – Professional',
       issuer: 'Anthropic',
       date: 'Issued Sep 2026 · Expires Sep 2027',
       href: 'https://www.credly.com/badges/9835a215-5c9a-4cc5-964d-4dc62c14521e',
+      badge: '/certs/claude-certified-architect-professional.png',
     },
     {
       title: 'Claude Certified Architect – Foundations',
       issuer: 'Anthropic',
       date: 'Issued Sep 2026 · Expires Sep 2027',
       href: 'https://www.credly.com/badges/7e844bdb-7f3d-4292-9d8c-d2e4e97fe6f9',
+      badge: '/certs/claude-certified-architect-foundations.png',
     },
     {
       title: 'GitHub Copilot',
       issuer: 'Microsoft',
       date: 'Issued Sep 2026 · Expires Sep 2028',
       href: 'https://learn.microsoft.com/api/credentials/share/en-us/Yash-8987/71C6A552AD79C507?sharingId=F3F9629D5D45EC9E',
+      badge: '/certs/github-copilot.png',
     },
     {
       title: 'AWS Partner: Technical Accredited',
       issuer: 'AWS',
       date: 'Issued Sep 2026',
       href: 'https://www.credly.com/badges/fbe58bae-f577-4653-bbcf-500b78a55eb1',
+      badge: '/certs/aws-partner-technical-accredited.png',
     },
     {
       title: 'Claude Certified Developer – Foundations',
       issuer: 'Anthropic',
       date: 'Issued Aug 2026 · Expires Aug 2027',
       href: 'https://www.credly.com/badges/0292ec26-4d6d-4615-9b0d-b150851c932a',
+      badge: '/certs/claude-certified-developer-foundations.png',
     },
     {
       title: 'GitHub Foundations',
       issuer: 'DataCamp',
       date: 'Issued Jul 2026',
       href: 'https://www.datacamp.com/completed/statement-of-accomplishment/track/a6eaa9a945a13dee9cd7c4470716fb324e04d1c5',
+      mark: 'DC',
     },
     {
       title: 'Introduction to Cyber Attacks',
       issuer: 'New York University',
       date: 'Issued Aug 2023',
       href: 'https://www.coursera.org/account/accomplishments/verify/8W8PWE46S26X',
+      mark: 'NYU',
     },
     {
       title: 'Principles of UX/UI Design',
       issuer: 'Meta',
       date: 'Issued Apr 2023',
       href: 'https://www.coursera.org/account/accomplishments/verify/WCEKDRQCCW4B',
+      mark: 'META',
     },
   ] satisfies Certification[],
 } as const;
@@ -158,13 +171,23 @@ export const work = {
   heading: 'Things I shipped',
   projects: [
     {
+      title: 'Saarthi',
+      year: '2026',
+      role: 'Solo build',
+      blurb:
+        'An AI co-driver for long-haul truck drivers. It watches for the first signs of drowsiness, plans the next tea break and keeps the driver company. Launch site with a live demo of each, built around Ollie the owl.',
+      tech: ['Next.js', 'Three.js', 'TypeScript'],
+      href: 'https://saarthi.yashsiwach.in',
+      image: '/saarthi.jpg',
+    },
+    {
       title: 'Archery Tournament Manager',
       year: '2026',
       role: 'Solo build',
       blurb:
         'Tournament management for my archery academy — coaches register archers, judges score qualification and matches, everyone sees live rankings and field target boards.',
       tech: ['Next.js', 'Supabase', 'TypeScript'],
-      href: 'https://archery-tms.vercel.app',
+      href: 'https://archery-tms-v2.vercel.app',
       image: '/archery-tms.png',
     },
     {
