@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import type { ReactNode } from 'react';
 import ReactMarkdown, { type Components } from 'react-markdown';
-import { formatPostDate, getBlogPost, getBlogPosts } from '../lib/blog-data';
+import { formatPostDate, getBlogPost, getBlogPosts, slugifyHeading } from '../lib/blog-data';
 
 // Only published slugs exist; anything else is a 404 without rendering.
 export const dynamicParams = false;
@@ -34,13 +35,28 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       type: 'article',
       publishedTime: post.date,
       tags: post.tags,
-      images: [{ url: '/Hero_img.jpeg', width: 1254, height: 1254, alt: 'Yash Siwach' }],
+      images: post.image
+        ? [{ url: post.image, width: 1280, height: 720, alt: post.title }]
+        : [{ url: '/Hero_img.jpeg', width: 1254, height: 1254, alt: 'Yash Siwach' }],
     },
   };
 }
 
+function textOf(node: ReactNode): string {
+  if (typeof node === 'string') return node;
+  if (Array.isArray(node)) return node.map(textOf).join('');
+  return '';
+}
+
 const markdown: Components = {
-  h2: ({ children }) => <h2 className="mt-12 font-display text-display-m text-ink">{children}</h2>,
+  h2: ({ children }) => (
+    <h2
+      id={slugifyHeading(textOf(children))}
+      className="mt-12 scroll-mt-8 font-display text-display-m text-ink"
+    >
+      {children}
+    </h2>
+  ),
   h3: ({ children }) => <h3 className="mt-8 font-display text-xl text-ink">{children}</h3>,
   a: ({ href, children }) => (
     <a
@@ -87,6 +103,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const post = getBlogPost(slug);
   if (!post) notFound();
 
+  const headings = [...post.content.matchAll(/^## (.+)$/gm)].map(match => match[1]);
+
   return (
     <main className="grid-shell section-rhythm">
       <article className="col-span-12 md:col-span-8 md:col-start-3">
@@ -116,6 +134,24 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </video>
             <figcaption className="mt-3 text-sm text-ink-mute">{post.video.caption}</figcaption>
           </figure>
+        )}
+
+        {headings.length >= 4 && (
+          <nav aria-label="On this page" className="mt-10 border-y border-border py-6">
+            <p className="mono-label">On this page</p>
+            <ol className="mt-4 space-y-2 text-body text-ink-dim">
+              {headings.map(heading => (
+                <li key={heading}>
+                  <a
+                    href={`#${slugifyHeading(heading)}`}
+                    className="transition-colors hover:text-ink"
+                  >
+                    {heading}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
         )}
 
         {/* Inline code gets a chip; fenced code is already boxed by <pre>. */}
