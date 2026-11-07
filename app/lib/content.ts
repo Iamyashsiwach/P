@@ -103,6 +103,20 @@ export const certifications = {
   profile: 'https://www.credly.com/users/yash-siwach',
   items: [
     {
+      title: 'Certified Partner Specialist: Gemini Enterprise Agent Development',
+      issuer: 'Google Cloud',
+      date: 'Issued Oct 2026 · Expires Apr 2027',
+      href: 'https://www.credly.com/badges/2b169bff-1f35-49c4-a463-fbcf4280391f',
+      badge: '/certs/google-cloud-gemini-agent-development.png',
+    },
+    {
+      title: 'Certified Partner Specialist: Gemini Enterprise Deployment',
+      issuer: 'Google Cloud',
+      date: 'Issued Oct 2026 · Expires Apr 2027',
+      href: 'https://www.credly.com/badges/35404153-dddd-4c35-8ad4-7408bd6e1351',
+      badge: '/certs/google-cloud-gemini-deployment.png',
+    },
+    {
       title: 'AWS Certified Solutions Architect – Associate',
       issuer: 'AWS',
       date: 'Issued Sep 2026 · Expires Sep 2029',
