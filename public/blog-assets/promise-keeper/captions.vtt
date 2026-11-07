@@ -1,0 +1,25 @@
+WEBVTT
+
+00:00.350 --> 00:13.283
+This exporter finished successfully, but included unwanted columns. PromiseKeeper caught the extra fields and email content. The starting error is deliberately seeded for this demo.
+
+00:14.083 --> 00:24.183
+In a Switch room, Yash confirms three orders with order number and total only. The coordinator records his actual message before starting work.
+
+00:24.983 --> 00:36.960
+The coordinator hands the failed check to the builder. The builder fixes the exporter, then verifies it once. Receipt one, two passes. Approval is still empty.
+
+00:37.761 --> 00:46.894
+Yash tries to approve his own request. The code refuses. Only the designated data owner can sign off on this checked file.
+
+00:47.694 --> 00:58.397
+Anjali reviews the actual CSV and approves from her own account. The coordinator records her message reference and the verified file hash.
+
+00:59.197 --> 01:09.330
+A third agent checks the code gate before preparing a local message draft. The gate passes for the approved receipt. Nothing is sent to a customer.
+
+01:10.131 --> 01:23.145
+Yash adds email to the requirements. Recording revision two clears both verification and approval. The old sign off no longer applies, and the email deny policy stays active.
+
+01:23.945 --> 01:35.852
+The sender checks again. Release is blocked, and the old draft is marked retracted. PromiseKeeper keeps the request, the checked work, and an independent review connected.

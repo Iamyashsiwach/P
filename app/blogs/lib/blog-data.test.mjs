@@ -3,7 +3,7 @@
 // blog-data.ts with the TypeScript compiler that's already installed.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import ts from 'typescript';
 
 const source = readFileSync(new URL('./blog-data.ts', import.meta.url), 'utf8');
@@ -27,6 +27,19 @@ test('every post is well-formed and slugs are unique', () => {
     assert.match(post.slug, /^[a-z0-9]+(-[a-z0-9]+)*$/, `bad slug: ${post.slug}`);
     assert.match(post.date, /^\d{4}-\d{2}-\d{2}$/, `bad date: ${post.date}`);
     assert.ok(post.title && post.excerpt && post.content.trim(), `empty field in ${post.slug}`);
+  }
+});
+
+test('local assets linked from posts exist under public/', () => {
+  const publicDir = new URL('../../../public', import.meta.url).pathname;
+  for (const post of getBlogPosts()) {
+    const links = [...post.content.matchAll(/\]\((\/[^)\s]+)\)/g)].map(m => m[1]);
+    if (post.video) links.push(post.video.src, post.video.poster, post.video.captions);
+    for (const link of links) {
+      // next.config.js redirects /blogs/* to /* on the blog host, which would 404 the asset.
+      assert.ok(!link.startsWith('/blogs/'), `${post.slug}: ${link} is under the /blogs prefix`);
+      assert.ok(existsSync(publicDir + link), `${post.slug}: missing public${link}`);
+    }
   }
 });
 
