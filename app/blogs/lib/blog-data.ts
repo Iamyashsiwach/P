@@ -119,6 +119,11 @@ Every step of the story leans on a specific Switch capability:
 - **A new team installs the whole workflow.** One parameterized template defines all
   three agents, the room, its first document and the kickoff.
 
+Here is the whole system in one picture. The middle box is the Switch room; the right
+column is plain local code that the agents call.
+
+![How the pieces fit: the requester and data owner talk to the coordinator in one Switch room with the builder and sender. Local code checks the CSV, keeps the receipt ledger and runs the release gate.](/blog-assets/promise-keeper/architecture.svg)
+
 ## Catch the first version's privacy mistake
 
 The request is specific: export all three sample orders with \`order_number\` and
@@ -313,16 +318,178 @@ project was not voice-built.
 - Switch docs: [install Switch Console](https://docs.switchagents.ai/switch-rooms/getting-started/install-switch-console), [getting started](https://docs.switchagents.ai/switch-rooms/getting-started/index), [room templates](https://docs.switchagents.ai/switch-rooms/administer/room-templates) and [shared context](https://docs.switchagents.ai/switch-rooms/using/shared-context).`,
   },
   {
-    slug: 'hello-world',
-    title: 'Hello, world',
+    slug: 'one-nextjs-app-many-subdomains',
+    title: 'One Next.js app, several subdomains',
     date: '2026-11-07',
-    excerpt: 'What this is, and what to expect.',
-    tags: ['meta'],
-    content: `I write things down once I have finished figuring them out, mostly so I stop figuring them out again.
+    excerpt:
+      'How this blog is served from the same Next.js deployment as my portfolio, using host-based rewrites, and what to check before trusting the setup.',
+    tags: ['nextjs', 'vercel', 'architecture'],
+    content: `This blog lives at \`blogs.yashsiwach.in\`, but it is not a separate project. It is a folder, \`app/blogs\`, inside the same Next.js app and the same Vercel deployment as my portfolio. A request for the blog host is rewritten onto that folder, and nothing else about the app changes.
 
-Expect notes on building for the web (Next.js, Three.js, the occasional shader), cloud and infrastructure on AWS, and whatever I am learning at work. Every so often something with no business being a hobby, like archery, will sneak in.
+I picked this over a second project for the usual lazy reasons: one build, one pipeline, one set of design tokens, and nothing to keep in sync. The cost is that the blog and the portfolio ship together, which I am fine with.
 
-Posts show up here when they are done, not before.`,
+## The routing
+
+Next.js rewrites can match on the host header with \`has\`. The whole setup is a few lines in \`next.config.js\`:
+
+\`\`\`js
+const BLOGS_HOST = 'blogs.yashsiwach.in';
+const onBlogsHost = [{ type: 'host', value: BLOGS_HOST }];
+
+module.exports = {
+  async rewrites() {
+    return {
+      // Before the filesystem: '/' is also the portfolio's home page.
+      beforeFiles: [{ source: '/', has: onBlogsHost, destination: '/blogs' }],
+      // After the filesystem, so files in public/ still win.
+      afterFiles: [{ source: '/:slug', has: onBlogsHost, destination: '/blogs/:slug' }],
+    };
+  },
+};
+\`\`\`
+
+Order matters here. \`/\` already exists as a page, so the rewrite has to run before the filesystem is consulted. \`/:slug\` would swallow \`/favicon.ico\` and \`/robots.txt\`, so it runs after, once real files have had their turn.
+
+## Keep the prefix private
+
+Rewrites are invisible, which means \`/blogs/some-post\` still works on every host unless you say otherwise. I redirect it both ways:
+
+\`\`\`js
+async redirects() {
+  return [
+    // On the blog host the prefix is redundant.
+    { source: '/blogs', has: onBlogsHost, destination: '/', permanent: true },
+    { source: '/blogs/:path*', has: onBlogsHost, destination: '/:path*', permanent: true },
+    // Everywhere else the folder should not exist.
+    { source: '/blogs', missing: onBlogsHost, destination: '/', permanent: true },
+    { source: '/blogs/:path*', missing: onBlogsHost, destination: '/', permanent: true },
+  ];
+},
+\`\`\`
+
+## Give each host its own metadata
+
+Relative canonical and Open Graph URLs resolve against \`metadataBase\`, which my root layout sets to the portfolio. A nested layout overrides it for the whole subtree:
+
+\`\`\`ts
+export const metadata: Metadata = { metadataBase: new URL('https://blogs.yashsiwach.in') };
+\`\`\`
+
+Without it, every canonical on the blog would point at the other site.
+
+## Testing without the real domain
+
+\`localhost\` and preview URLs never match the host, so the rewrites do not fire. Two ways around that:
+
+- Against a running build, send the header yourself: \`curl -H "Host: blogs.yashsiwach.in" localhost:3000/\`.
+- In a browser, temporarily change the host constant to \`blogs.localhost\`. Chrome resolves \`*.localhost\` to your own machine, so \`http://blogs.localhost:3000\` reaches your dev server.
+
+## Things I would check again
+
+- **Add the domain after the code is deployed, not before.** Until the rewrite is live, the new host happily serves the main site's home page.
+- **Give the new host its own \`robots.txt\` and \`sitemap.xml\`,** and exclude the folder from the main sitemap. A sitemap on one host cannot list URLs on another.
+- **Test the request, not the file.** Anything in \`public/\` that shares the redirected prefix gets caught by the redirect, which is a story for another post.
+
+If the domain's DNS is already on Vercel, adding the subdomain to the project is the last step.`,
+  },
+  {
+    slug: 'the-redirect-that-404d-my-blog-images',
+    title: 'The redirect that quietly 404’d my blog images',
+    date: '2026-11-07',
+    excerpt:
+      'A file that exists is not a URL that works. How a host redirect swallowed my assets, and the test I added so it cannot happen again.',
+    tags: ['nextjs', 'debugging', 'testing'],
+    content: `I added a video and five screenshots to a post, put them in \`public/blogs/promise-keeper/\`, and the page showed a dark empty box where the video should be.
+
+The files were there. A test that asks "does this file exist" would have passed. The bug was in the URL.
+
+## What happened
+
+This blog is served on its own host (see the previous post on subdomains). On that host a redirect removes the \`/blogs\` prefix, so \`blogs.yashsiwach.in/blogs/some-post\` lands on \`/some-post\`. For pages, that rule is correct.
+
+My assets lived at \`/blogs/promise-keeper/poster.jpg\`. The browser asked for exactly that URL, the redirect matched \`/blogs/:path*\`, and it sent the request to \`/promise-keeper/poster.jpg\`. That path does not exist, and the only rewrite on the host matches a single segment, so the request ended in a 404.
+
+The order is what makes it quiet. Next.js applies redirects before it looks at the filesystem, so a rule written for pages also catches anything under \`public/\` that happens to share the prefix. Nothing errors at build time, and nothing looks wrong in the editor.
+
+## How I found it
+
+The page showed a spinner and nothing else, so instead of guessing I asked the page what it had requested:
+
+\`\`\`js
+const video = document.querySelector('video');
+fetch(video.poster).then(response => response.status); // 404
+\`\`\`
+
+The poster, the video and the captions all came back 404 while the files sat on disk. Following the redirect by hand made the reason obvious.
+
+## The fix
+
+Move the assets out of the redirected prefix, to \`public/blog-assets/\`, and update the links. Nothing else changed.
+
+## The guard
+
+The fix is one move. The lasting part is a check. A test I already had verified that every local link in every post pointed at a real file. I added one more assertion that rejects the prefix the host redirects:
+
+\`\`\`js
+assert.ok(!link.startsWith('/blogs/'), \`\${post.slug}: \${link} is under the /blogs prefix\`);
+assert.ok(existsSync(publicDir + link), \`\${post.slug}: missing public\${link}\`);
+\`\`\`
+
+Now a dead link and a link the redirect would eat both fail before anything ships.
+
+## The general version
+
+"The file exists" and "the URL works" are different claims. Whenever a rewrite, a redirect or a base path sits in front of static files, test the request, not the file.`,
+  },
+  {
+    slug: 'testing-typescript-on-node-20-without-a-runner',
+    title: 'Testing a TypeScript module on Node 20 without adding a runner',
+    date: '2026-11-07',
+    excerpt:
+      'No test runner, Node 20 cannot run .ts, and I wanted one check that fails when my data is wrong. The compiler already in node_modules was enough.',
+    tags: ['testing', 'typescript', 'node'],
+    content: `This blog's posts live in one TypeScript file: an array of objects and a few small helpers. I wanted a test that fails if I publish a post with a bad slug or a dead image link. The repository has no test runner, and Node 20 cannot execute \`.ts\` files directly.
+
+There were three ways out. I could add Vitest, Jest or \`tsx\`, which is a dependency for about forty lines of checks. I could upgrade Node, since 22.6 and later have \`--experimental-strip-types\`. Or I could use something already installed. \`typescript\` is a dev dependency of any Next.js project, and \`transpileModule\` turns a module into JavaScript in memory.
+
+## The trick
+
+\`\`\`js
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import ts from 'typescript';
+
+const source = readFileSync(new URL('./blog-data.ts', import.meta.url), 'utf8');
+const { outputText } = ts.transpileModule(source, {
+  compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
+});
+const { getBlogPosts } = await import(
+  'data:text/javascript;base64,' + Buffer.from(outputText).toString('base64')
+);
+\`\`\`
+
+Run it with \`node --test app/blogs/lib\`. No config, no install, no build step.
+
+## The one constraint
+
+The module under test cannot import anything. A \`data:\` URL has no filesystem to resolve relative paths against, so an \`import './other'\` inside it fails. I kept \`blog-data.ts\` free of imports and left a comment saying why, so nobody tidies one in later.
+
+## What to test
+
+Examples such as "this slug exists" go stale. Invariants do not. The checks that earned their place:
+
+- posts are sorted newest first;
+- slugs are unique and URL-safe;
+- every local image, video and caption link points to a file that exists;
+- no link is relative, because relative links break on a post URL;
+- every heading gets a unique anchor.
+
+Each one loops over whatever data exists today, so adding a post adds coverage without touching the test.
+
+## When not to do this
+
+\`transpileModule\` strips types and checks nothing, so type errors are still the job of \`next build\`. If the module needs imports, JSX or mocks, install a real runner. This approach is for the case where a plain function and a data file are all you need to check.`,
   },
 ];
 

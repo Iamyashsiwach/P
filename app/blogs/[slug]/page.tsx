@@ -81,20 +81,28 @@ const markdown: Components = {
   strong: ({ children }) => <strong className="font-medium text-ink">{children}</strong>,
   // Every screenshot so far is 1920x1080; width/height only reserve the aspect
   // ratio, the image still scales to the column.
-  img: ({ src, alt }) =>
-    typeof src === 'string' ? (
+  img: ({ src, alt }) => {
+    if (typeof src !== 'string') return null;
+    // A diagram stays legible on a phone by scrolling sideways inside its box
+    // (like a code block) instead of shrinking its text to nothing.
+    const diagram = src.endsWith('.svg');
+
+    return (
       <span className="my-2 block">
-        <Image
-          src={src}
-          alt={alt ?? ''}
-          width={1920}
-          height={1080}
-          sizes="(min-width: 768px) 800px, 100vw"
-          className="h-auto w-full border border-border"
-        />
+        <span className="block overflow-x-auto" tabIndex={diagram ? 0 : undefined}>
+          <Image
+            src={src}
+            alt={alt ?? ''}
+            width={1920}
+            height={1080}
+            sizes="(min-width: 768px) 800px, 100vw"
+            className={`h-auto w-full border border-border ${diagram ? 'min-w-[800px]' : ''}`}
+          />
+        </span>
         {alt && <span className="mt-3 block text-sm text-ink-mute">{alt}</span>}
       </span>
-    ) : null,
+    );
+  },
   hr: () => <hr className="rule my-12" />,
 };
 
@@ -104,6 +112,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   if (!post) notFound();
 
   const headings = [...post.content.matchAll(/^## (.+)$/gm)].map(match => match[1]);
+  const minutes = Math.max(1, Math.round(post.content.split(/\s+/).length / 220));
 
   return (
     <main className="grid-shell section-rhythm">
@@ -113,9 +122,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </Link>
 
         <header className="mt-10">
-          <time dateTime={post.date} data-numeric className="mono-label">
-            {formatPostDate(post.date)}
-          </time>
+          <p className="mono-label flex flex-wrap gap-x-4 gap-y-1">
+            <time dateTime={post.date} data-numeric>
+              {formatPostDate(post.date)}
+            </time>
+            <span>By Yash Siwach</span>
+            <span data-numeric>{minutes} min read</span>
+          </p>
           <h1 className="mt-6 font-display text-display-l text-ink">{post.title}</h1>
           <hr className="rule mt-10" />
         </header>
