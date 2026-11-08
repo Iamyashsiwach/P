@@ -14,13 +14,11 @@ export const profile = {
   eyebrow: 'Gurugram, IN · Accenture',
   statement: 'Turning ‘we should’ into ‘we did.’',
   email: 'iam@yashsiwach.in',
-  phone: '+91 7206099609',
-  phoneHref: 'tel:+917206099609',
   location: 'Gurugram, Haryana, India',
   resume: 'https://drive.google.com/file/d/1ZKDsqFIP8bYJbzc60ojeXw0EfuP5OBux/view?usp=sharing',
   socials: [
     { label: 'GitHub', href: 'https://github.com/iamyashsiwach' },
-    { label: 'X', href: 'https://twitter.com/iamyashsiwach' },
+    { label: 'X', href: 'https://x.com/yashsiwachx' },
     { label: 'LinkedIn', href: 'https://linkedin.com/in/yash-siwach' },
   ],
 } as const;

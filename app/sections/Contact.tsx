@@ -125,12 +125,6 @@ export function Contact() {
             >
               {copied ? 'Copied' : 'Copy address'}
             </button>
-            <a
-              href={profile.phoneHref}
-              className="font-mono text-mono-label uppercase tracking-[0.18em] text-ink-mute transition-colors hover:text-ink"
-            >
-              {profile.phone}
-            </a>
             <span className="font-mono text-mono-label uppercase tracking-[0.18em] text-ink-mute">
               {profile.location}
             </span>
