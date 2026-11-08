@@ -31,7 +31,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 const description =
-  'Associate Software Engineer at Accenture, Gurugram. Turning ‘we should’ into ‘we did.’';
+  'Yash Siwach — Accenture, Gurugram. Turning ‘we should’ into ‘we did’: problems, products and the teams that ship them.';
 
 // Site-wide defaults only. Every route under this layout inherits these, so
 // nothing here may name a specific page: a canonical or og:url set here made

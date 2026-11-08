@@ -98,28 +98,16 @@ export function CertWork() {
                   <span data-numeric className="shrink-0 font-mono text-xs text-ink-mute">
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  {/* Badge art where the issuer publishes one, otherwise a
-                      plain mark of the same size so the rows stay aligned.
-                      Multiply drops the white backing some badges ship with
+                  {/* Multiply drops the white backing some badges ship with
                       onto the paper colour. */}
-                  {'badge' in cert && cert.badge ? (
-                    <Image
-                      src={cert.badge}
-                      alt=""
-                      width={56}
-                      height={56}
-                      data-print-hide
-                      className="h-14 w-14 shrink-0 object-contain mix-blend-multiply"
-                    />
-                  ) : (
-                    <span
-                      aria-hidden="true"
-                      data-print-hide
-                      className="flex h-14 w-14 shrink-0 items-center justify-center border border-border font-mono text-xs text-ink-mute"
-                    >
-                      {'mark' in cert ? cert.mark : null}
-                    </span>
-                  )}
+                  <Image
+                    src={cert.badge}
+                    alt=""
+                    width={56}
+                    height={56}
+                    data-print-hide
+                    className="h-14 w-14 shrink-0 object-contain mix-blend-multiply"
+                  />
                   {/* Wraps rather than truncates, unlike the Work rows: on a
                       phone the expiry date is what got cut off, and it's
                       half of what a visitor is here to verify. */}
