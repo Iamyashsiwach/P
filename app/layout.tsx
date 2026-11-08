@@ -84,7 +84,7 @@ const personSchema = {
     name: 'Accenture',
   },
   sameAs: [
-    'https://twitter.com/iamyashsiwach',
+    'https://x.com/yashsiwachx',
     'https://linkedin.com/in/yash-siwach',
     'https://github.com/iamyashsiwach',
   ],
