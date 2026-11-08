@@ -12,7 +12,7 @@
 export const profile = {
   name: 'Yash Siwach',
   eyebrow: 'Gurugram, IN · Associate Software Engineer @ Accenture',
-  statement: 'I build software end to end — schema to shader — and I care how they get used.',
+  statement: 'Turning ‘we should’ into ‘we did.’',
   email: 'iam@yashsiwach.in',
   phone: '+91 7206099609',
   phoneHref: 'tel:+917206099609',
