@@ -167,7 +167,7 @@ export const commands: Command[] = [
     run: () => ({
       kind: 'goto',
       href: '#contact',
-      lines: [contact.line, `Email: ${profile.email}`, `Or: ${profile.phone}`],
+      lines: [contact.line, `Email: ${profile.email}`],
     }),
   },
   {

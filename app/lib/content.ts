@@ -14,8 +14,6 @@ export const profile = {
   eyebrow: 'Gurugram, IN · Accenture',
   statement: 'Turning ‘we should’ into ‘we did.’',
   email: 'iam@yashsiwach.in',
-  phone: '+91 7206099609',
-  phoneHref: 'tel:+917206099609',
   location: 'Gurugram, Haryana, India',
   resume: 'https://drive.google.com/file/d/1ZKDsqFIP8bYJbzc60ojeXw0EfuP5OBux/view?usp=sharing',
   socials: [
