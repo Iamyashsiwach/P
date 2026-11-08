@@ -11,7 +11,7 @@
 
 export const profile = {
   name: 'Yash Siwach',
-  eyebrow: 'Gurugram, IN · Associate Software Engineer @ Accenture',
+  eyebrow: 'Gurugram, IN · Accenture',
   statement: 'Turning ‘we should’ into ‘we did.’',
   email: 'iam@yashsiwach.in',
   phone: '+91 7206099609',
@@ -47,22 +47,19 @@ export const sectionIds = ['home', 'about', 'log', 'stack', 'work', 'proof', 'co
 
 export const about = {
   eyebrow: '01 / Who',
-  heading: 'Someone has to own the whole stack.',
+  heading: 'From owning the stack to owning the outcome.',
   spec: [
     { term: 'Location', value: 'Gurugram, IN' },
-    { term: 'Currently', value: 'Associate Software Engineer, Accenture' },
-    { term: 'Stack', value: 'TypeScript · Next.js · Node · AWS ' },
-    {
-      term: 'Focus',
-      value: 'Systems and cloud architecture, DevOps and MLOps, agent tooling and MCP',
-    },
-    { term: 'Shipping since', value: '2022' },
+    { term: 'Currently', value: 'Accenture' },
+    { term: 'Background', value: 'BCA, Chandigarh University · 2025' },
+    { term: 'Focus', value: 'Problems, products, and the people who ship them' },
+    { term: 'Led', value: 'Blue Layer Studio · Starknet and Aleo chapters, Chandigarh' },
   ],
   paragraphs: [
-    'I started building because I wanted things that did not exist yet — an air quality monitor for my parents’ flat, an AR game, a copy-trading bot at 3am during a hackathon, etc.',
-    'Most of what I know came from shipping small things badly and then fixing them. I have written the schema, the API, the frontend, the deploy config and the CSS for the same product often enough that I stopped thinking of them as separate jobs. Owning all of it is also what got me interested in why we were building any of it.',
-    'That habit of owning the whole thing is what led me to run Blue Layer Studio for the better part of two years — client sites, start to finish, my own name on the invoice, growing from just me to a team of six working across time zones. But, These days most of that energy goes into shipping at Accenture.',
-    'Right now I am drawn to the parts of engineering that are hard to fake: systems and cloud architecture, the DevOps and MLOps work that keeps things running once they ship, and building with MCP and agents rather than just around them.',
+    'I started building because I wanted things that did not exist yet — an air quality monitor for my parents’ flat, an AR game, a copy-trading bot at 3am during a hackathon. Every one of them started with a problem, not a stack.',
+    'Shipping whole products on my own, from the database to the deploy, taught me the technology. It also taught me that most projects do not fail on the code. They fail on an unclear problem, a misread user, or a team pulling in different directions.',
+    'Blue Layer Studio is where that clicked. For the better part of two years I ran client work start to finish, my own name on the invoice, growing from just me to a team of six across time zones. The build was the easy part; the job was understanding what each client actually needed and getting everyone moving toward it. Leading the Starknet and Aleo chapters in Chandigarh was the same job, with a room instead of a codebase.',
+    'That is where I am heading: the problem before the product, and the people and decisions that turn a plan into something real. Accenture is where I am learning how large organisations make those calls.',
   ],
   portrait: { src: '/Hero_img.jpeg', alt: 'Yash Siwach' },
 } as const;
@@ -184,14 +181,14 @@ export const certifications = {
 
 export const work = {
   eyebrow: '04 / Work',
-  heading: 'Things I shipped',
+  heading: 'Problems I took on',
   projects: [
     {
       title: 'Archery Tournament Manager',
       year: '2026',
-      role: 'Solo build',
+      role: 'Idea to launch',
       blurb:
-        'Tournament management for my archery academy — coaches register archers, judges score qualification and matches, everyone sees live rankings and field target boards.',
+        'Built for the people running a tournament day at my own archery academy: coaches register archers, judges score qualification and matches, and everyone sees live rankings and field target boards.',
       tech: ['Next.js', 'Supabase', 'TypeScript'],
       href: 'https://archerytms.yashsiwach.in',
       image: '/archery-tms.png',
@@ -200,9 +197,9 @@ export const work = {
     {
       title: 'Saarthi',
       year: '2026',
-      role: 'Solo build',
+      role: 'Idea to launch',
       blurb:
-        'An AI co-driver for long-haul truck drivers. It watches for the first signs of drowsiness, plans the next tea break and keeps the driver company. Launch site with a live demo of each, built around Ollie the owl.',
+        'Long-haul truck drivers fight fatigue alone. Saarthi is an AI co-driver that watches for the first signs of drowsiness, plans the next tea break and keeps the driver company. Launch site with a live demo of each, built around Ollie the owl.',
       tech: ['Next.js', 'Three.js', 'TypeScript'],
       href: 'https://saarthi.yashsiwach.in',
       image: '/saarthi.jpg',
@@ -220,9 +217,9 @@ export const work = {
     {
       title: 'GreenBytes',
       year: '2025',
-      role: 'Solo build — frontend, backend and ML pipeline',
+      role: 'Idea to launch, including the ML pipeline',
       blurb:
-        'Crop disease detection for farmers — a photo plus a few diagnostic questions, fused through a YOLOv8 + TabNet model for a diagnosis. FastAPI backend, deployed on Azure.',
+        'A farmer with a sick crop needs an answer, not a lab. A photo plus a few diagnostic questions, fused through a YOLOv8 + TabNet model, returns a diagnosis. FastAPI backend, deployed on Azure.',
       tech: ['Next.js', 'FastAPI', 'PyTorch', 'YOLOv8', 'Azure'],
       href: 'https://greenbytes-ui.vercel.app',
       image: '/greenbytes.png',
@@ -230,9 +227,9 @@ export const work = {
     {
       title: 'MGNREGA District Dashboard',
       year: '2025',
-      role: 'Solo build',
+      role: 'Idea to launch',
       blurb:
-        'District-level performance dashboard for a national rural employment scheme — bilingual (Hindi/English), built for low-literacy rural users, with automatic district detection.',
+        'District-level performance for a national rural employment scheme, designed around its real users: bilingual (Hindi/English), readable with low literacy, and it detects your district for you.',
       tech: ['Next.js', 'PostgreSQL', 'Docker', 'GitHub Actions'],
       image: '/mgnrega-dashboard.png',
     },
@@ -249,9 +246,9 @@ export const work = {
     {
       title: 'Blue Layer Studio',
       year: '2024',
-      role: 'Design and build, solo',
+      role: 'Ran the studio · built the site',
       blurb:
-        'Agency site with a Three.js hero and retrieval-augmented search over their case studies. Built the frontend, the retrieval layer and the deploy.',
+        'The studio I ran for the better part of two years — client work start to finish, from just me to a team of six. Its own site has a Three.js hero and retrieval-augmented search over the case studies.',
       tech: ['Next.js', 'Three.js', 'RAG', 'TypeScript'],
       href: 'https://webagency-iamyashsiwachs-projects.vercel.app',
       image: '/Screenshot (2).jpeg',
@@ -327,13 +324,13 @@ export const log = {
           date: '2026',
           title: 'Joined Accenture',
           detail:
-            'Started as an Associate Software Engineer in Gurugram. The move from shipping solo projects to building inside a team, with review, standards and a delivery schedule that does not care how you feel about it.',
+            'Started as an Associate Software Engineer in Gurugram. The move from shipping solo projects to delivering inside a large organisation, with review, standards and clients whose priorities set the schedule. A close look at how big teams decide and deliver.',
         },
         {
           date: '2026',
           title: 'Archery coaching certification, National Institute of Sports, Kolkata',
           detail:
-            'Six-week certification course in sports coaching, archery, at the National Institute of Sports (NIS), Kolkata. Coaching is a different skill from shooting: you break a movement down, watch it, and fix one thing at a time.',
+            'Six-week certification course in sports coaching, archery, at the National Institute of Sports (NIS), Kolkata. Coaching is a different skill from shooting: you do not take the shot, you help someone else take it better — break the movement down, watch it, fix one thing at a time.',
         },
       ],
     },
@@ -488,6 +485,6 @@ export const proof = {
 
 export const contact = {
   eyebrow: '07 / Contact',
-  heading: 'Let’s build something',
-  line: 'Freelance work, full-time roles, or a project you cannot get anyone else to take on.',
+  heading: 'Got a ‘we should’?',
+  line: 'A role, a project, or something you have been meaning to start. Happy to talk it through.',
 } as const;
